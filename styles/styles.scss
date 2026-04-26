@@ -305,57 +305,112 @@ section {
          }
      }
 
-    // Skills Grid Section
-    .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 1.5rem;
-        margin-top: 2rem;
+     // Skills Grid Section
+     .skills-grid {
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         grid-gap: 1.5rem;
+         margin-top: 2rem;
 
-        .skill-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1.5rem;
-            background-color: var(--color-grey-5);
-            border-radius: 10px;
-            border: 1px solid var(--color-grey-4);
-            transition: all 0.4s ease-in-out;
-            text-align: center;
+         .skill-item {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             padding: 2rem 1.5rem;
+             background-color: var(--color-grey-5);
+             border-radius: 10px;
+             border: 1px solid var(--color-grey-4);
+             transition: all 0.4s ease-in-out;
+             text-align: center;
 
-            &:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 8px 20px rgba(39, 174, 96, 0.2);
-                border-color: var(--color-secondary);
-                background-color: rgba(39, 174, 96, 0.05);
-            }
+             &:hover {
+                 transform: translateY(-8px);
+                 box-shadow: 0 8px 20px rgba(39, 174, 96, 0.2);
+                 border-color: var(--color-secondary);
+                 background-color: rgba(39, 174, 96, 0.05);
+             }
 
-            h4 {
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: var(--color-white);
-                margin-bottom: 1rem;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
+             .progress-circle-wrapper {
+                 position: relative;
+                 width: 160px;
+                 height: 160px;
+                 display: flex;
+                 align-items: center;
+                 justify-content: center;
+                 margin-bottom: 1rem;
 
-            .skill-bar {
-                width: 100%;
-                height: 10px;
-                background-color: var(--color-grey-4);
-                border-radius: 5px;
-                overflow: hidden;
-                position: relative;
+                 svg.progress-ring {
+                     transform: rotate(-90deg);
+                     width: 160px;
+                     height: 160px;
 
-                .skill-bar-fill {
-                    height: 100%;
-                    background-color: var(--color-secondary);
-                    transition: width 0.4s ease-in-out;
-                }
-            }
-        }
-    }
+                     circle {
+                         fill: none;
+                         stroke-linecap: round;
+
+                         &.progress-ring-bg {
+                             stroke: var(--color-grey-4);
+                             stroke-width: 8;
+                         }
+
+                         &.progress-ring-fill {
+                             stroke-width: 8;
+                             stroke-dasharray: 439.82;
+                             stroke-dashoffset: 439.82;
+                             transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-color 0.3s ease-in-out;
+                         }
+                     }
+                 }
+
+                 .percentage-text {
+                     position: absolute;
+                     font-size: 1.8rem;
+                     font-weight: 700;
+                     color: var(--color-white);
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                 }
+             }
+
+             h4 {
+                 font-size: 1.2rem;
+                 font-weight: 600;
+                 color: var(--color-white);
+                 margin-bottom: 0.5rem;
+                 text-transform: uppercase;
+                 letter-spacing: 0.5px;
+             }
+
+             .skill-info {
+                 display: flex;
+                 flex-direction: column;
+                 align-items: center;
+
+                 .proficiency {
+                     font-size: 0.9rem;
+                     color: var(--color-grey-2);
+                     font-weight: 500;
+                 }
+             }
+
+             .skill-bar {
+                 width: 100%;
+                 height: 10px;
+                 background-color: var(--color-grey-4);
+                 border-radius: 5px;
+                 overflow: hidden;
+                 position: relative;
+
+                 .skill-bar-fill {
+                     height: 100%;
+                     background-color: var(--color-secondary);
+                     transition: width 0.4s ease-in-out;
+                 }
+             }
+         }
+     }
 }
 .stat-title {
     text-transform: uppercase;
@@ -745,24 +800,33 @@ section {
 }
 
 .main-title {
-    text-align: center;
-    h2 {
-        position: relative;
-        text-transform: uppercase;
-        font-size: 4rem;
-        font-weight: 700;
-        span { color: var(--color-secondary); }
-        .bg-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            color: var(--color-grey-5);
-            transition: all .4s ease-in-out;
-            z-index: -1;
-            transform: translate(-50%, -50%);
-            font-weight: 800;
-            font-size: 6.3rem;
-        }
+     text-align: center;
+     h2 {
+         position: relative;
+         text-transform: uppercase;
+         font-size: 4rem;
+         font-weight: 700;
+         span { color: var(--color-secondary); }
+         .bg-text {
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             color: var(--color-grey-5);
+             transition: all .4s ease-in-out;
+             z-index: -1;
+             transform: translate(-50%, -50%);
+             font-weight: 800;
+             font-size: 6.3rem;
+         }
+     }
+}
+
+@keyframes fillProgress {
+    from {
+        stroke-dashoffset: 439.82;
+    }
+    to {
+        stroke-dashoffset: var(--progress-offset, 0);
     }
 }
 

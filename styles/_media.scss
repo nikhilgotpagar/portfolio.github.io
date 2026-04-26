@@ -74,10 +74,16 @@
     }
 
     .about-stats{
-        .progress-bars{
-            grid-template-columns: repeat(1, 1fr);
-        }
-    }
+         .progress-bars{
+             grid-template-columns: repeat(1, 1fr);
+         }
+         .skills-grid{
+             grid-template-columns: repeat(2, 1fr);
+         }
+         .technologies{
+             grid-template-columns: repeat(1, 1fr);
+         }
+     }
 
     .portfolios{
         grid-template-columns: repeat(1, 1fr);
