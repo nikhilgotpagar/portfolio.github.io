@@ -164,19 +164,74 @@ section {
             clip-path: polygon(0 0, 46% 0, 79% 100%, 0% 100%);
         }
         .image {
-            border-radius: var(--br-sm-2);
-            height: 90%;
-            width: 68%;
-            margin-left: 4rem;
-            background-color: var(--color-black);
-            transition: all .4s ease-in-out;
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: all .4s ease-in-out;
-            }
-        }
+             border-radius: var(--br-sm-2);
+             height: 90%;
+             width: 68%;
+             margin-left: 4rem;
+             background: linear-gradient(135deg, var(--color-black) 0%, rgba(26, 31, 46, 0.5) 100%);
+             transition: all .4s ease-in-out;
+             position: relative;
+             padding: 3px;
+             overflow: hidden;
+             box-shadow: var(--glow-secondary),
+                 0 0 40px rgba(0, 0, 0, 0.1),
+                 inset 0 0 20px var(--glow-secondary);
+             border: 1px solid var(--color-secondary);
+
+             &::before {
+                 content: '';
+                 position: absolute;
+                 top: 0;
+                 left: 0;
+                 right: 0;
+                 bottom: 0;
+                 background: linear-gradient(135deg, var(--color-secondary) 0%, transparent 50%);
+                 border-radius: var(--br-sm-2);
+                 z-index: 1;
+                 pointer-events: none;
+                 opacity: 0.1;
+                 animation: techGlow 3s ease-in-out infinite;
+             }
+
+             &::after {
+                 content: '';
+                 position: absolute;
+                 top: -2px;
+                 left: -2px;
+                 right: -2px;
+                 bottom: -2px;
+                 background: linear-gradient(45deg, var(--color-secondary), transparent, var(--color-secondary));
+                 border-radius: var(--br-sm-2);
+                 z-index: -1;
+                 opacity: 0.3;
+                 animation: borderRotate 6s linear infinite;
+             }
+
+             img {
+                 width: 100%;
+                 height: 100%;
+                 object-fit: cover;
+                 transition: all .4s ease-in-out;
+                 border-radius: calc(var(--br-sm-2) - 2px);
+                 filter: brightness(1.05) contrast(1.1);
+                 position: relative;
+                 z-index: 2;
+             }
+
+             &:hover {
+                 box-shadow: var(--glow-secondary),
+                     0 0 60px rgba(0, 0, 0, 0.2),
+                     inset 0 0 30px var(--glow-secondary);
+
+                 img {
+                     filter: brightness(1.15) contrast(1.2) drop-shadow(0 0 10px var(--color-secondary));
+                 }
+
+                 &::after {
+                     opacity: 0.6;
+                 }
+             }
+         }
     }
 
     .right-header {
@@ -822,12 +877,42 @@ section {
 }
 
 @keyframes fillProgress {
-    from {
-        stroke-dashoffset: 439.82;
-    }
-    to {
-        stroke-dashoffset: var(--progress-offset, 0);
-    }
-}
+     from {
+         stroke-dashoffset: 439.82;
+     }
+     to {
+         stroke-dashoffset: var(--progress-offset, 0);
+     }
+ }
+
+@keyframes techGlow {
+     0%, 100% {
+         opacity: 0.4;
+         box-shadow: inset 0 0 10px rgba(39, 174, 96, 0.1);
+     }
+     50% {
+         opacity: 0.8;
+         box-shadow: inset 0 0 25px rgba(39, 174, 96, 0.2);
+     }
+ }
+
+@keyframes borderRotate {
+     0% {
+         background: linear-gradient(45deg, var(--color-secondary), transparent, var(--color-secondary));
+     }
+     25% {
+         background: linear-gradient(135deg, var(--color-secondary), transparent, var(--color-secondary));
+     }
+     50% {
+         background: linear-gradient(225deg, var(--color-secondary), transparent, var(--color-secondary));
+     }
+     75% {
+         background: linear-gradient(315deg, var(--color-secondary), transparent, var(--color-secondary));
+     }
+     100% {
+         background: linear-gradient(405deg, var(--color-secondary), transparent, var(--color-secondary));
+     }
+ }
+
 
 @import './media';
