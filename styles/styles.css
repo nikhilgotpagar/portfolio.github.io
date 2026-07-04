@@ -32,6 +32,31 @@
   --progress-color-6: #06b6d4;
 }
 
+/* Professional Mode Explicit */
+body.professional-mode {
+  --color-primary: #0f172a;
+  --color-secondary: #3b82f6;
+  --color-accent: #22c55e;
+  --color-white: #e5e7eb;
+  --color-black: #000;
+  --color-grey0: #1f2933;
+  --color-grey-1: #9ca3af;
+  --color-grey-2: #9ca3af;
+  --color-grey-3: #6b7280;
+  --color-grey-4: #1f2933;
+  --color-grey-5: #111827;
+  --color-grey-6: #0f172a;
+  --glow-secondary: 0 0 15px rgba(59, 130, 246, 0.3);
+  --glow-accent: 0 0 15px rgba(34, 197, 94, 0.2);
+  /* Progress Bar Colors */
+  --progress-color-1: #ef4444;
+  --progress-color-2: #f97316;
+  --progress-color-3: #eab308;
+  --progress-color-4: #84cc16;
+  --progress-color-5: #22c55e;
+  --progress-color-6: #06b6d4;
+}
+
 /* Gaming Theme (SECONDARY) */
 body.gaming-mode {
   --color-primary: #0a0a0a;
@@ -57,7 +82,8 @@ body.gaming-mode {
   --progress-color-6: #ff6b6b;
 }
 
-.light-mode {
+/* Light Theme */
+body.light-mode {
   --color-primary: #f8fafc;
   --color-secondary: #3b82f6;
   --color-accent: #22c55e;
@@ -82,14 +108,52 @@ body.gaming-mode {
 }
 
 body {
-  background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%);
-  background-attachment: fixed;
+  background-color: var(--color-primary);
   font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   color: var(--color-white);
   transition: all 0.4s ease-in-out;
   position: relative;
   overflow-x: hidden;
+}
+
+/* Default Professional theme background */
+body.professional-mode {
+  background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* Professional theme (default or explicit) */
+body.professional-mode {
+  background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%) !important;
+  background-attachment: fixed !important;
+}
+
+body.professional-mode::before {
+  background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.02) 0%, transparent 50%);
+}
+
+/* Gaming theme background */
+body.gaming-mode {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0a0a0a 50%, #1a1a1a 100%) !important;
+  background-attachment: fixed !important;
+}
+
+body.gaming-mode::before {
+  background: radial-gradient(circle at 20% 50%, rgba(255, 30, 30, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(255, 59, 59, 0.03) 0%, transparent 50%);
+}
+
+/* Light theme background */
+body.light-mode {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #f8fafc 100%) !important;
+  background-attachment: fixed !important;
+}
+
+body.light-mode::before {
+  background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.02) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.01) 0%, transparent 50%);
 }
 
 body::before {
@@ -105,22 +169,6 @@ body::before {
   z-index: 0;
 }
 
-/* Gaming Mode Background */
-body.gaming-mode {
-  background: linear-gradient(-45deg, #0a0e27, #1a1f3a, #0a0e27, #16213e);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-}
-
-body.gaming-mode::before {
-  background: radial-gradient(circle at 20% 50%, rgba(255, 30, 30, 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(255, 59, 59, 0.03) 0%, transparent 50%);
-}
-
-body.light-mode {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%) !important;
-  animation: none !important;
-}
 
 a {
   display: inline-block;
@@ -230,6 +278,8 @@ section {
     box-shadow: 0 4px 12px rgba(0,0,0,.15);
     transition: all 0.3s ease-in-out;
     border: 1px solid rgba(59, 130, 246, 0.2);
+    z-index: 9999;
+    pointer-events: auto;
 }
 .theme-btn:hover {
     transform: scale(1.1) rotate(15deg);
@@ -1236,18 +1286,6 @@ section {
 }
 
 
-body {
-    background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%);
-    background-attachment: fixed;
-}
-
-body.gaming-mode {
-    background: linear-gradient(-45deg, #0a0e27, #1a1f3a, #0a0e27, #16213e) !important;
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite !important;
-}
-
-/* Light mode gradient */
 body.light-mode {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%) !important;
     animation: none !important;
