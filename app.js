@@ -258,22 +258,7 @@
         });
     }
 
-    // ===== PARALLAX EFFECT ON SCROLL =====
-    window.addEventListener("scroll", () => {
-        const scrolled = window.scrollY;
-        
-        // Profile image parallax
-        const profileImage = document.querySelector(".header-content .left-header .image");
-        if(profileImage) {
-            profileImage.style.transform = `translateY(${scrolled * 0.2}px) scale(${Math.max(0.9, 1 - scrolled / 8000)})`;
-        }
-        
-        // Header fade effect
-        const header = document.querySelector("header");
-        if(header) {
-            header.style.opacity = Math.max(0.3, 1 - scrolled / 800);
-        }
-    }, { passive: true });
+    // ===== PARALLAX EFFECT ON SCROLL ===== (REMOVED - disabled for better mobile UX)
 
     // ===== SKILL PROGRESS CIRCLES ANIMATION =====
     const skillItems = document.querySelectorAll(".progress-ring-fill");

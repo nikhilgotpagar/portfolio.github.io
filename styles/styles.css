@@ -120,13 +120,13 @@ body {
 /* Default Professional theme background */
 body.professional-mode {
   background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%) !important;
-  background-attachment: fixed !important;
+  background-attachment: scroll;
 }
 
 /* Professional theme (default or explicit) */
 body.professional-mode {
   background: linear-gradient(135deg, #0f172a 0%, #111827 25%, #1e293b 50%, #0f172a 100%) !important;
-  background-attachment: fixed !important;
+  background-attachment: scroll;
 }
 
 body.professional-mode::before {
@@ -137,7 +137,7 @@ body.professional-mode::before {
 /* Gaming theme background */
 body.gaming-mode {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0a0a0a 50%, #1a1a1a 100%) !important;
-  background-attachment: fixed !important;
+  background-attachment: scroll;
 }
 
 body.gaming-mode::before {
@@ -148,7 +148,7 @@ body.gaming-mode::before {
 /* Light theme background */
 body.light-mode {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #f8fafc 100%) !important;
-  background-attachment: fixed !important;
+  background-attachment: scroll;
 }
 
 body.light-mode::before {
