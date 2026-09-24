@@ -784,3 +784,170 @@ body.light-mode {
 .contact-item:hover {
     background: linear-gradient(135deg, var(--theme-bg-light), transparent) !important;
 }
+
+/* ===== ENHANCED PAGE TRANSITIONS ===== */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section entrance animations */
+section {
+    animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+}
+
+section.active {
+    animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Staggered item animations */
+.about-item,
+.timeline-item,
+.tech-category,
+.core-skill,
+.cert-chip {
+    opacity: 0;
+    animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.about-item:nth-child(1) { animation-delay: 0.1s; }
+.about-item:nth-child(2) { animation-delay: 0.2s; }
+.about-item:nth-child(3) { animation-delay: 0.3s; }
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+.tech-category:nth-child(1) { animation-delay: 0.1s; }
+.tech-category:nth-child(2) { animation-delay: 0.15s; }
+.tech-category:nth-child(3) { animation-delay: 0.2s; }
+.tech-category:nth-child(4) { animation-delay: 0.25s; }
+.tech-category:nth-child(5) { animation-delay: 0.3s; }
+
+.core-skill:nth-child(1) { animation-delay: 0.1s; }
+.core-skill:nth-child(2) { animation-delay: 0.15s; }
+.core-skill:nth-child(3) { animation-delay: 0.2s; }
+.core-skill:nth-child(4) { animation-delay: 0.25s; }
+
+.cert-chip:nth-child(1) { animation-delay: 0.1s; }
+.cert-chip:nth-child(2) { animation-delay: 0.15s; }
+.cert-chip:nth-child(3) { animation-delay: 0.2s; }
+.cert-chip:nth-child(4) { animation-delay: 0.25s; }
+.cert-chip:nth-child(5) { animation-delay: 0.3s; }
+.cert-chip:nth-child(6) { animation-delay: 0.35s; }
+
+/* Enhanced section title animations */
+.main-title h2 {
+    animation: slideInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.section-label {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.left-about h4,
+.left-contact h4 {
+    animation: slideInLeft 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.left-about p,
+.contact-intro {
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Smooth page transitions on scroll */
+.container {
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth section transitions */
+section {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button entrance animation */
+.hero-actions {
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    animation-delay: 0.5s;
+}
+
+.main-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Impact list stagger */
+.impact-list li {
+    opacity: 0;
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.impact-list li:nth-child(1) { animation-delay: 0.2s; }
+.impact-list li:nth-child(2) { animation-delay: 0.3s; }
+
+/* Form inputs subtle entrance */
+.input-control input,
+.input-control textarea {
+    animation: fadeInScale 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    animation-delay: 0.2s;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
