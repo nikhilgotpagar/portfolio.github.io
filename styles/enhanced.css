@@ -729,17 +729,17 @@ header {
 
 /* ===== THEME-SPECIFIC STYLING ===== */
 
-/* Professional Theme (Default) */
+/* Professional Theme (Default) — aligned with blue secondary */
 :root {
-    --theme-bg-light: rgba(39, 174, 96, 0.05);
-    --theme-bg-medium: rgba(39, 174, 96, 0.1);
+    --theme-bg-light: rgba(59, 130, 246, 0.05);
+    --theme-bg-medium: rgba(59, 130, 246, 0.1);
     --theme-border-color: var(--color-secondary);
 }
 
 /* Professional Theme (Explicit) */
 body.professional-mode {
-    --theme-bg-light: rgba(39, 174, 96, 0.05);
-    --theme-bg-medium: rgba(39, 174, 96, 0.1);
+    --theme-bg-light: rgba(59, 130, 246, 0.05);
+    --theme-bg-medium: rgba(59, 130, 246, 0.1);
     --theme-border-color: var(--color-secondary);
 }
 
@@ -752,8 +752,8 @@ body.gaming-mode {
 
 /* Light Theme */
 body.light-mode {
-    --theme-bg-light: rgba(59, 130, 246, 0.05);
-    --theme-bg-medium: rgba(59, 130, 246, 0.1);
+    --theme-bg-light: rgba(29, 78, 216, 0.05);
+    --theme-bg-medium: rgba(29, 78, 216, 0.1);
     --theme-border-color: var(--color-secondary);
 }
 
