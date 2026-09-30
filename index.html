@@ -17,6 +17,34 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
 </head>
 <body class="main-content professional-mode">
+    <nav class="top-nav" aria-label="Primary">
+        <a href="#home" class="top-nav__brand" aria-label="Nikhil Gotpagar home">NG</a>
+        <button class="top-nav__toggle" type="button" aria-expanded="false" aria-controls="top-nav-menu" aria-label="Open menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="top-nav__menu" id="top-nav-menu">
+            <div class="top-nav__links">
+                <a href="#home" class="top-nav__link is-active" data-id="home">Home</a>
+                <a href="#about" class="top-nav__link" data-id="about">About</a>
+                <a href="#blogs" class="top-nav__link" data-id="blogs">Experience</a>
+                <a href="#contact" class="top-nav__link" data-id="contact">Contact</a>
+            </div>
+            <div class="top-nav__actions">
+                <a href="https://github.com/nikhilgotpagar" class="top-nav__icon" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/nikhil-gotpagar-84a27b193/" class="top-nav__icon" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <button class="theme-btn top-nav__theme" type="button" title="Toggle theme" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="https://drive.google.com/file/d/1gd1qQAJ4zzEy_wbrvza7E7z8TE1TsOBJ/view?usp=sharing" class="top-nav__resume" target="_blank" rel="noopener">
+                    <i class="fas fa-download"></i> Resume
+                </a>
+            </div>
+        </div>
+    </nav>
     <header class="container header active home-cyber" id="home">
         <div class="home-dash">
             <div class="home-hero">
@@ -169,21 +197,21 @@
                         <a href="#about">About</a>
                     </div>
                     <div class="home-spot__certs">
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/c71573c7d70647eeae5cd7e66cf0ecec" target="_blank" rel="noopener" title="AWS Gen AI Developer">
+                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/c71573c7d70647eeae5cd7e66cf0ecec" target="_blank" rel="noopener" title="AWS Certified Generative AI Developer – Professional">
                             <img src="img/aws-certified-generative-ai-developer-professional.png" alt="">
-                            <em>GenAI Pro</em>
+                            <em>AWS Gen AI Developer – Professional</em>
                         </a>
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/d22f61b75a26430498847f680de0b62f" target="_blank" rel="noopener" title="AWS Solutions Architect">
+                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/d22f61b75a26430498847f680de0b62f" target="_blank" rel="noopener" title="AWS Certified Solutions Architect – Associate">
                             <img src="img/awssolnlogo.png" alt="">
-                            <em>SA Associate</em>
+                            <em>AWS Solutions Architect – Associate</em>
                         </a>
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/528d01a7b15e4684863e091388f2602c" target="_blank" rel="noopener" title="AWS Cloud Practitioner">
+                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/528d01a7b15e4684863e091388f2602c" target="_blank" rel="noopener" title="AWS Certified Cloud Practitioner">
                             <img src="img/image.png" alt="">
-                            <em>Cloud Ready</em>
+                            <em>AWS Cloud Practitioner</em>
                         </a>
-                        <a href="https://verify.skilljar.com/c/f66j2sfwk9jt" target="_blank" rel="noopener" title="FinOps Practitioner">
+                        <a href="https://verify.skilljar.com/c/f66j2sfwk9jt" target="_blank" rel="noopener" title="FinOps Certified Practitioner">
                             <img src="img/finopslogo.png" alt="">
-                            <em>FinOps</em>
+                            <em>FinOps Practitioner</em>
                         </a>
                     </div>
                 </div>
@@ -388,27 +416,27 @@
             <div class="certs-strip">
                 <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/c71573c7d70647eeae5cd7e66cf0ecec" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/aws-certified-generative-ai-developer-professional.png" alt="">
-                    <span>AWS Gen AI Developer</span>
+                    <span>AWS Certified Generative AI Developer – Professional</span>
                 </a>
                 <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/d22f61b75a26430498847f680de0b62f" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/awssolnlogo.png" alt="">
-                    <span>AWS Solutions Architect</span>
+                    <span>AWS Certified Solutions Architect – Associate</span>
                 </a>
                 <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/528d01a7b15e4684863e091388f2602c" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/image.png" alt="">
-                    <span>AWS Cloud Practitioner</span>
+                    <span>AWS Certified Cloud Practitioner</span>
                 </a>
                 <a href="https://verify.skilljar.com/c/f66j2sfwk9jt" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/finopslogo.png" alt="">
-                    <span>FinOps Practitioner</span>
+                    <span>FinOps Certified Practitioner</span>
                 </a>
                 <a href="https://www.hackerrank.com/certificates/32cb0c464f3e" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/HackerRank.png" alt="">
-                    <span>HackerRank Java</span>
+                    <span>HackerRank Java (Basic)</span>
                 </a>
                 <a href="https://www.hackerrank.com/certificates/5f7de67217be" class="cert-chip" target="_blank" rel="noopener">
                     <img src="img/HackerRank.png" alt="">
-                    <span>HackerRank SQL</span>
+                    <span>HackerRank SQL (Basic)</span>
                 </a>
             </div>
         </section>
@@ -522,27 +550,6 @@
         </section>
     </main>
 
-    <div class="controls controls--labeled">
-        <div class="control active-btn" data-id="home" title="Home">
-            <i class="fas fa-home"></i>
-            <span class="control-label">Home</span>
-        </div>
-        <div class="control" data-id="about" title="About">
-            <i class="fas fa-user"></i>
-            <span class="control-label">About</span>
-        </div>
-        <div class="control" data-id="blogs" title="Experience">
-            <i class="fas fa-briefcase"></i>
-            <span class="control-label">Work</span>
-        </div>
-        <div class="control" data-id="contact" title="Contact">
-            <i class="fas fa-envelope-open"></i>
-            <span class="control-label">Contact</span>
-        </div>
-    </div>
-    <div class="theme-btn" title="Toggle theme" role="button" tabindex="0" aria-label="Toggle theme">
-        <i class="fas fa-adjust"></i>
-    </div>
     <script src="app.js"></script>
 </body>
 </html>

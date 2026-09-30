@@ -8,25 +8,28 @@
         console.warn("EmailJS not initialized. Contact form may not work until configured.");
     }
 
-    // ===== NAVIGATION CONTROLS WITH SCROLL SYNC =====
-    const controls = document.querySelectorAll(".control");
+    // ===== TOP NAV + SCROLL SYNC =====
+    const navLinks = document.querySelectorAll(".top-nav__link");
     const sections = document.querySelectorAll("section[id], header[id]");
+    const navToggle = document.querySelector(".top-nav__toggle");
+    const navMenu = document.querySelector(".top-nav__menu");
 
-    [...controls].forEach((button, index) => {
-        button.addEventListener("click", function (e) {
-            createRipple(this, e);
-
-            const sectionId = this.dataset.id;
-            const section = document.getElementById(sectionId);
-
-            if (section) {
-                section.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
+    function setActiveNav(sectionId) {
+        navLinks.forEach((link) => {
+            link.classList.toggle("is-active", link.dataset.id === sectionId);
         });
-        button.style.animationDelay = `${index * 0.1}s`;
-    });
+    }
 
-    // Smooth hash links (e.g. Contact CTA)
+    if (navToggle && navMenu) {
+        navToggle.addEventListener("click", () => {
+            const open = navMenu.classList.toggle("is-open");
+            navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+            navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+            navToggle.querySelector("i").className = open ? "fas fa-times" : "fas fa-bars";
+        });
+    }
+
+    // Smooth hash links (nav + in-page CTAs)
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", (e) => {
             const id = anchor.getAttribute("href").slice(1);
@@ -34,6 +37,15 @@
             if (target) {
                 e.preventDefault();
                 target.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (navMenu) {
+                    navMenu.classList.remove("is-open");
+                    if (navToggle) {
+                        navToggle.setAttribute("aria-expanded", "false");
+                        navToggle.setAttribute("aria-label", "Open menu");
+                        const icon = navToggle.querySelector("i");
+                        if (icon) icon.className = "fas fa-bars";
+                    }
+                }
             }
         });
     });
@@ -50,31 +62,10 @@
                 }
             });
 
-            controls.forEach((button) => {
-                button.classList.remove("active-btn");
-                if (button.dataset.id === currentSection) {
-                    button.classList.add("active-btn");
-                }
-            });
+            setActiveNav(currentSection);
         },
         { passive: true }
     );
-
-    function createRipple(element, event) {
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = event.offsetX - size / 2;
-        const y = event.offsetY - size / 2;
-
-        const ripple = document.createElement("span");
-        ripple.style.width = ripple.style.height = size + "px";
-        ripple.style.left = x + "px";
-        ripple.style.top = y + "px";
-        ripple.classList.add("ripple");
-        element.appendChild(ripple);
-
-        setTimeout(() => ripple.remove(), 600);
-    }
 
     // ===== THEME TOGGLE SYSTEM (light → professional → gaming) =====
     function initTheme() {
@@ -378,8 +369,8 @@
 
         function sizeCanvas(force) {
             const rect = canvas.getBoundingClientRect();
-            const w = Math.max(240, Math.floor(rect.width));
-            const h = Math.max(240, Math.floor(rect.height));
+            const w = Math.max(180, Math.floor(rect.width) || canvas.clientWidth || 280);
+            const h = Math.max(180, Math.floor(rect.height) || canvas.clientHeight || 280);
             const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
             if (!force && w === viewW && h === viewH && nextDpr === dpr) {
                 return { w: viewW, h: viewH };
@@ -416,7 +407,7 @@
 
         function drawMeridians(rot, R, cx, cy, color) {
             ctx.strokeStyle = color;
-            ctx.lineWidth = 0.7;
+            ctx.lineWidth = 1.15;
             for (let lon = -180; lon < 180; lon += 30) {
                 ctx.beginPath();
                 let started = false;
@@ -439,7 +430,7 @@
 
         function drawParallels(rot, R, cx, cy, color) {
             ctx.strokeStyle = color;
-            ctx.lineWidth = 0.6;
+            ctx.lineWidth = 1;
             for (let lat = -60; lat <= 60; lat += 30) {
                 ctx.beginPath();
                 let started = false;
@@ -476,9 +467,12 @@
             ctx.moveTo(p1.x, p1.y);
             ctx.quadraticCurveTo(cx2, cy2, p2.x, p2.y);
             ctx.strokeStyle = color;
-            ctx.lineWidth = 1.2;
-            ctx.globalAlpha = 0.55;
+            ctx.lineWidth = 1.6;
+            ctx.globalAlpha = 0.85;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 8;
             ctx.stroke();
+            ctx.shadowBlur = 0;
             ctx.globalAlpha = 1;
         }
 
@@ -487,29 +481,32 @@
             const { accent } = readColors();
             const cx = w / 2;
             const cy = h / 2;
-            const R = Math.min(w, h) * 0.38;
+            const R = Math.min(w, h) * 0.42;
 
             ctx.clearRect(0, 0, w, h);
 
-            // Soft sphere fill
-            const grad = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.3, R * 0.1, cx, cy, R);
-            grad.addColorStop(0, hexToRgba(accent, 0.18));
-            grad.addColorStop(0.55, hexToRgba(accent, 0.06));
-            grad.addColorStop(1, "rgba(0,0,0,0)");
+            // Soft sphere fill — readable against dark backgrounds
+            const grad = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.3, R * 0.08, cx, cy, R);
+            grad.addColorStop(0, hexToRgba(accent, 0.42));
+            grad.addColorStop(0.45, hexToRgba(accent, 0.16));
+            grad.addColorStop(1, hexToRgba(accent, 0.03));
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // Outer rim
+            // Outer rim + halo
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
-            ctx.strokeStyle = hexToRgba(accent, 0.55);
-            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = hexToRgba(accent, 0.95);
+            ctx.lineWidth = 2.25;
+            ctx.shadowColor = accent;
+            ctx.shadowBlur = 14;
             ctx.stroke();
+            ctx.shadowBlur = 0;
 
-            drawMeridians(rotation, R, cx, cy, hexToRgba(accent, 0.28));
-            drawParallels(rotation, R, cx, cy, hexToRgba(accent, 0.22));
+            drawMeridians(rotation, R, cx, cy, hexToRgba(accent, 0.55));
+            drawParallels(rotation, R, cx, cy, hexToRgba(accent, 0.48));
 
             // Land dots
             land.forEach((pt) => {
@@ -517,8 +514,8 @@
                 if (p.z < 0) return;
                 const depth = (p.z / R + 1) / 2;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 1.1 + depth * 0.6, 0, Math.PI * 2);
-                ctx.fillStyle = hexToRgba(accent, 0.25 + depth * 0.55);
+                ctx.arc(p.x, p.y, 1.4 + depth * 1.1, 0, Math.PI * 2);
+                ctx.fillStyle = hexToRgba(accent, 0.55 + depth * 0.4);
                 ctx.fill();
             });
 
@@ -532,22 +529,22 @@
                 const p = project(hub.lat, hub.lon, rotation, R, cx, cy);
                 if (p.z < 0) return;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2);
-                ctx.fillStyle = accent;
+                ctx.arc(p.x, p.y, 3.8, 0, Math.PI * 2);
+                ctx.fillStyle = "#ffffff";
                 ctx.shadowColor = accent;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 14;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
-                ctx.strokeStyle = hexToRgba(accent, 0.35);
-                ctx.lineWidth = 1;
+                ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                ctx.strokeStyle = hexToRgba(accent, 0.7);
+                ctx.lineWidth = 1.4;
                 ctx.stroke();
             });
 
             if (!reduceMotion) {
-                rotation += 0.0045;
+                rotation += 0.005;
                 rafId = requestAnimationFrame(frame);
             }
         }
@@ -600,10 +597,24 @@
             { passive: true }
         );
 
-        requestAnimationFrame(() => {
+        let started = false;
+        function start() {
+            if (started) {
+                sizeCanvas(true);
+                return;
+            }
+            started = true;
             sizeCanvas(true);
             frame();
-        });
+            // Re-measure after layout/fonts settle (fixes blank globe on first paint)
+            setTimeout(() => sizeCanvas(true), 120);
+            setTimeout(() => sizeCanvas(true), 400);
+        }
+
+        requestAnimationFrame(start);
+        if (document.readyState !== "complete") {
+            window.addEventListener("load", start, { once: true });
+        }
 
         return () => {
             if (rafId) cancelAnimationFrame(rafId);

@@ -150,10 +150,6 @@ body::before {
     }
 }
 
-.h-shape {
-    animation: shapeFloat 7s ease-in-out infinite !important;
-    opacity: 0.65;
-}
 
 /* ===== GLOW ANIMATION ===== */
 @keyframes glow {
@@ -165,27 +161,10 @@ body::before {
     }
 }
 
-.right-header .name span {
-    animation: none;
-    color: var(--color-secondary);
-    transition: color 0.3s ease;
-}
 
 /* ===== HEADER ANIMATIONS ===== */
-.right-header .name {
-    animation: slideInUp 0.8s ease-out;
-}
 
-.right-header p {
-    animation: slideInUp 1s ease-out;
-    animation-delay: 0.1s;
-    opacity: 0.88;
-    transition: opacity 0.4s ease;
-}
 
-.right-header p:hover {
-    opacity: 1;
-}
 
 /* ===== ABOUT SECTION ENHANCEMENTS ===== */
 .about-container {
@@ -714,10 +693,6 @@ header {
     z-index: 3;
 }
 
-.header-content {
-    position: relative;
-    z-index: 4;
-}
 
 .controls {
     z-index: 10;
@@ -918,10 +893,6 @@ section {
 }
 
 /* Button entrance animation */
-.hero-actions {
-    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    animation-delay: 0.5s;
-}
 
 .main-btn {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
