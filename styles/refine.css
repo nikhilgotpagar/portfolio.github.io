@@ -577,3 +577,274 @@ body.light-mode .particle {
     display: none;
   }
 }
+
+/* Final visual polish: clearer hierarchy, calmer surfaces, and roomier mobile layouts. */
+.home-dash {
+  gap: 1.1rem;
+}
+
+.home-hero {
+  grid-template-columns: minmax(0, 1.35fr) minmax(210px, 0.72fr) minmax(190px, 0.58fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.home-intro {
+  grid-template-columns: minmax(150px, 0.82fr) minmax(0, 1.18fr);
+  gap: 0.5rem 1rem;
+}
+
+.home-intro-body {
+  gap: 0.65rem;
+}
+
+.home-name {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.home-role {
+  font-family: var(--home-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: var(--home-cyan);
+}
+
+.home-lead {
+  max-width: 32rem;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--home-text) 88%, var(--home-muted));
+}
+
+.home-tags {
+  gap: 0.45rem;
+}
+
+.home-tags span {
+  padding: 0.32rem 0.58rem;
+  font-size: 0.65rem;
+}
+
+.cta-primary,
+.cta-ghost {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+.home-status__card,
+.home-rail__block,
+.home-spot,
+.home-ticker__item {
+  border-radius: 10px;
+}
+
+.home-status__card,
+.home-rail__block,
+.home-spot {
+  border-color: var(--home-border);
+}
+
+.main-title h2 {
+  line-height: 1.1;
+}
+
+.section-label {
+  margin-bottom: 0.8rem;
+}
+
+.core-skill,
+.tech-category,
+.cert-chip,
+.timeline-item {
+  transition-timing-function: ease;
+}
+
+.about > *,
+.blogs-content,
+.contact-container {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+}
+
+.about > .main-title {
+  text-align: left;
+}
+
+.about > .main-title h2 .bg-text {
+  display: none;
+}
+
+.about-container {
+  display: block;
+  padding: 2rem 0 3rem;
+}
+
+.about-container .left-about {
+  max-width: 58rem;
+  padding-right: 0;
+}
+
+.about-container .left-about p {
+  max-width: 54rem;
+  line-height: 1.7;
+}
+
+.about-container .right-about {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.about-container .right-about .about-item {
+  padding: 1rem 1.25rem !important;
+}
+
+.about-container .right-about .about-item .abt-text {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 !important;
+}
+
+.about-container .right-about .about-item .abt-text .large-text {
+  font-size: 2.25rem;
+}
+
+.about-container .right-about .about-item .abt-text .small-text {
+  padding-left: 0 !important;
+  font-size: 0.72rem !important;
+  text-align: right;
+}
+
+.about-container .right-about .about-item .abt-text .small-text::before {
+  display: none;
+}
+
+.about-stats {
+  padding-bottom: 2.5rem;
+}
+
+.about-stats .stat-title {
+  margin-bottom: 1rem;
+}
+
+.certs-strip {
+  flex-wrap: nowrap;
+  gap: 0.65rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 0.25rem 0.1rem 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.cert-chip {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.7rem 0.45rem 0.45rem;
+}
+
+.cert-chip span {
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    gap: 1.25rem;
+  }
+
+  .home-name {
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+  }
+
+  .core-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-container .right-about .about-item .abt-text {
+    align-items: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-cyber {
+    padding: 5rem 1rem 2rem !important;
+  }
+
+  .home-dash {
+    gap: 1rem;
+  }
+
+  .home-intro {
+    gap: 0.5rem;
+  }
+
+  .home-portrait {
+    max-width: 200px;
+  }
+
+  .home-intro-body {
+    gap: 0.55rem;
+  }
+
+  .home-name {
+    font-size: clamp(1.8rem, 7vw, 2.25rem);
+  }
+
+  .home-role {
+    font-size: 0.78rem;
+  }
+
+  .home-lead {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .home-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-status__card {
+    min-width: 0;
+  }
+
+  .main-title h2 {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .core-skills {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .about-container {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .about-container .right-about {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .about-container .right-about .about-item .abt-text .small-text {
+    text-align: right;
+  }
+
+  .cert-chip span {
+    white-space: nowrap;
+  }
+}
