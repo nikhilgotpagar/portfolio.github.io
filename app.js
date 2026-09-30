@@ -205,24 +205,24 @@
 
         const examples = [
             {
-                prompt: "Design a card platform for 1M+ daily transactions.",
-                answer: "Scale Java services on ECS; use Kafka for async workloads and autoscaling for traffic spikes.",
+                prompt: "Tell me about scaling a high-throughput system.",
+                answer: "At JPMorgan Chase, I built Java services on AWS for distributed card systems handling 1M+ transactions daily.",
             },
             {
-                prompt: "How would you trust LLM-extracted ledger data?",
-                answer: "Use Azure OpenAI prompts, business rules, and JSON Schema validation before ledger output.",
+                prompt: "How have you applied GenAI to a financial workflow?",
+                answer: "I built a FastAPI document pipeline with Docling and Azure OpenAI, validating ledger data with business rules and JSON Schema.",
             },
             {
-                prompt: "How would you migrate services with minimal downtime?",
-                answer: "Move Spring Boot services to AWS, test integrations, and release through blue-green deployments.",
+                prompt: "Describe your cloud migration experience.",
+                answer: "I led an on-prem-to-AWS migration and used blue-green deployments to release services without downtime.",
             },
             {
-                prompt: "When would you choose Kafka over REST?",
-                answer: "Use Kafka for asynchronous event workflows; use REST or GraphQL for client-driven data retrieval.",
+                prompt: "How have you used Kafka in distributed systems?",
+                answer: "I used Kafka for asynchronous, high-volume events and built REST and GraphQL APIs for client-driven data retrieval.",
             },
             {
-                prompt: "Describe a measurable operational improvement.",
-                answer: "At Cybage, I automated warehouse workflows and cut manual effort by 75%.",
+                prompt: "What measurable impact have you delivered?",
+                answer: "At Cybage, I automated supply-chain workflows, reducing manual operational effort by 75%.",
             },
         ];
 
