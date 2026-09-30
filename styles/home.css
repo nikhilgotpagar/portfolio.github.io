@@ -23,6 +23,107 @@
   font-family: var(--font-display, "Space Grotesk", system-ui, sans-serif);
 }
 
+.top-nav::before {
+  content: "";
+  position: absolute;
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-accent));
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.visit-thanks {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.visit-thanks.is-visible {
+  visibility: visible;
+}
+
+.visit-thanks__toast {
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 38%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-grey-5) 92%, transparent);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  color: var(--color-white);
+  font-family: var(--font-display, "Space Grotesk", system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  white-space: nowrap;
+}
+
+.visit-thanks.is-visible .visit-thanks__toast {
+  animation: visitThanksIn 0.3s ease-out forwards;
+}
+
+.visit-thanks.is-hiding .visit-thanks__toast {
+  animation: visitThanksOut 0.25s ease-in forwards;
+}
+
+.visit-thanks__confetti {
+  position: absolute;
+  left: 50%;
+  bottom: 5.5rem;
+}
+
+.visit-thanks__confetti span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--burst-color);
+  opacity: 0;
+  animation: visitConfettiBurst 1.5s cubic-bezier(0.15, 0.7, 0.25, 1) var(--burst-delay) forwards;
+}
+
+.visit-thanks__confetti span:nth-child(even) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+@keyframes visitThanksIn {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes visitThanksOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+}
+
+@keyframes visitConfettiBurst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--burst-x), var(--burst-y)) rotate(var(--burst-rotation));
+  }
+}
+
 .top-nav__brand {
   flex-shrink: 0;
   font-weight: 700;
@@ -1283,6 +1384,16 @@ header.home-cyber.container {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .visit-thanks__confetti {
+    display: none;
+  }
+
+  .visit-thanks.is-visible .visit-thanks__toast {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
   .home-portrait__glow,
   .home-portrait__rings span,
   .home-globe__glow,

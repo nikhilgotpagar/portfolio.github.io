@@ -11,8 +11,51 @@
     // ===== TOP NAV + SCROLL SYNC =====
     const navLinks = document.querySelectorAll(".top-nav__link");
     const sections = document.querySelectorAll("section[id], header[id]");
+    const topNav = document.querySelector(".top-nav");
+    const visitThanks = document.querySelector("#visit-thanks");
     const navToggle = document.querySelector(".top-nav__toggle");
     const navMenu = document.querySelector(".top-nav__menu");
+    let visitThanksShown = false;
+
+    function updateScrollProgress() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+        if (topNav) topNav.style.setProperty("--scroll-progress", progress.toString());
+        if (maxScroll > 0 && progress >= 0.995) showVisitThanks();
+    }
+
+    function showVisitThanks() {
+        if (!visitThanks || visitThanksShown) return;
+        visitThanksShown = true;
+        visitThanks.setAttribute("aria-hidden", "false");
+
+        const confetti = visitThanks.querySelector(".visit-thanks__confetti");
+        if (confetti) {
+            const colors = ["#60a5fa", "#34d399", "#fbbf24", "#f472b6", "#a78bfa"];
+            for (let i = 0; i < 28; i++) {
+                const piece = document.createElement("span");
+                const angle = ((200 + (i * 140) / 27) * Math.PI) / 180;
+                const distance = 85 + ((i * 37) % 90);
+                piece.style.setProperty("--burst-x", `${Math.round(Math.cos(angle) * distance)}px`);
+                piece.style.setProperty("--burst-y", `${Math.round(Math.sin(angle) * distance)}px`);
+                piece.style.setProperty("--burst-rotation", `${(i * 137) % 720}deg`);
+                piece.style.setProperty("--burst-delay", `${(i % 7) * 18}ms`);
+                piece.style.setProperty("--burst-color", colors[i % colors.length]);
+                confetti.appendChild(piece);
+            }
+        }
+
+        visitThanks.classList.add("is-visible");
+        window.setTimeout(() => {
+            visitThanks.classList.add("is-hiding");
+            window.setTimeout(() => {
+                visitThanks.classList.remove("is-visible");
+                visitThanks.classList.remove("is-hiding");
+                visitThanks.setAttribute("aria-hidden", "true");
+                if (confetti) confetti.replaceChildren();
+            }, 250);
+        }, 3500);
+    }
 
     function setActiveNav(sectionId) {
         navLinks.forEach((link) => {
@@ -53,6 +96,7 @@
     window.addEventListener(
         "scroll",
         () => {
+            updateScrollProgress();
             let currentSection = "home";
 
             sections.forEach((section) => {
@@ -66,6 +110,8 @@
         },
         { passive: true }
     );
+    window.addEventListener("resize", updateScrollProgress, { passive: true });
+    updateScrollProgress();
 
     // ===== THEME TOGGLE SYSTEM (light → professional → gaming) =====
     function initTheme() {
@@ -312,6 +358,8 @@
         let rotation = 0;
         let rafId = null;
         let globeHovered = false;
+        let lastFrameTime = 0;
+        const rotationSpeed = 0.75;
         let dpr = Math.min(window.devicePixelRatio || 1, 2);
         let viewW = 0;
         let viewH = 0;
@@ -518,9 +566,11 @@
             ctx.fillText(label, left + labelWidth / 2, top + labelHeight / 2);
         }
 
-        function frame() {
+        function frame(timestamp = performance.now()) {
             const { w, h } = sizeCanvas(false);
             const { accent } = readColors();
+            const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) / 1000 : 0;
+            lastFrameTime = timestamp;
             const cx = w / 2;
             const cy = h / 2;
             const R = Math.min(w, h) * 0.42;
@@ -591,7 +641,7 @@
             });
 
             if (!reduceMotion) {
-                rotation += 0.003;
+                rotation += rotationSpeed * elapsed;
                 rafId = requestAnimationFrame(frame);
             }
         }
