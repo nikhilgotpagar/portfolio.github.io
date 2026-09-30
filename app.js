@@ -198,6 +198,65 @@
         initTheme();
     }
 
+    function initGenAiPreview() {
+        const prompt = document.querySelector(".genai-preview__prompt");
+        const answer = document.querySelector(".genai-preview__answer");
+        if (!prompt || !answer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        const examples = [
+            {
+                prompt: "Design a card platform for 1M+ daily transactions.",
+                answer: "Scale Java services on ECS; use Kafka for async workloads and autoscaling for traffic spikes.",
+            },
+            {
+                prompt: "How would you trust LLM-extracted ledger data?",
+                answer: "Use Azure OpenAI prompts, business rules, and JSON Schema validation before ledger output.",
+            },
+            {
+                prompt: "How would you migrate services with minimal downtime?",
+                answer: "Move Spring Boot services to AWS, test integrations, and release through blue-green deployments.",
+            },
+            {
+                prompt: "When would you choose Kafka over REST?",
+                answer: "Use Kafka for asynchronous event workflows; use REST or GraphQL for client-driven data retrieval.",
+            },
+            {
+                prompt: "Describe a measurable operational improvement.",
+                answer: "At Cybage, I automated warehouse workflows and cut manual effort by 75%.",
+            },
+        ];
+
+        const typeText = (element, text, speed, onComplete) => {
+            const characters = Array.from(text);
+            let index = 0;
+            const typeNext = () => {
+                index += 1;
+                element.textContent = characters.slice(0, index).join("");
+                if (index < characters.length) {
+                    window.setTimeout(typeNext, speed);
+                } else {
+                    onComplete();
+                }
+            };
+            typeNext();
+        };
+
+        let exampleIndex = 0;
+        function playExample() {
+            const example = examples[exampleIndex];
+            prompt.textContent = example.prompt;
+            answer.textContent = "";
+            answer.classList.add("is-generating");
+            typeText(answer, example.answer, 28, () => {
+                exampleIndex = (exampleIndex + 1) % examples.length;
+                window.setTimeout(playExample, 650);
+            });
+        }
+
+        window.setTimeout(playExample, 450);
+    }
+
+    initGenAiPreview();
     document.documentElement.style.scrollBehavior = "smooth";
 
     // ===== SCROLL REVEALS =====
