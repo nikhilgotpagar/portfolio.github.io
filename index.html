@@ -18,227 +18,153 @@
 </head>
 <body class="main-content professional-mode">
     <header class="container header active home-cyber" id="home">
-        <div class="home-dash">
-            <div class="home-hero">
-                <div class="home-intro">
-                    <div class="home-portrait">
-                        <div class="home-portrait__rings" aria-hidden="true">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <div class="home-portrait__glow" aria-hidden="true"></div>
-                        <img src="img/nikhil-cutout.png" alt="Nikhil Gotpagar">
+        <div class="home-stage">
+            <div class="home-visual" aria-hidden="false">
+                <div class="home-visual__glow"></div>
+
+                <div class="float-panel float-whoami">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> whoami</div>
+                    <div class="whoami-name">Nikhil Gotpagar</div>
+                    <div class="whoami-role">Software Engineer II <span class="cursor-blink">_</span></div>
+                </div>
+
+                <div class="float-stats">
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">EXPERIENCE</span>
+                        <span class="float-stat__value">5+ Years</span>
                     </div>
-                    <div class="home-intro-body">
-                        <p class="home-eyebrow"><span class="home-eyebrow__slash">//</span> HI, I'M</p>
-                        <h1 class="home-name">NIKHIL <span>GOTPAGAR</span></h1>
-                        <p class="home-role">SOFTWARE ENGINEER II AT JPMorganChase.</p>
-                        <p class="home-lead">Building scalable distributed systems and cloud-native apps with Java, AWS, and Generative AI.</p>
-                        <div class="home-tags" aria-label="Core skills">
-                            <span>Java</span>
-                            <span>AWS</span>
-                            <span>Microservices</span>
-                            <span>Kafka</span>
-                            <span>GenAI</span>
-                        </div>
-                        <div class="home-cta">
-                            <a href="#blogs" class="cta-primary">View Experience <i class="fas fa-arrow-right"></i></a>
-                            <a href="https://drive.google.com/file/d/1gd1qQAJ4zzEy_wbrvza7E7z8TE1TsOBJ/view?usp=sharing" class="cta-ghost" target="_blank" rel="noopener">Download Resume</a>
-                        </div>
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">SYSTEMS BUILT</span>
+                        <span class="float-stat__value">8+</span>
+                    </div>
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">AVAILABILITY</span>
+                        <span class="float-stat__value">99.99% <small>Uptime Focus</small></span>
                     </div>
                 </div>
 
-                <div class="home-globe-col">
-                    <div class="home-globe" aria-hidden="true">
-                        <div class="home-globe__glow"></div>
-                        <div class="home-globe__orbit home-globe__orbit--a"></div>
-                        <div class="home-globe__orbit home-globe__orbit--b"></div>
-                        <canvas id="earth-globe" width="360" height="360"></canvas>
+                <div class="home-portrait">
+                    <img src="img/nikhil-cutout.png" alt="Nikhil Gotpagar">
+                </div>
+
+                <div class="float-panel float-code">
+                    <div class="float-panel__bar">
+                        <span></span><span></span><span></span>
+                        <em>OrderService.java</em>
                     </div>
-                    <div class="home-globe-meta">
-                        <span class="home-globe-meta__tag">GLOBAL SYSTEMS</span>
-                        <span>Multi-region · AWS · Kafka</span>
-                        <div class="home-globe-meta__regions">
-                            <em>us-east</em>
-                            <em>eu-west</em>
-                            <em>ap-south</em>
-                        </div>
+                    <pre><code><span class="c-kw">public class</span> <span class="c-cls">OrderService</span> {
+  <span class="c-kw">@Autowired</span>
+  <span class="c-cls">KafkaTemplate</span>&lt;String, Event&gt; kafka;
+
+  <span class="c-kw">public</span> <span class="c-cls">Order</span> place(<span class="c-cls">Request</span> req) {
+    <span class="c-kw">return</span> gateway.route(req);
+  }
+}</code></pre>
+                </div>
+
+                <div class="float-panel float-arch">
+                    <div class="float-panel__title">System Architecture</div>
+                    <div class="arch-flow">
+                        <span>Client</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>API Gateway</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Microservices</span>
+                    </div>
+                    <div class="arch-aws">
+                        <span><i class="fab fa-aws"></i> SQS</span>
+                        <span><i class="fas fa-database"></i> RDS</span>
                     </div>
                 </div>
 
-                <aside class="home-status">
-                    <div class="home-status__live">
-                        <span class="home-status__dot"></span> ONLINE
-                    </div>
-                    <div class="home-status__card">
-                        <span class="home-status__label">Throughput</span>
-                        <strong>1M+</strong>
-                        <span class="home-status__unit">Events / Day</span>
-                        <svg class="home-status__chart" viewBox="0 0 140 36" preserveAspectRatio="none">
-                            <polyline class="home-status__wave" points="0,28 12,24 24,26 36,18 48,20 60,12 72,16 84,8 96,11 108,6 120,9 140,4" fill="none" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="home-status__card home-status__card--split">
-                        <div>
-                            <span class="home-status__label">Uptime</span>
-                            <strong>99.99%</strong>
-                        </div>
-                        <div>
-                            <span class="home-status__label">Latency</span>
-                            <strong>−40%</strong>
-                        </div>
-                    </div>
-                    <p class="home-status__quote">>_ shipping reliable platforms across cloud regions</p>
-                    <div class="home-status__avail">
-                        <div class="home-status__avail-row">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Mumbai, IN</span>
-                        </div>
-                        <div class="home-status__avail-row">
-                            <i class="fas fa-briefcase"></i>
-                            <span>Open to backend / cloud roles</span>
-                        </div>
-                        <a href="#contact" class="home-status__ping">
-                            <i class="fas fa-paper-plane"></i> Say hello
-                        </a>
-                    </div>
-                </aside>
-            </div>
-
-            <div class="home-ticker" role="list" aria-label="Key metrics">
-                <div class="home-ticker__track">
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fas fa-clock"></i>
-                        <em>05+</em>
-                        <span>Years Experience</span>
-                    </div>
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fas fa-bolt"></i>
-                        <em>1M+</em>
-                        <span>Events / Day</span>
-                    </div>
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fab fa-aws"></i>
-                        <em>AWS</em>
-                        <span>Cloud Platform</span>
-                    </div>
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fas fa-code"></i>
-                        <em>Java</em>
-                        <span>Primary Language</span>
-                    </div>
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fas fa-shield-alt"></i>
-                        <em>99.99%</em>
-                        <span>System Reliability</span>
-                    </div>
-                    <div class="home-ticker__item" role="listitem">
-                        <i class="fas fa-layer-group"></i>
-                        <em>8+</em>
-                        <span>Systems Shipped</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="home-spotlight">
-                <div class="home-spot">
-                    <div class="home-spot__head">
-                        <span>Recent work</span>
-                        <a href="#blogs">View all</a>
-                    </div>
-                    <div class="home-spot__cards">
-                        <article>
-                            <i class="fas fa-credit-card"></i>
-                            <div>
-                                <strong>Distributed Payments</strong>
-                                <p>Multi-region credit platforms · Java · Kafka · AWS</p>
-                            </div>
-                        </article>
-                        <article>
-                            <i class="fas fa-brain"></i>
-                            <div>
-                                <strong>AI Doc Processor</strong>
-                                <p>Bank statements via LLMs · FastAPI · Azure OpenAI</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-
-                <div class="home-spot">
-                    <div class="home-spot__head">
-                        <span>Credentials</span>
-                        <a href="#about">About</a>
-                    </div>
-                    <div class="home-spot__certs">
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/c71573c7d70647eeae5cd7e66cf0ecec" target="_blank" rel="noopener" title="AWS Gen AI Developer">
-                            <img src="img/aws-certified-generative-ai-developer-professional.png" alt="">
-                            <em>GenAI Pro</em>
-                        </a>
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/d22f61b75a26430498847f680de0b62f" target="_blank" rel="noopener" title="AWS Solutions Architect">
-                            <img src="img/awssolnlogo.png" alt="">
-                            <em>SA Associate</em>
-                        </a>
-                        <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/528d01a7b15e4684863e091388f2602c" target="_blank" rel="noopener" title="AWS Cloud Practitioner">
-                            <img src="img/image.png" alt="">
-                            <em>Cloud Ready</em>
-                        </a>
-                        <a href="https://verify.skilljar.com/c/f66j2sfwk9jt" target="_blank" rel="noopener" title="FinOps Practitioner">
-                            <img src="img/finopslogo.png" alt="">
-                            <em>FinOps</em>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="home-spot home-spot--focus">
-                    <div class="home-spot__head">
-                        <span>Now focusing</span>
-                    </div>
-                    <ul class="home-spot__focus">
-                        <li><i class="fas fa-network-wired"></i> Distributed systems</li>
-                        <li><i class="fas fa-cloud"></i> Cloud architecture</li>
-                        <li><i class="fas fa-robot"></i> GenAI engineering</li>
+                <div class="float-panel float-skills">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> ls skills</div>
+                    <ul class="skills-cols">
+                        <li>Java</li>
+                        <li>Spring Boot</li>
+                        <li>AWS</li>
+                        <li>Kafka</li>
+                        <li>Docker</li>
+                        <li>Kubernetes</li>
+                        <li>PostgreSQL</li>
+                        <li>Redis</li>
+                        <li>System Design</li>
+                        <li>REST APIs</li>
+                        <li>Git</li>
+                        <li>CI/CD</li>
                     </ul>
-                    <div class="home-spot__social">
-                        <a href="https://github.com/nikhilgotpagar" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/nikhil-gotpagar-84a27b193/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="mailto:nikhilgotpagar1997@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
+                </div>
+
+                <div class="float-panel float-chart">
+                    <div class="float-panel__title">API Requests <span>(24h)</span></div>
+                    <svg viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
+                        <polyline points="0,32 15,28 30,30 45,18 60,22 75,10 90,14 105,6 120,8" fill="none" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <div class="float-chart__peak">1.2M</div>
                 </div>
             </div>
 
-            <div class="home-rail">
-                <div class="home-rail__block home-rail__block--arch">
-                    <span class="home-rail__label">Architecture</span>
-                    <div class="home-rail__flow">
-                        <span>Clients</span>
-                        <i class="fas fa-chevron-right"></i>
-                        <span>Gateway</span>
-                        <i class="fas fa-chevron-right"></i>
-                        <span class="is-hot">Microservices</span>
-                        <i class="fas fa-chevron-right"></i>
-                        <span>Kafka</span>
-                        <i class="fas fa-chevron-right"></i>
-                        <span>AWS</span>
+            <div class="home-copy">
+                <p class="home-hi"><span aria-hidden="true">👋</span> Hi there, I'm</p>
+                <h1 class="home-name">Nikhil <span>Gotpagar</span></h1>
+                <p class="home-role">Software Engineer II at JPMorgan Chase</p>
+                <p class="home-lead">Building scalable distributed systems and cloud-native apps with Java, AWS, and Generative AI.</p>
+
+                <div class="home-metrics">
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-rocket"></i></div>
+                        <div>
+                            <strong>1M+</strong>
+                            <span>Requests/Day Handled</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <strong>40%</strong>
+                            <span>Latency Reduction</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-cloud"></i></div>
+                        <div>
+                            <strong>99.99%</strong>
+                            <span>System Availability</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-layer-group"></i></div>
+                        <div>
+                            <strong>8+</strong>
+                            <span>End-to-End Projects</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="home-stack">
+                    <p class="home-stack__label">TECH STACK</p>
+                    <div class="home-stack__pills">
+                        <span class="stack-pill"><span class="stack-mark">J</span> Java</span>
+                        <span class="stack-pill"><i class="fas fa-leaf"></i> Spring Boot</span>
+                        <span class="stack-pill"><i class="fab fa-aws"></i> AWS</span>
+                        <span class="stack-pill"><i class="fas fa-stream"></i> Kafka</span>
+                        <span class="stack-pill"><i class="fab fa-docker"></i> Docker</span>
+                        <span class="stack-pill"><i class="fas fa-dharmachakra"></i> Kubernetes</span>
+                        <span class="stack-pill"><i class="fas fa-brain"></i> Gen AI</span>
+                        <span class="stack-pill"><i class="fas fa-database"></i> PostgreSQL</span>
                     </div>
                 </div>
-                <div class="home-rail__block home-rail__block--exp">
-                    <span class="home-rail__label">Experience</span>
-                    <div class="home-rail__jobs">
-                        <a href="#blogs"><strong>JPMorgan Chase</strong><em>SE II</em></a>
-                        <a href="#blogs"><strong>Cybage</strong><em>SE</em></a>
-                    </div>
+
+                <div class="home-about-term">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> cat about.me</div>
+                    <p>Software Engineer with 5+ years of experience building scalable distributed systems and cloud-native applications. Currently at JPMorgan Chase, working on high-performance backend platforms using Java and AWS. Recently expanded expertise into Generative AI, leveraging LLMs, AI-assisted development, and cloud-native AI solutions. Passionate about distributed systems, cloud engineering, and applying AI to solve real-world engineering problems.<span class="cursor-blink">_</span></p>
                 </div>
-                <div class="home-rail__block home-rail__block--stack">
-                    <span class="home-rail__label">Stack</span>
-                    <div class="home-rail__pills">
-                        <span>Java</span>
-                        <span>Spring</span>
-                        <span>AWS</span>
-                        <span>Kafka</span>
-                        <span>Docker</span>
-                        <span>GenAI</span>
-                    </div>
+
+                <div class="home-cta">
+                    <a href="https://drive.google.com/file/d/1gd1qQAJ4zzEy_wbrvza7E7z8TE1TsOBJ/view?usp=sharing" class="cta-primary" target="_blank" rel="noopener">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
                 </div>
-                <a href="#contact" class="home-rail__cta">Get in Touch <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </header>
