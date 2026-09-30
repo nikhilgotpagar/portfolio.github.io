@@ -544,7 +544,7 @@
             });
 
             if (!reduceMotion) {
-                rotation += 0.005;
+                rotation += 0.003;
                 rafId = requestAnimationFrame(frame);
             }
         }

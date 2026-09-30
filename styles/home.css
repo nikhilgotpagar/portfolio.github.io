@@ -571,13 +571,13 @@ body.gaming-mode .cta-primary {
 
 .home-globe__glow {
   position: absolute;
-  inset: 8%;
+  inset: 12%;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--globe-core), transparent 68%);
-  filter: blur(28px);
-  animation: globePulse 5s ease-in-out infinite;
+  background: radial-gradient(circle, var(--globe-core), transparent 72%);
+  filter: blur(34px);
+  animation: globePulse 7s ease-in-out infinite;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.72;
 }
 
 @keyframes globePulse {
@@ -603,15 +603,15 @@ body.gaming-mode .cta-primary {
 }
 
 .home-globe__orbit--a {
-  inset: 2%;
-  animation: orbitSpin 28s linear infinite;
-  border-style: dashed;
+  inset: 3%;
+  border-color: color-mix(in srgb, var(--home-cyan) 20%, transparent);
+  animation: orbitSpin 56s linear infinite;
 }
 
 .home-globe__orbit--b {
-  inset: -6%;
-  border-color: color-mix(in srgb, var(--home-cyan) 14%, transparent);
-  animation: orbitSpin 40s linear infinite reverse;
+  inset: -4%;
+  border-color: color-mix(in srgb, var(--home-cyan) 9%, transparent);
+  animation: orbitSpin 72s linear infinite reverse;
 }
 
 @keyframes orbitSpin {
