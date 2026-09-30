@@ -682,8 +682,13 @@ body.light-mode .particle {
   font-size: 0.78rem;
 }
 
-.home-status__quote {
-  font-size: 0.74rem;
+.home-status__heading {
+  margin: 0 0 0.15rem;
+  color: var(--home-text);
+  font-family: var(--home-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .home-globe-meta {
@@ -814,6 +819,87 @@ body.light-mode .particle {
 .cert-chip span {
   white-space: nowrap;
   font-size: 0.78rem;
+}
+
+.certs-strip {
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2rem), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2rem), transparent 100%);
+}
+
+.timeline {
+  gap: 1.25rem;
+}
+
+.timeline .timeline-item {
+  margin-left: 0;
+  padding: 1.35rem 1.5rem 1.4rem 2rem !important;
+  border-left: 2px solid var(--border-subtle) !important;
+  background: var(--surface);
+}
+
+.timeline .timeline-item:hover {
+  padding-left: 2.2rem !important;
+  border-left-color: var(--color-secondary) !important;
+}
+
+.timeline .timeline-item .tl-icon {
+  left: -1.15rem;
+  top: 1.1rem;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.timeline .timeline-item .tl-icon i {
+  font-size: 0.95rem;
+}
+
+.timeline .timeline-item .tl-duration {
+  margin: 0 0 0.35rem;
+  padding: 0;
+  background: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.timeline .timeline-item h5 {
+  padding: 0.25rem 0 0.55rem;
+  text-transform: none;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.timeline .timeline-item h5 span {
+  font-size: 1rem;
+}
+
+.timeline .timeline-item p {
+  margin: 0;
+  color: var(--color-grey-1);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+body.light-mode .timeline .timeline-item {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+@media (max-width: 700px) {
+  .timeline {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .timeline .timeline-item {
+    padding: 1.2rem 1rem 1.2rem 1.5rem !important;
+  }
+
+  .timeline .timeline-item:hover {
+    padding-left: 1.65rem !important;
+  }
+
+  .timeline .timeline-item .tl-icon {
+    left: -0.95rem;
+  }
 }
 
 a:focus-visible,

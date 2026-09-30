@@ -113,6 +113,12 @@
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
+.top-nav__icon .leetcode-mark {
+  display: block;
+  width: 19px;
+  height: 19px;
+}
+
 .top-nav__icon:hover {
   color: var(--color-secondary);
   border-color: color-mix(in srgb, var(--color-secondary) 35%, transparent);
@@ -550,6 +556,8 @@ body.gaming-mode .cta-primary {
 
 /* ----- Globe (compact, top-aligned) ----- */
 .home-globe-col {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -567,6 +575,30 @@ body.gaming-mode .cta-primary {
   margin: 0 auto;
   display: grid;
   place-items: center;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-globe:hover {
+    z-index: 3;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--home-cyan) 28%, transparent));
+  }
+
+  .home-globe:hover + .home-globe-meta .home-globe-meta__regions em {
+    border-color: color-mix(in srgb, var(--home-cyan) 62%, transparent);
+    background: color-mix(in srgb, var(--home-cyan) 16%, transparent);
+    color: var(--home-text);
+    transform: translateY(-2px);
+  }
+
+  .home-globe:hover + .home-globe-meta .home-globe-meta__regions em:nth-child(2) {
+    transition-delay: 0.05s;
+  }
+
+  .home-globe:hover + .home-globe-meta .home-globe-meta__regions em:nth-child(3) {
+    transition-delay: 0.1s;
+  }
 }
 
 .home-globe__glow {
@@ -652,6 +684,7 @@ body.gaming-mode .cta-primary {
   border: 1px solid color-mix(in srgb, var(--home-cyan) 30%, transparent);
   color: var(--home-cyan);
   background: color-mix(in srgb, var(--home-cyan) 8%, transparent);
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 /* ----- Status ----- */

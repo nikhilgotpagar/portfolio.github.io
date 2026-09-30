@@ -311,21 +311,34 @@
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         let rotation = 0;
         let rafId = null;
+        let globeHovered = false;
         let dpr = Math.min(window.devicePixelRatio || 1, 2);
         let viewW = 0;
         let viewH = 0;
 
         // Hub cities (lat, lon) for glowing nodes + arcs
         const hubs = [
-            { lat: 40.7, lon: -74 }, // NYC / finance
-            { lat: 51.5, lon: -0.1 }, // London
-            { lat: 19.1, lon: 72.9 }, // Mumbai
+            { lat: 39, lon: -77.5, region: "us-east-1" }, // Northern Virginia
+            { lat: 51.5, lon: -0.1, region: "eu-west-2" }, // London
+            { lat: 19.1, lon: 72.9, region: "ap-south-1" }, // Mumbai
             { lat: 1.3, lon: 103.8 }, // Singapore
             { lat: 35.7, lon: 139.7 }, // Tokyo
             { lat: -33.9, lon: 151.2 }, // Sydney
             { lat: 37.8, lon: -122.4 }, // SF
             { lat: 52.5, lon: 13.4 }, // Berlin
         ];
+        const globe = canvas.closest(".home-globe");
+
+        if (globe) {
+            globe.addEventListener("pointerenter", () => {
+                globeHovered = true;
+                if (reduceMotion) frame();
+            });
+            globe.addEventListener("pointerleave", () => {
+                globeHovered = false;
+                if (reduceMotion) frame();
+            });
+        }
 
         const arcs = [
             [0, 1],
@@ -476,6 +489,35 @@
             ctx.globalAlpha = 1;
         }
 
+        function drawRegionLabel(point, label, cx, cy, w, h, color) {
+            const labelWidth = 76;
+            const labelHeight = 19;
+            const direction = point.x < cx ? 1 : -1;
+            const left = Math.max(4, Math.min(w - labelWidth - 4, point.x + direction * 12 - (direction < 0 ? labelWidth : 0)));
+            const top = Math.max(4, Math.min(h - labelHeight - 4, point.y - labelHeight / 2));
+            const lineEndX = direction > 0 ? left : left + labelWidth;
+
+            ctx.beginPath();
+            ctx.moveTo(point.x, point.y);
+            ctx.lineTo(lineEndX, top + labelHeight / 2);
+            ctx.strokeStyle = hexToRgba(color, 0.9);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.fillStyle = "rgba(6, 18, 30, 0.92)";
+            ctx.fillRect(left, top, labelWidth, labelHeight);
+            ctx.beginPath();
+            ctx.rect(left, top, labelWidth, labelHeight);
+            ctx.strokeStyle = hexToRgba(color, 0.8);
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "600 10px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(label, left + labelWidth / 2, top + labelHeight / 2);
+        }
+
         function frame() {
             const { w, h } = sizeCanvas(false);
             const { accent } = readColors();
@@ -528,19 +570,24 @@
             hubs.forEach((hub) => {
                 const p = project(hub.lat, hub.lon, rotation, R, cx, cy);
                 if (p.z < 0) return;
+                const isAwsRegion = globeHovered && Boolean(hub.region);
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 3.8, 0, Math.PI * 2);
-                ctx.fillStyle = "#ffffff";
+                ctx.arc(p.x, p.y, isAwsRegion ? 5 : 3.8, 0, Math.PI * 2);
+                ctx.fillStyle = isAwsRegion ? accent : "#ffffff";
                 ctx.shadowColor = accent;
-                ctx.shadowBlur = 14;
+                ctx.shadowBlur = isAwsRegion ? 22 : 14;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
-                ctx.strokeStyle = hexToRgba(accent, 0.7);
-                ctx.lineWidth = 1.4;
+                ctx.arc(p.x, p.y, isAwsRegion ? 10.5 : 8, 0, Math.PI * 2);
+                ctx.strokeStyle = hexToRgba(accent, isAwsRegion ? 1 : 0.7);
+                ctx.lineWidth = isAwsRegion ? 2 : 1.4;
                 ctx.stroke();
+
+                if (isAwsRegion && hub.region) {
+                    drawRegionLabel(p, hub.region, cx, cy, w, h, accent);
+                }
             });
 
             if (!reduceMotion) {
