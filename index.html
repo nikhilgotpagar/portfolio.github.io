@@ -9,34 +9,161 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/enhanced.css">
     <link rel="stylesheet" href="styles/refine.css">
+    <link rel="stylesheet" href="styles/home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
 </head>
-<body class="main-content light-mode">
-    <header class="container header active" id="home">
-        <div class="header-content">
-            <div class="left-header">
-                <div class="h-shape"></div>
-                <div class="image">
-                    <img src="img/Nikhil.jpg" alt="Nikhil Gotpagar">
+<body class="main-content professional-mode">
+    <header class="container header active home-cyber" id="home">
+        <div class="home-stage">
+            <div class="home-visual" aria-hidden="false">
+                <div class="home-visual__glow"></div>
+
+                <div class="float-panel float-whoami">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> whoami</div>
+                    <div class="whoami-name">Nikhil Gotpagar</div>
+                    <div class="whoami-role">Software Engineer II <span class="cursor-blink">_</span></div>
+                </div>
+
+                <div class="float-stats">
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">EXPERIENCE</span>
+                        <span class="float-stat__value">5+ Years</span>
+                    </div>
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">SYSTEMS BUILT</span>
+                        <span class="float-stat__value">8+</span>
+                    </div>
+                    <div class="float-panel float-stat">
+                        <span class="float-stat__label">AVAILABILITY</span>
+                        <span class="float-stat__value">99.99% <small>Uptime Focus</small></span>
+                    </div>
+                </div>
+
+                <div class="home-portrait">
+                    <img src="img/nikhil-cutout.png" alt="Nikhil Gotpagar">
+                </div>
+
+                <div class="float-panel float-code">
+                    <div class="float-panel__bar">
+                        <span></span><span></span><span></span>
+                        <em>OrderService.java</em>
+                    </div>
+                    <pre><code><span class="c-kw">public class</span> <span class="c-cls">OrderService</span> {
+  <span class="c-kw">@Autowired</span>
+  <span class="c-cls">KafkaTemplate</span>&lt;String, Event&gt; kafka;
+
+  <span class="c-kw">public</span> <span class="c-cls">Order</span> place(<span class="c-cls">Request</span> req) {
+    <span class="c-kw">return</span> gateway.route(req);
+  }
+}</code></pre>
+                </div>
+
+                <div class="float-panel float-arch">
+                    <div class="float-panel__title">System Architecture</div>
+                    <div class="arch-flow">
+                        <span>Client</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>API Gateway</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Microservices</span>
+                    </div>
+                    <div class="arch-aws">
+                        <span><i class="fab fa-aws"></i> SQS</span>
+                        <span><i class="fas fa-database"></i> RDS</span>
+                    </div>
+                </div>
+
+                <div class="float-panel float-skills">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> ls skills</div>
+                    <ul class="skills-cols">
+                        <li>Java</li>
+                        <li>Spring Boot</li>
+                        <li>AWS</li>
+                        <li>Kafka</li>
+                        <li>Docker</li>
+                        <li>Kubernetes</li>
+                        <li>PostgreSQL</li>
+                        <li>Redis</li>
+                        <li>System Design</li>
+                        <li>REST APIs</li>
+                        <li>Git</li>
+                        <li>CI/CD</li>
+                    </ul>
+                </div>
+
+                <div class="float-panel float-chart">
+                    <div class="float-panel__title">API Requests <span>(24h)</span></div>
+                    <svg viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
+                        <polyline points="0,32 15,28 30,30 45,18 60,22 75,10 90,14 105,6 120,8" fill="none" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <div class="float-chart__peak">1.2M</div>
                 </div>
             </div>
-            <div class="right-header">
-                <p class="hero-label"><span class="status-dot" aria-hidden="true"></span> Systems · Java · AWS · Gen AI</p>
-                <h1 class="name"><span class="name-gradient">Nikhil Gotpagar</span></h1>
-                <p class="hero-role">Software Engineer II at JPMorganChase</p>
-                <p class="hero-lead">
-                    Software Engineer II with 5+ years of experience architecting and building scalable distributed systems and cloud-native applications. Currently at JPMorgan Chase, specializing in high-performance backend platforms using Java, AWS, and cloud infrastructure. Expanding expertise into Generative AI and LLM-powered engineering solutions.
-                </p>
-                <div class="btn-con hero-actions">
-                    <a href="https://drive.google.com/file/d/1gd1qQAJ4zzEy_wbrvza7E7z8TE1TsOBJ/view?usp=sharing" class="main-btn" target="_blank" rel="noopener">
-                        <span class="btn-text">Download CV</span>
-                        <span class="btn-icon"><i class="fas fa-download"></i></span>
-                    </a>
 
+            <div class="home-copy">
+                <p class="home-hi"><span aria-hidden="true">👋</span> Hi there, I'm</p>
+                <h1 class="home-name">Nikhil <span>Gotpagar</span></h1>
+                <p class="home-role">Software Engineer II at JPMorgan Chase</p>
+                <p class="home-lead">Building scalable distributed systems and cloud-native apps with Java, AWS, and Generative AI.</p>
+
+                <div class="home-metrics">
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-rocket"></i></div>
+                        <div>
+                            <strong>1M+</strong>
+                            <span>Requests/Day Handled</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <strong>40%</strong>
+                            <span>Latency Reduction</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-cloud"></i></div>
+                        <div>
+                            <strong>99.99%</strong>
+                            <span>System Availability</span>
+                        </div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-card__icon"><i class="fas fa-layer-group"></i></div>
+                        <div>
+                            <strong>8+</strong>
+                            <span>End-to-End Projects</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="home-stack">
+                    <p class="home-stack__label">TECH STACK</p>
+                    <div class="home-stack__pills">
+                        <span class="stack-pill"><span class="stack-mark">J</span> Java</span>
+                        <span class="stack-pill"><i class="fas fa-leaf"></i> Spring Boot</span>
+                        <span class="stack-pill"><i class="fab fa-aws"></i> AWS</span>
+                        <span class="stack-pill"><i class="fas fa-stream"></i> Kafka</span>
+                        <span class="stack-pill"><i class="fab fa-docker"></i> Docker</span>
+                        <span class="stack-pill"><i class="fas fa-dharmachakra"></i> Kubernetes</span>
+                        <span class="stack-pill"><i class="fas fa-brain"></i> Gen AI</span>
+                        <span class="stack-pill"><i class="fas fa-database"></i> PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="home-about-term">
+                    <div class="term-line"><span class="term-prompt">nikhil@dev:~$</span> cat about.me</div>
+                    <p>Software Engineer with 5+ years of experience building scalable distributed systems and cloud-native applications. Currently at JPMorgan Chase, working on high-performance backend platforms using Java and AWS. Recently expanded expertise into Generative AI, leveraging LLMs, AI-assisted development, and cloud-native AI solutions. Passionate about distributed systems, cloud engineering, and applying AI to solve real-world engineering problems.<span class="cursor-blink">_</span></p>
+                </div>
+
+                <div class="home-cta">
+                    <a href="https://drive.google.com/file/d/1gd1qQAJ4zzEy_wbrvza7E7z8TE1TsOBJ/view?usp=sharing" class="cta-primary" target="_blank" rel="noopener">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
                 </div>
             </div>
         </div>
@@ -215,7 +342,7 @@
         <section class="container" id="blogs">
             <div class="blogs-content">
                 <div class="main-title">
-                    <h2>My <span>Experience</span><span class="bg-text">timeline</span></h2>
+                    <h2>My <span>TIMELINE</span><span class="bg-text">timeline</span></h2>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
@@ -321,18 +448,22 @@
         </section>
     </main>
 
-    <div class="controls">
+    <div class="controls controls--labeled">
         <div class="control active-btn" data-id="home" title="Home">
             <i class="fas fa-home"></i>
+            <span class="control-label">Home</span>
         </div>
         <div class="control" data-id="about" title="About">
             <i class="fas fa-user"></i>
+            <span class="control-label">About</span>
         </div>
         <div class="control" data-id="blogs" title="Experience">
             <i class="fas fa-briefcase"></i>
+            <span class="control-label">Work</span>
         </div>
         <div class="control" data-id="contact" title="Contact">
             <i class="fas fa-envelope-open"></i>
+            <span class="control-label">Contact</span>
         </div>
     </div>
     <div class="theme-btn" title="Toggle theme" role="button" tabindex="0" aria-label="Toggle theme">

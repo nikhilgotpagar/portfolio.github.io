@@ -85,8 +85,8 @@
             return;
         }
 
-        let currentTheme = localStorage.getItem("theme") || "light";
-        const themes = ["light", "professional", "gaming"];
+        let currentTheme = localStorage.getItem("theme") || "professional";
+        const themes = ["professional", "gaming", "light"];
 
         if (!themes.includes(currentTheme)) {
             currentTheme = "professional";
