@@ -961,7 +961,7 @@ body.gaming-mode .cta-primary {
   border-color: color-mix(in srgb, var(--home-cyan) 55%, transparent);
 }
 
-/* ----- Simulated GenAI resume preview ----- */
+/* ----- Resume Q&A examples ----- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -981,48 +981,57 @@ body.gaming-mode .cta-primary {
   min-height: 0;
   min-width: 0;
   overflow: hidden;
-  padding-block: 1.5rem;
-  border: 1px solid var(--home-border);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--home-cyan) 3%, transparent);
+  padding: 1.15rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--home-cyan) 22%, transparent);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--home-cyan) 7%, transparent), transparent 58%),
+    var(--home-panel);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
   animation: fadeRiseHome 0.95s ease-out 0.2s both;
 }
 
 .genai-preview__mode {
   position: absolute;
-  top: 0.2rem;
-  right: 0.45rem;
-  color: var(--home-cyan);
+  top: 0.8rem;
+  right: 1rem;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--home-cyan) 24%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--home-cyan) 7%, transparent);
+  color: var(--home-muted);
   font-family: var(--home-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.06em;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
 .genai-preview__body {
   display: flex;
   flex-direction: column;
-  gap: 0.08rem;
-  padding: 0.16rem 0.55rem;
+  gap: 0.75rem;
+  padding: 1.45rem 0.1rem 0.15rem;
 }
 
 .genai-preview__line {
   min-width: 0;
   display: grid;
-  grid-template-columns: 5.2rem minmax(0, 1fr);
-  align-items: baseline;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.5rem;
 }
 
 .genai-preview__prefix {
   display: block;
-  color: var(--home-cyan);
+  padding-top: 0.12rem;
+  color: var(--home-muted);
   font-family: var(--home-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
+  font-size: 0.57rem;
+  letter-spacing: 0.07em;
 }
 
 .genai-preview__line--answer .genai-preview__prefix {
-  color: var(--color-accent);
+  color: var(--home-cyan);
 }
 
 .genai-preview__line p {
@@ -1030,28 +1039,22 @@ body.gaming-mode .cta-primary {
   min-height: 0;
   margin: 0;
   color: var(--home-text);
-  font-size: 0.82rem;
-  line-height: 1.4;
+  font-size: 0.84rem;
+  line-height: 1.55;
   overflow-wrap: anywhere;
 }
 
 .genai-preview__prompt {
-  color: var(--home-muted) !important;
+  color: var(--home-text) !important;
 }
 
 .genai-preview__answer {
   color: color-mix(in srgb, var(--home-text) 88%, var(--home-muted)) !important;
 }
 
-.genai-preview__mode::before {
-  content: "";
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  margin: 0 0.25rem 1px 0;
-  border-radius: 50%;
-  background: var(--home-cyan);
-  animation: pulseWave 1.2s ease-in-out infinite;
+.genai-preview__line--answer {
+  padding-top: 0.7rem;
+  border-top: 1px solid color-mix(in srgb, var(--home-cyan) 15%, transparent);
 }
 
 .genai-preview__answer.is-generating::after {
@@ -1380,6 +1383,15 @@ header.home-cyber.container {
   .home-globe canvas { max-width: 240px; max-height: 240px; }
 
   .home-status { flex-direction: column; }
+
+  .genai-preview {
+    padding: 1rem;
+  }
+
+  .genai-preview__line {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
 
   .home-contact-strip {
     align-items: flex-start;
