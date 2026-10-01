@@ -174,20 +174,47 @@
                 </aside>
             </div>
 
-            <div class="home-architecture" role="img" aria-label="Illustrative architecture flow: client to API to AWS to Kafka to database">
+            <div class="home-architecture" role="group" aria-label="Illustrative distributed system architecture">
                 <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
-                <div class="home-architecture__flow" aria-hidden="true">
-                    <span class="home-architecture__node" data-system="api"><i class="fas fa-laptop"></i>USERS</span>
-                    <span class="home-architecture__link" data-system="api"><i></i></span>
-                    <span class="home-architecture__node" data-system="api"><i class="fas fa-code"></i>API</span>
-                    <span class="home-architecture__link" data-system="api ecs"><i></i></span>
-                    <span class="home-architecture__node" data-system="ecs"><i class="fas fa-cubes"></i>ECS</span>
-                    <span class="home-architecture__link" data-system="ecs aws"><i></i></span>
-                    <span class="home-architecture__node" data-system="aws"><i class="fab fa-aws"></i>AWS</span>
-                    <span class="home-architecture__link" data-system="aws kafka"><i></i></span>
-                    <span class="home-architecture__node" data-system="kafka"><i class="fas fa-stream"></i>KAFKA</span>
-                    <span class="home-architecture__link" data-system="kafka db"><i></i></span>
-                    <span class="home-architecture__node" data-system="db"><i class="fas fa-database"></i>AURORA</span>
+                <div class="home-architecture__viewport">
+                  <div class="home-architecture__canvas">
+                    <svg class="home-architecture__routes" viewBox="0 0 1000 105" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="home-architecture__route home-architecture__route--secondary" d="M24 42 C180 0 296 92 480 42 S790 0 976 42"></path>
+                        <path class="home-architecture__route home-architecture__route--secondary" d="M24 54 C180 96 296 8 480 54 S790 96 976 54"></path>
+                        <path id="architecture-route-1" class="home-architecture__route" data-route="client api" d="M70 46 C112 24 200 68 242 46"></path>
+                        <path id="architecture-route-2" class="home-architecture__route" data-route="api ecs" d="M242 46 C284 68 372 24 414 46"></path>
+                        <path id="architecture-route-3" class="home-architecture__route" data-route="ecs aws" d="M414 46 C456 24 544 68 586 46"></path>
+                        <path id="architecture-route-4" class="home-architecture__route" data-route="aws kafka" d="M586 46 C628 68 716 24 758 46"></path>
+                        <path id="architecture-route-5" class="home-architecture__route" data-route="kafka db" d="M758 46 C800 24 888 68 930 46"></path>
+                        <g class="home-architecture__packets">
+                            <circle r="3"><animateMotion dur="3.8s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
+                            <circle r="3"><animateMotion dur="4.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
+                            <circle r="3"><animateMotion dur="4.5s" begin="-2.7s" repeatCount="indefinite"><mpath href="#architecture-route-3" xlink:href="#architecture-route-3"></mpath></animateMotion></circle>
+                            <circle r="3"><animateMotion dur="3.9s" begin="-1.9s" repeatCount="indefinite"><mpath href="#architecture-route-4" xlink:href="#architecture-route-4"></mpath></animateMotion></circle>
+                            <circle r="3"><animateMotion dur="4.3s" begin="-3.1s" repeatCount="indefinite"><mpath href="#architecture-route-5" xlink:href="#architecture-route-5"></mpath></animateMotion></circle>
+                        </g>
+                    </svg>
+                    <div class="home-architecture__nodes">
+                        <button class="home-architecture__node" type="button" data-system="client" title="Client requests enter the service flow" aria-label="Client node">
+                            <span class="home-architecture__node-ring"><i class="fas fa-user-circle"></i></span><span class="home-architecture__node-label">Client</span>
+                        </button>
+                        <button class="home-architecture__node" type="button" data-system="api" title="Java and Spring Boot APIs" aria-label="API node">
+                            <span class="home-architecture__node-ring"><i class="fas fa-network-wired"></i></span><span class="home-architecture__node-label">API</span>
+                        </button>
+                        <button class="home-architecture__node" type="button" data-system="ecs" title="Containerized microservices on ECS Fargate" aria-label="ECS node">
+                            <span class="home-architecture__node-ring"><i class="fas fa-boxes"></i></span><span class="home-architecture__node-label">ECS</span>
+                        </button>
+                        <button class="home-architecture__node home-architecture__node--aws" type="button" data-system="aws" title="AWS cloud infrastructure" aria-label="AWS node">
+                            <span class="home-architecture__node-ring"><i class="fab fa-aws"></i></span><span class="home-architecture__node-label">AWS</span>
+                        </button>
+                        <button class="home-architecture__node" type="button" data-system="kafka" title="Kafka event streaming" aria-label="Kafka node">
+                            <span class="home-architecture__node-ring"><i class="fas fa-stream"></i></span><span class="home-architecture__node-label">Kafka</span>
+                        </button>
+                        <button class="home-architecture__node" type="button" data-system="db" title="Aurora PostgreSQL data store" aria-label="Database node">
+                            <span class="home-architecture__node-ring"><i class="fas fa-database"></i></span><span class="home-architecture__node-label">DB</span>
+                        </button>
+                    </div>
+                  </div>
                 </div>
             </div>
 

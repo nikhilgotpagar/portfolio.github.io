@@ -618,15 +618,33 @@
         const hero = canvas.closest(".home-hero");
 
         if (hero) {
+            const setActiveSystem = (element) => {
+                const [system] = element.dataset.system.split(/\s+/);
+                activeSystem = system;
+                hero.dataset.focusSystem = system;
+                if (reduceMotion) frame();
+            };
+
             hero.querySelectorAll("[data-system]").forEach((element) => {
                 element.addEventListener("pointerenter", () => {
-                    const [system] = element.dataset.system.split(/\s+/);
-                    activeSystem = system;
-                    hero.dataset.focusSystem = system;
-                    if (reduceMotion) frame();
+                    setActiveSystem(element);
                 });
                 element.addEventListener("pointerleave", (event) => {
                     if (event.relatedTarget instanceof Node && element.contains(event.relatedTarget)) return;
+                    activeSystem = "";
+                    delete hero.dataset.focusSystem;
+                    if (reduceMotion) frame();
+                });
+            });
+
+            hero.querySelectorAll(".home-architecture__node[data-system]").forEach((node) => {
+                node.addEventListener("focus", () => setActiveSystem(node));
+                node.addEventListener("blur", (event) => {
+                    const nextNode = event.relatedTarget;
+                    if (nextNode instanceof HTMLElement && nextNode.matches(".home-architecture__node[data-system]")) {
+                        setActiveSystem(nextNode);
+                        return;
+                    }
                     activeSystem = "";
                     delete hero.dataset.focusSystem;
                     if (reduceMotion) frame();
