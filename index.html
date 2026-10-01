@@ -186,12 +186,22 @@
                         <path id="architecture-route-3" class="home-architecture__route" data-route="ecs aws" d="M414 46 C456 24 544 68 586 46"></path>
                         <path id="architecture-route-4" class="home-architecture__route" data-route="aws kafka" d="M586 46 C628 68 716 24 758 46"></path>
                         <path id="architecture-route-5" class="home-architecture__route" data-route="kafka db" d="M758 46 C800 24 888 68 930 46"></path>
+                        <path id="architecture-route-api-kafka-a" class="home-architecture__route home-architecture__route--branch" d="M242 46 C400 4 540 8 758 46"></path>
+                        <path id="architecture-route-api-kafka-b" class="home-architecture__route home-architecture__route--branch" d="M414 46 C530 90 634 84 758 46"></path>
+                        <path id="architecture-route-kafka-consumer-a" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 19 818 19 850 21"></path>
+                        <path id="architecture-route-kafka-consumer-b" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C796 46 820 43 858 43"></path>
+                        <path id="architecture-route-kafka-consumer-c" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 69 824 62 866 64"></path>
                         <g class="home-architecture__packets">
                             <circle r="3"><animateMotion dur="3.8s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
                             <circle r="3"><animateMotion dur="4.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
                             <circle r="3"><animateMotion dur="4.5s" begin="-2.7s" repeatCount="indefinite"><mpath href="#architecture-route-3" xlink:href="#architecture-route-3"></mpath></animateMotion></circle>
                             <circle r="3"><animateMotion dur="3.9s" begin="-1.9s" repeatCount="indefinite"><mpath href="#architecture-route-4" xlink:href="#architecture-route-4"></mpath></animateMotion></circle>
                             <circle r="3"><animateMotion dur="4.3s" begin="-3.1s" repeatCount="indefinite"><mpath href="#architecture-route-5" xlink:href="#architecture-route-5"></mpath></animateMotion></circle>
+                            <circle r="2.5"><animateMotion dur="5.4s" begin="-1.2s" repeatCount="indefinite"><mpath href="#architecture-route-api-kafka-a" xlink:href="#architecture-route-api-kafka-a"></mpath></animateMotion></circle>
+                            <circle r="2.5"><animateMotion dur="5.8s" begin="-3.2s" repeatCount="indefinite"><mpath href="#architecture-route-api-kafka-b" xlink:href="#architecture-route-api-kafka-b"></mpath></animateMotion></circle>
+                            <circle r="2.3"><animateMotion dur="3.6s" begin="-0.8s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
+                            <circle r="2.3"><animateMotion dur="4.1s" begin="-2s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-b" xlink:href="#architecture-route-kafka-consumer-b"></mpath></animateMotion></circle>
+                            <circle r="2.3"><animateMotion dur="3.9s" begin="-2.8s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-c" xlink:href="#architecture-route-kafka-consumer-c"></mpath></animateMotion></circle>
                         </g>
                     </svg>
                     <div class="home-architecture__nodes">
@@ -210,7 +220,13 @@
                         <button class="home-architecture__node" type="button" data-system="kafka" title="Kafka event streaming" aria-label="Kafka node">
                             <span class="home-architecture__node-ring"><i class="fas fa-stream"></i></span><span class="home-architecture__node-label">Kafka</span>
                         </button>
-                        <button class="home-architecture__node" type="button" data-system="db" title="Aurora PostgreSQL data store" aria-label="Database node">
+                        <div class="home-architecture__consumers" role="group" aria-label="Kafka consumer group">
+                            <span class="home-architecture__consumer-heading">CONSUMER GROUP</span>
+                            <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 01</span>
+                            <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 02</span>
+                            <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 03</span>
+                        </div>
+                        <button class="home-architecture__node home-architecture__node--db" type="button" data-system="db" title="Aurora PostgreSQL data store" aria-label="Database node">
                             <span class="home-architecture__node-ring"><i class="fas fa-database"></i></span><span class="home-architecture__node-label">DB</span>
                         </button>
                     </div>
