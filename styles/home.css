@@ -354,9 +354,6 @@ body.light-mode .top-nav__link:hover {
   --home-glow: color-mix(in srgb, var(--color-secondary) 22%, transparent);
   --home-mono: var(--font-mono, "JetBrains Mono", ui-monospace, monospace);
   --home-sans: var(--font-display, "Space Grotesk", system-ui, sans-serif);
-  --globe-accent: var(--color-secondary);
-  --globe-mesh: color-mix(in srgb, var(--color-secondary) 75%, transparent);
-  --globe-core: color-mix(in srgb, var(--color-secondary) 40%, transparent);
 
   min-height: 100vh;
   min-height: 100svh;

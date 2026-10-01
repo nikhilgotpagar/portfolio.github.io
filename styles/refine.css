@@ -759,11 +759,6 @@ body.light-mode .particle {
     max-width: 250px;
   }
 
-  .home-globe canvas {
-    max-width: 250px;
-    max-height: 250px;
-  }
-
   .home-contact-strip {
     padding: 0.55rem 0;
   }
