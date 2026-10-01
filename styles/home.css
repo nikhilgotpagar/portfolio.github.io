@@ -534,6 +534,12 @@ body.light-mode .home-portrait__glow { opacity: 0.4; }
   filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45));
   -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+  animation: portraitFloat 7s ease-in-out infinite;
+}
+
+@keyframes portraitFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 body.light-mode .home-portrait img {
@@ -1412,6 +1418,7 @@ header.home-cyber.container {
 
   .home-portrait__glow,
   .home-portrait__rings span,
+  .home-portrait img,
   .home-globe__glow,
   .home-globe__orbit,
   .home-status__dot,
@@ -1422,6 +1429,27 @@ header.home-cyber.container {
   .genai-preview,
   .home-contact-strip {
     animation: none !important;
+  }
+
+  .home-portrait__rings span:nth-child(1) {
+    opacity: 0.45;
+    transform: none;
+  }
+
+  .home-portrait__rings span:nth-child(2) {
+    opacity: 0.35;
+  }
+
+  .home-portrait__rings span:nth-child(3) {
+    opacity: 0.18;
+  }
+
+  .home-portrait__glow {
+    opacity: 0.5;
+  }
+
+  .home-portrait img {
+    transform: none;
   }
 
   .genai-preview__line p.is-generating::after {
