@@ -56,7 +56,23 @@
         <div class="visit-thanks__toast">Thanks for visiting!</div>
     </div>
     <header class="container header active home-cyber" id="home">
+        <canvas class="home-ambient" aria-hidden="true"></canvas>
+        <div class="home-perspective-grid" aria-hidden="true"></div>
+        <div class="home-sweep" aria-hidden="true"></div>
+        <div class="home-code-field" aria-hidden="true">
+            <span>KafkaConsumer&lt;Event&gt;</span>
+            <span>AWS::ECS::Service</span>
+            <span>distributed systems</span>
+            <span>Spring Boot · Terraform</span>
+            <span>Spinnaker / blue-green</span>
+        </div>
         <div class="home-dash">
+            <nav class="home-nav-rail" aria-label="Home section shortcuts">
+                <a href="#home" class="is-active" data-home-section="home"><span>01</span> HOME</a>
+                <a href="#blogs" data-home-section="blogs"><span>02</span> EXPERIENCE</a>
+                <a href="#about" data-home-section="about"><span>03</span> SYSTEMS</a>
+                <a href="#contact" data-home-section="contact"><span>04</span> CONTACT</a>
+            </nav>
             <div class="home-hero">
                 <div class="home-intro">
                     <div class="home-portrait">
@@ -91,7 +107,14 @@
                         <div class="home-globe__glow"></div>
                         <div class="home-globe__orbit home-globe__orbit--a"></div>
                         <div class="home-globe__orbit home-globe__orbit--b"></div>
+                        <div class="home-globe__scan"></div>
                         <canvas id="earth-globe" width="360" height="360"></canvas>
+                    </div>
+                    <div class="home-globe-hud home-globe-hud--top" aria-hidden="true">
+                        <i class="fas fa-satellite-dish"></i><span>AWS / MULTI-REGION</span>
+                    </div>
+                    <div class="home-globe-hud home-globe-hud--bottom" aria-hidden="true">
+                        <i class="fas fa-stream"></i><span>EVENT STREAM · KAFKA</span>
                     </div>
                     <div class="home-globe-meta">
                         <span class="home-globe-meta__tag">AWS REGIONS</span>
@@ -110,6 +133,13 @@
                         <span class="home-status__label">Daily transaction volume</span>
                         <strong>1M+</strong>
                         <span class="home-status__unit">Transactions / Day</span>
+                        <div class="home-status__traffic" aria-hidden="true">
+                            <span>TRAFFIC PROFILE · ILLUSTRATIVE</span>
+                            <svg viewBox="0 0 180 28" preserveAspectRatio="none">
+                                <path class="home-status__traffic-fill" d="M0 24 0 19 15 17 28 20 43 10 57 14 72 6 87 11 101 4 116 12 130 8 144 15 159 6 180 9 180 28 0 28Z"></path>
+                                <path class="home-status__traffic-line" d="M0 19 15 17 28 20 43 10 57 14 72 6 87 11 101 4 116 12 130 8 144 15 159 6 180 9"></path>
+                            </svg>
+                        </div>
                     </div>
                     <div class="home-status__card home-status__card--split">
                         <div>
@@ -119,6 +149,9 @@
                         <div>
                             <span class="home-status__label">Latency reduced</span>
                             <strong>−40%</strong>
+                            <div class="home-status__bars" aria-hidden="true">
+                                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                            </div>
                         </div>
                     </div>
                     <div class="home-status__avail">
@@ -132,6 +165,21 @@
                         </div>
                     </div>
                 </aside>
+            </div>
+
+            <div class="home-architecture" role="img" aria-label="Illustrative architecture flow: client to API to AWS to Kafka to database">
+                <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
+                <div class="home-architecture__flow" aria-hidden="true">
+                    <span class="home-architecture__node"><i class="fas fa-laptop"></i>CLIENT</span>
+                    <span class="home-architecture__link"><i></i></span>
+                    <span class="home-architecture__node"><i class="fas fa-code"></i>API</span>
+                    <span class="home-architecture__link"><i></i></span>
+                    <span class="home-architecture__node"><i class="fab fa-aws"></i>AWS</span>
+                    <span class="home-architecture__link"><i></i></span>
+                    <span class="home-architecture__node"><i class="fas fa-stream"></i>KAFKA</span>
+                    <span class="home-architecture__link"><i></i></span>
+                    <span class="home-architecture__node"><i class="fas fa-database"></i>DB</span>
+                </div>
             </div>
 
             <section class="genai-preview" aria-label="Resume question and answer examples">

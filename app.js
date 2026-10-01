@@ -10,6 +10,7 @@
 
     // ===== TOP NAV + SCROLL SYNC =====
     const navLinks = document.querySelectorAll(".top-nav__link");
+    const homeRailLinks = document.querySelectorAll(".home-nav-rail a");
     const sections = document.querySelectorAll("section[id], header[id]");
     const topNav = document.querySelector(".top-nav");
     const visitThanks = document.querySelector("#visit-thanks");
@@ -60,6 +61,9 @@
     function setActiveNav(sectionId) {
         navLinks.forEach((link) => {
             link.classList.toggle("is-active", link.dataset.id === sectionId);
+        });
+        homeRailLinks.forEach((link) => {
+            link.classList.toggle("is-active", link.dataset.homeSection === sectionId);
         });
     }
 
@@ -409,6 +413,170 @@
     }
     createParticles();
 
+    function initHomeAmbient() {
+        const hero = document.querySelector(".home-cyber");
+        const canvas = document.querySelector(".home-ambient");
+        if (!hero || !canvas) return;
+
+        const context = canvas.getContext("2d");
+        if (!context) return;
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const particles = [];
+        let width = 0;
+        let height = 0;
+        let pixelRatio = 1;
+        let previousTime = 0;
+        let frameId = 0;
+        let pointerX = -1000;
+        let pointerY = -1000;
+        let pointerFrame = 0;
+
+        function resize() {
+            const rect = hero.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+            pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+            canvas.width = Math.round(width * pixelRatio);
+            canvas.height = Math.round(height * pixelRatio);
+            context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            particles.length = 0;
+            const count = width < 700 ? 12 : width < 1100 ? 20 : 32;
+            for (let index = 0; index < count; index += 1) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.13,
+                    vy: (Math.random() - 0.5) * 0.1,
+                    radius: 0.7 + Math.random() * 1.1,
+                    phase: Math.random() * Math.PI * 2,
+                });
+            }
+        }
+
+        function draw(timestamp = performance.now()) {
+            const delta = previousTime ? Math.min(timestamp - previousTime, 40) / 16.67 : 1;
+            previousTime = timestamp;
+            context.clearRect(0, 0, width, height);
+            const styles = getComputedStyle(hero);
+            const color = styles.getPropertyValue("--home-cyan").trim() || "#38bdf8";
+
+            particles.forEach((particle, index) => {
+                if (!reduceMotion) {
+                    particle.x += particle.vx * delta;
+                    particle.y += particle.vy * delta;
+                    if (particle.x < 0) particle.x = width;
+                    if (particle.x > width) particle.x = 0;
+                    if (particle.y < 0) particle.y = height;
+                    if (particle.y > height) particle.y = 0;
+                }
+
+                const dx = particle.x - pointerX;
+                const dy = particle.y - pointerY;
+                const distanceToPointer = Math.hypot(dx, dy);
+                const pointerBoost = finePointer ? Math.max(0, 1 - distanceToPointer / 170) : 0;
+                const pulse = 0.35 + (Math.sin(timestamp / 3400 + particle.phase) + 1) * 0.16;
+                const alpha = pulse + pointerBoost * 0.38;
+                context.beginPath();
+                context.arc(particle.x, particle.y, particle.radius + pointerBoost * 0.6, 0, Math.PI * 2);
+                context.fillStyle = colorToRgba(color, Math.min(alpha, 0.9));
+                context.shadowColor = color;
+                context.shadowBlur = pointerBoost > 0 ? 8 : 3;
+                context.fill();
+                context.shadowBlur = 0;
+
+                for (let otherIndex = index + 1; otherIndex < particles.length; otherIndex += 1) {
+                    const other = particles[otherIndex];
+                    const distance = Math.hypot(particle.x - other.x, particle.y - other.y);
+                    if (distance > 112) continue;
+                    context.beginPath();
+                    context.moveTo(particle.x, particle.y);
+                    context.lineTo(other.x, other.y);
+                    context.strokeStyle = colorToRgba(color, (1 - distance / 112) * 0.12);
+                    context.lineWidth = 0.65;
+                    context.stroke();
+                }
+            });
+
+            if (!reduceMotion) frameId = requestAnimationFrame(draw);
+        }
+
+        function colorToRgba(color, alpha) {
+            const hex = color.trim().replace("#", "");
+            if (/^[\da-f]{6}$/i.test(hex)) {
+                const red = parseInt(hex.slice(0, 2), 16);
+                const green = parseInt(hex.slice(2, 4), 16);
+                const blue = parseInt(hex.slice(4, 6), 16);
+                return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+            }
+            const values = color.match(/\d+/g);
+            if (values && values.length >= 3) return `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`;
+            return `rgba(56, 189, 248, ${alpha})`;
+        }
+
+        function onPointerMove(event) {
+            if (reduceMotion) return;
+            const bounds = hero.getBoundingClientRect();
+            pointerX = event.clientX - bounds.left;
+            pointerY = event.clientY - bounds.top;
+            if (pointerFrame) return;
+            pointerFrame = requestAnimationFrame(() => {
+                pointerFrame = 0;
+                hero.style.setProperty("--pointer-x", `${pointerX}px`);
+                hero.style.setProperty("--pointer-y", `${pointerY}px`);
+                const parallaxX = ((pointerX / width) - 0.5) * 10;
+                const parallaxY = ((pointerY / height) - 0.5) * 8;
+                hero.style.setProperty("--parallax-dash-x", `${-parallaxX * 0.035}px`);
+                hero.style.setProperty("--parallax-dash-y", `${-parallaxY * 0.035}px`);
+                hero.style.setProperty("--parallax-text-x", `${parallaxX * 0.06}px`);
+                hero.style.setProperty("--parallax-text-y", `${parallaxY * 0.06}px`);
+                hero.style.setProperty("--parallax-portrait-x", `${parallaxX * 0.14}px`);
+                hero.style.setProperty("--parallax-portrait-y", `${parallaxY * 0.14}px`);
+                hero.style.setProperty("--parallax-globe-x", `${parallaxX * 0.28}px`);
+                hero.style.setProperty("--parallax-globe-y", `${parallaxY * 0.28}px`);
+                hero.style.setProperty("--grid-x", `${((pointerX / width) - 0.5) * -4}px`);
+                hero.style.setProperty("--grid-y", `${((pointerY / height) - 0.5) * -3}px`);
+            });
+        }
+
+        function resetPointer() {
+            pointerX = -1000;
+            pointerY = -1000;
+            hero.style.setProperty("--pointer-x", "50%");
+            hero.style.setProperty("--pointer-y", "35%");
+            hero.style.setProperty("--parallax-dash-x", "0px");
+            hero.style.setProperty("--parallax-dash-y", "0px");
+            hero.style.setProperty("--parallax-text-x", "0px");
+            hero.style.setProperty("--parallax-text-y", "0px");
+            hero.style.setProperty("--parallax-portrait-x", "0px");
+            hero.style.setProperty("--parallax-portrait-y", "0px");
+            hero.style.setProperty("--parallax-globe-x", "0px");
+            hero.style.setProperty("--parallax-globe-y", "0px");
+            hero.style.setProperty("--grid-x", "0px");
+            hero.style.setProperty("--grid-y", "0px");
+        }
+
+        resize();
+        draw();
+        window.addEventListener("resize", () => {
+            resize();
+            if (reduceMotion) draw();
+        }, { passive: true });
+        if (finePointer && !reduceMotion) {
+            hero.addEventListener("pointermove", onPointerMove, { passive: true });
+            hero.addEventListener("pointerleave", resetPointer, { passive: true });
+        }
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                cancelAnimationFrame(frameId);
+            } else if (!reduceMotion) {
+                frameId = requestAnimationFrame(draw);
+            }
+        });
+    }
+    initHomeAmbient();
+
     document.querySelectorAll(".input-control input, .input-control textarea").forEach((input) => {
         input.addEventListener("focus", function () {
             this.style.outline = "1px solid var(--color-secondary)";
@@ -436,12 +604,12 @@
 
         // Hub cities (lat, lon) for glowing nodes + arcs
         const hubs = [
-            { lat: 39, lon: -77.5, region: "us-east-1" }, // Northern Virginia
-            { lat: 51.5, lon: -0.1, region: "eu-west-2" }, // London
-            { lat: 19.1, lon: 72.9, region: "ap-south-1" }, // Mumbai
-            { lat: 1.3, lon: 103.8 }, // Singapore
+            { lat: 39, lon: -77.5, region: "us-east-1", service: "AWS" }, // Northern Virginia
+            { lat: 51.5, lon: -0.1, region: "eu-west-2", service: "API" }, // London
+            { lat: 19.1, lon: 72.9, region: "ap-south-1", service: "KAFKA" }, // Mumbai
+            { lat: 1.3, lon: 103.8, service: "ECS" }, // Singapore
             { lat: 35.7, lon: 139.7 }, // Tokyo
-            { lat: -33.9, lon: 151.2 }, // Sydney
+            { lat: -33.9, lon: 151.2, service: "DB" }, // Sydney
             { lat: 37.8, lon: -122.4 }, // SF
             { lat: 52.5, lon: 13.4 }, // Berlin
         ];
@@ -582,7 +750,7 @@
             }
         }
 
-        function drawArc(a, b, rot, R, cx, cy, color) {
+        function drawArc(a, b, rot, R, cx, cy, color, timestamp, showPacket) {
             const p1 = project(a.lat, a.lon, rot, R, cx, cy);
             const p2 = project(b.lat, b.lon, rot, R, cx, cy);
             if (p1.z < 0 && p2.z < 0) return;
@@ -605,6 +773,37 @@
             ctx.stroke();
             ctx.shadowBlur = 0;
             ctx.globalAlpha = 1;
+
+            if (showPacket && !reduceMotion) {
+                const progress = ((timestamp / 4200) + (a.lat + b.lon) * 0.013) % 1;
+                const inverse = 1 - progress;
+                const x = inverse * inverse * p1.x + 2 * inverse * progress * cx2 + progress * progress * p2.x;
+                const y = inverse * inverse * p1.y + 2 * inverse * progress * cy2 + progress * progress * p2.y;
+                ctx.beginPath();
+                ctx.arc(x, y, 2.1, 0, Math.PI * 2);
+                ctx.fillStyle = "#ffffff";
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 9;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function drawServiceLabel(point, label, w, h, color) {
+            const labelWidth = label === "KAFKA" ? 40 : 30;
+            const labelHeight = 13;
+            const left = Math.max(3, Math.min(w - labelWidth - 3, point.x + 6));
+            const top = Math.max(3, Math.min(h - labelHeight - 3, point.y - 15));
+            ctx.fillStyle = "rgba(6, 18, 30, 0.8)";
+            ctx.fillRect(left, top, labelWidth, labelHeight);
+            ctx.strokeStyle = hexToRgba(color, 0.62);
+            ctx.lineWidth = 0.7;
+            ctx.strokeRect(left, top, labelWidth, labelHeight);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "600 7px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(label, left + labelWidth / 2, top + labelHeight / 2);
         }
 
         function drawRegionLabel(point, label, cx, cy, w, h, color) {
@@ -682,8 +881,8 @@
             });
 
             // Connection arcs
-            arcs.forEach(([i, j]) => {
-                drawArc(hubs[i], hubs[j], rotation, R, cx, cy, accent);
+            arcs.forEach(([i, j], index) => {
+                drawArc(hubs[i], hubs[j], rotation, R, cx, cy, accent, timestamp, index % 3 === 0);
             });
 
             // Hub nodes
@@ -705,6 +904,7 @@
                 ctx.lineWidth = isAwsRegion ? 2 : 1.4;
                 ctx.stroke();
 
+                if (hub.service) drawServiceLabel(p, hub.service, w, h, accent);
                 if (isAwsRegion && hub.region) {
                     drawRegionLabel(p, hub.region, cx, cy, w, h, accent);
                 }
