@@ -206,7 +206,7 @@
         const examples = [
             {
                 prompt: "Tell me about scaling a high-throughput system.",
-                answer: "At JPMorganChase, I built Java services on AWS for distributed card systems handling 1M+ transactions daily.",
+                answer: "At JPMorgan Chase, I built Java services on AWS for distributed card systems handling 1M+ transactions daily.",
             },
             {
                 prompt: "How have you applied GenAI to a financial workflow?",
