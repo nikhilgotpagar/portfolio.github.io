@@ -110,10 +110,10 @@
                         <div class="home-globe__scan"></div>
                         <canvas id="earth-globe" width="360" height="360"></canvas>
                     </div>
-                    <div class="home-globe-hud home-globe-hud--top" aria-hidden="true">
+                    <div class="home-globe-hud home-globe-hud--top" data-system="aws ecs" aria-hidden="true">
                         <i class="fas fa-satellite-dish"></i><span>AWS / MULTI-REGION</span>
                     </div>
-                    <div class="home-globe-hud home-globe-hud--bottom" aria-hidden="true">
+                    <div class="home-globe-hud home-globe-hud--bottom" data-system="kafka" aria-hidden="true">
                         <i class="fas fa-stream"></i><span>EVENT STREAM · KAFKA</span>
                     </div>
                     <div class="home-globe-meta">
@@ -129,6 +129,13 @@
 
                 <aside class="home-status">
                     <h2 class="home-status__heading">Engineering at scale</h2>
+                    <div class="home-status__scanner" role="img" aria-label="Illustrative system scan of three displayed AWS regions">
+                        <span class="home-status__scanner-label">SYSTEM SCAN</span>
+                        <span class="home-status__radar" aria-hidden="true">
+                            <i></i><i></i><i></i><b></b>
+                        </span>
+                        <span class="home-status__scanner-regions">03 REGIONS</span>
+                    </div>
                     <div class="home-status__card">
                         <span class="home-status__label">Daily transaction volume</span>
                         <strong>1M+</strong>
@@ -170,15 +177,17 @@
             <div class="home-architecture" role="img" aria-label="Illustrative architecture flow: client to API to AWS to Kafka to database">
                 <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
                 <div class="home-architecture__flow" aria-hidden="true">
-                    <span class="home-architecture__node"><i class="fas fa-laptop"></i>CLIENT</span>
-                    <span class="home-architecture__link"><i></i></span>
-                    <span class="home-architecture__node"><i class="fas fa-code"></i>API</span>
-                    <span class="home-architecture__link"><i></i></span>
-                    <span class="home-architecture__node"><i class="fab fa-aws"></i>AWS</span>
-                    <span class="home-architecture__link"><i></i></span>
-                    <span class="home-architecture__node"><i class="fas fa-stream"></i>KAFKA</span>
-                    <span class="home-architecture__link"><i></i></span>
-                    <span class="home-architecture__node"><i class="fas fa-database"></i>DB</span>
+                    <span class="home-architecture__node" data-system="api"><i class="fas fa-laptop"></i>USERS</span>
+                    <span class="home-architecture__link" data-system="api"><i></i></span>
+                    <span class="home-architecture__node" data-system="api"><i class="fas fa-code"></i>API</span>
+                    <span class="home-architecture__link" data-system="api ecs"><i></i></span>
+                    <span class="home-architecture__node" data-system="ecs"><i class="fas fa-cubes"></i>ECS</span>
+                    <span class="home-architecture__link" data-system="ecs aws"><i></i></span>
+                    <span class="home-architecture__node" data-system="aws"><i class="fab fa-aws"></i>AWS</span>
+                    <span class="home-architecture__link" data-system="aws kafka"><i></i></span>
+                    <span class="home-architecture__node" data-system="kafka"><i class="fas fa-stream"></i>KAFKA</span>
+                    <span class="home-architecture__link" data-system="kafka db"><i></i></span>
+                    <span class="home-architecture__node" data-system="db"><i class="fas fa-database"></i>AURORA</span>
                 </div>
             </div>
 

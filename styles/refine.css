@@ -683,6 +683,7 @@ body.light-mode .particle {
 }
 
 .home-status__heading {
+  padding-right: 3.8rem;
   margin: 0 0 0.15rem;
   color: var(--home-text);
   font-family: var(--home-sans);

@@ -851,11 +851,79 @@ body.gaming-mode .cta-primary {
 
 /* ----- Status ----- */
 .home-status {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   padding-top: 0.15rem;
   animation: fadeRiseHome 0.9s ease-out 0.15s both;
+}
+
+.home-status__scanner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 0.12rem;
+  width: 3.35rem;
+  color: var(--home-muted);
+  font-family: var(--home-mono);
+  font-size: 0.38rem;
+  letter-spacing: 0.05em;
+}
+
+.home-status__scanner-label,
+.home-status__scanner-regions {
+  white-space: nowrap;
+}
+
+.home-status__radar {
+  position: relative;
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--home-cyan) 38%, transparent);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 49%, color-mix(in srgb, var(--home-cyan) 20%, transparent) 50%, transparent 51%),
+    linear-gradient(transparent 49%, color-mix(in srgb, var(--home-cyan) 20%, transparent) 50%, transparent 51%),
+    radial-gradient(circle, transparent 27%, color-mix(in srgb, var(--home-cyan) 17%, transparent) 29%, transparent 31%, transparent 57%, color-mix(in srgb, var(--home-cyan) 17%, transparent) 59%, transparent 61%);
+}
+
+.home-status__radar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent 0 76%, color-mix(in srgb, var(--home-cyan) 34%, transparent) 100%);
+  animation: radarSweep 6s linear infinite;
+}
+
+.home-status__radar i,
+.home-status__radar b {
+  position: absolute;
+  z-index: 1;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--home-cyan);
+  box-shadow: 0 0 5px var(--home-cyan);
+}
+
+.home-status__radar i:nth-child(1) { left: 28%; top: 32%; }
+.home-status__radar i:nth-child(2) { left: 66%; top: 42%; animation: radarNode 3.8s ease-in-out infinite; }
+.home-status__radar i:nth-child(3) { left: 48%; top: 72%; animation: radarNode 4.6s ease-in-out infinite -1.8s; }
+.home-status__radar b { left: calc(50% - 1.5px); top: calc(50% - 1.5px); background: var(--color-accent); }
+
+@keyframes radarSweep {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes radarNode {
+  50% { opacity: 0.4; box-shadow: 0 0 2px var(--home-cyan); }
 }
 
 .home-status__live {
@@ -1619,11 +1687,80 @@ body.gaming-mode .cta-primary {
   font-size: 0.49rem;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.home-architecture__node[data-system] {
+  cursor: default;
 }
 
 .home-architecture__node i {
   color: var(--home-cyan);
   font-size: 0.58rem;
+  transition: filter 0.2s ease;
+}
+
+.home-architecture__node.is-highlighted,
+.home-architecture__node[data-system]:hover {
+  color: var(--home-text);
+  text-shadow: 0 0 9px color-mix(in srgb, var(--home-cyan) 38%, transparent);
+}
+
+.home-architecture__node.is-highlighted i,
+.home-architecture__node[data-system]:hover i {
+  filter: drop-shadow(0 0 4px var(--home-cyan));
+}
+
+.home-hero[data-focus-system="api"] .home-architecture__link[data-system~="api"],
+.home-hero[data-focus-system="ecs"] .home-architecture__link[data-system~="ecs"],
+.home-hero[data-focus-system="aws"] .home-architecture__link[data-system~="aws"],
+.home-hero[data-focus-system="kafka"] .home-architecture__link[data-system~="kafka"],
+.home-hero[data-focus-system="db"] .home-architecture__link[data-system~="db"] {
+  background: color-mix(in srgb, var(--home-cyan) 72%, transparent);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--home-cyan) 48%, transparent);
+}
+
+.home-hero[data-focus-system="api"] [data-system~="api"],
+.home-hero[data-focus-system="ecs"] [data-system~="ecs"],
+.home-hero[data-focus-system="aws"] [data-system~="aws"],
+.home-hero[data-focus-system="kafka"] [data-system~="kafka"],
+.home-hero[data-focus-system="db"] [data-system~="db"] {
+  color: var(--home-text);
+  text-shadow: 0 0 9px color-mix(in srgb, var(--home-cyan) 38%, transparent);
+}
+
+.home-hero[data-focus-system="aws"] .home-globe canvas,
+.home-hero[data-focus-system="kafka"] .home-globe canvas,
+.home-hero[data-focus-system="api"] .home-globe canvas,
+.home-hero[data-focus-system="ecs"] .home-globe canvas,
+.home-hero[data-focus-system="db"] .home-globe canvas {
+  filter: brightness(1.08) drop-shadow(0 0 8px color-mix(in srgb, var(--home-cyan) 26%, transparent));
+}
+
+.home-hero[data-focus-system] .home-architecture__link[data-system~="api"]::after,
+.home-hero[data-focus-system] .home-architecture__link[data-system~="ecs"]::after,
+.home-hero[data-focus-system] .home-architecture__link[data-system~="aws"]::after,
+.home-hero[data-focus-system] .home-architecture__link[data-system~="kafka"]::after,
+.home-hero[data-focus-system] .home-architecture__link[data-system~="db"]::after {
+  opacity: 0.35;
+}
+
+.home-hero[data-focus-system="api"] .home-architecture__link[data-system~="api"]::after,
+.home-hero[data-focus-system="ecs"] .home-architecture__link[data-system~="ecs"]::after,
+.home-hero[data-focus-system="aws"] .home-architecture__link[data-system~="aws"]::after,
+.home-hero[data-focus-system="kafka"] .home-architecture__link[data-system~="kafka"]::after,
+.home-hero[data-focus-system="db"] .home-architecture__link[data-system~="db"]::after {
+  opacity: 1;
+  box-shadow: 0 0 9px var(--home-cyan);
+}
+
+.home-hero[data-focus-system="aws"] .home-globe__orbit,
+.home-hero[data-focus-system="kafka"] .home-globe__orbit,
+.home-hero[data-focus-system="api"] .home-globe__orbit,
+.home-hero[data-focus-system="ecs"] .home-globe__orbit,
+.home-hero[data-focus-system="db"] .home-globe__orbit {
+  border-color: color-mix(in srgb, var(--home-cyan) 48%, transparent);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 48%, transparent));
 }
 
 .home-architecture__link {
@@ -1705,6 +1842,7 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
 
 @media (max-width: 700px) {
   .home-ambient { opacity: 0.22; }
+  .home-status__heading { padding-right: 0; }
   .home-code-field span:nth-child(n + 3) { display: none; }
   .home-perspective-grid { height: 24%; opacity: 0.18; }
   .home-sweep { display: none; }
@@ -1716,6 +1854,7 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
   .home-architecture__node { gap: 0.2rem; font-size: 0.4rem; }
   .home-architecture__node i { font-size: 0.5rem; }
   .home-architecture__link { min-width: 0.2rem; }
+  .home-status__scanner { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1726,6 +1865,10 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
   .home-status__traffic-line,
   .home-status__bars i,
   .home-architecture__link::after {
+    animation: none !important;
+  }
+  .home-status__radar::before,
+  .home-status__radar i {
     animation: none !important;
   }
 
@@ -1873,6 +2016,14 @@ header.home-cyber.container {
 
   .home-status {
     gap: 0.3rem;
+  }
+
+  .home-status__scanner {
+    display: none;
+  }
+
+  .home-status__heading {
+    padding-right: 0;
   }
 
   .home-status__card {

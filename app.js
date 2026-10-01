@@ -596,8 +596,9 @@
         let rotation = 0;
         let rafId = null;
         let globeHovered = false;
+        let activeSystem = "";
         let lastFrameTime = 0;
-        const rotationSpeed = 0.75;
+        const rotationSpeed = 0.18;
         let dpr = Math.min(window.devicePixelRatio || 1, 2);
         let viewW = 0;
         let viewH = 0;
@@ -614,6 +615,24 @@
             { lat: 52.5, lon: 13.4 }, // Berlin
         ];
         const globe = canvas.closest(".home-globe");
+        const hero = canvas.closest(".home-hero");
+
+        if (hero) {
+            hero.querySelectorAll("[data-system]").forEach((element) => {
+                element.addEventListener("pointerenter", () => {
+                    const [system] = element.dataset.system.split(/\s+/);
+                    activeSystem = system;
+                    hero.dataset.focusSystem = system;
+                    if (reduceMotion) frame();
+                });
+                element.addEventListener("pointerleave", (event) => {
+                    if (event.relatedTarget instanceof Node && element.contains(event.relatedTarget)) return;
+                    activeSystem = "";
+                    delete hero.dataset.focusSystem;
+                    if (reduceMotion) frame();
+                });
+            });
+        }
 
         if (globe) {
             globe.addEventListener("pointerenter", () => {
@@ -750,7 +769,7 @@
             }
         }
 
-        function drawArc(a, b, rot, R, cx, cy, color, timestamp, showPacket) {
+        function drawArc(a, b, rot, R, cx, cy, color, timestamp, showPacket, highlighted) {
             const p1 = project(a.lat, a.lon, rot, R, cx, cy);
             const p2 = project(b.lat, b.lon, rot, R, cx, cy);
             if (p1.z < 0 && p2.z < 0) return;
@@ -766,15 +785,15 @@
             ctx.moveTo(p1.x, p1.y);
             ctx.quadraticCurveTo(cx2, cy2, p2.x, p2.y);
             ctx.strokeStyle = color;
-            ctx.lineWidth = 1.6;
-            ctx.globalAlpha = 0.85;
+            ctx.lineWidth = highlighted ? 2 : 1.2;
+            ctx.globalAlpha = highlighted ? 1 : activeSystem ? 0.2 : 0.72;
             ctx.shadowColor = color;
             ctx.shadowBlur = 8;
             ctx.stroke();
             ctx.shadowBlur = 0;
             ctx.globalAlpha = 1;
 
-            if (showPacket && !reduceMotion) {
+            if ((showPacket || highlighted) && !reduceMotion) {
                 const progress = ((timestamp / 4200) + (a.lat + b.lon) * 0.013) % 1;
                 const inverse = 1 - progress;
                 const x = inverse * inverse * p1.x + 2 * inverse * progress * cx2 + progress * progress * p2.x;
@@ -882,26 +901,30 @@
 
             // Connection arcs
             arcs.forEach(([i, j], index) => {
-                drawArc(hubs[i], hubs[j], rotation, R, cx, cy, accent, timestamp, index % 3 === 0);
+                const focus = activeSystem.toUpperCase();
+                const highlighted = Boolean(focus) && [hubs[i].service, hubs[j].service].includes(focus);
+                drawArc(hubs[i], hubs[j], rotation, R, cx, cy, accent, timestamp, index % 3 === 0, highlighted);
             });
 
             // Hub nodes
             hubs.forEach((hub) => {
                 const p = project(hub.lat, hub.lon, rotation, R, cx, cy);
                 if (p.z < 0) return;
-                const isAwsRegion = globeHovered && Boolean(hub.region);
+                const isFocusedService = activeSystem && hub.service === activeSystem.toUpperCase();
+                const isAwsRegion = (globeHovered && Boolean(hub.region)) || (activeSystem === "aws" && Boolean(hub.region));
+                const pulse = 0.5 + (Math.sin(timestamp / 900 + hub.lat) + 1) * 0.25;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, isAwsRegion ? 5 : 3.8, 0, Math.PI * 2);
-                ctx.fillStyle = isAwsRegion ? accent : "#ffffff";
+                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 4.4 : 3 + pulse * 0.8, 0, Math.PI * 2);
+                ctx.fillStyle = isFocusedService || isAwsRegion ? accent : "#ffffff";
                 ctx.shadowColor = accent;
-                ctx.shadowBlur = isAwsRegion ? 22 : 14;
+                ctx.shadowBlur = isFocusedService || isAwsRegion ? 20 : 8 + pulse * 5;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, isAwsRegion ? 10.5 : 8, 0, Math.PI * 2);
-                ctx.strokeStyle = hexToRgba(accent, isAwsRegion ? 1 : 0.7);
-                ctx.lineWidth = isAwsRegion ? 2 : 1.4;
+                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 9.5 : 6.5 + pulse * 1.5, 0, Math.PI * 2);
+                ctx.strokeStyle = hexToRgba(accent, isFocusedService || isAwsRegion ? 1 : 0.35 + pulse * 0.35);
+                ctx.lineWidth = isFocusedService || isAwsRegion ? 1.8 : 1;
                 ctx.stroke();
 
                 if (hub.service) drawServiceLabel(p, hub.service, w, h, accent);
@@ -963,6 +986,16 @@
             },
             { passive: true }
         );
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                cancelAnimationFrame(rafId);
+            } else if (reduceMotion) {
+                frame();
+            } else {
+                lastFrameTime = 0;
+                rafId = requestAnimationFrame(frame);
+            }
+        });
 
         let started = false;
         function start() {
