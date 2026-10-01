@@ -199,9 +199,10 @@
     }
 
     function initGenAiPreview() {
+        const preview = document.querySelector(".genai-preview");
         const prompt = document.querySelector(".genai-preview__prompt");
         const answer = document.querySelector(".genai-preview__answer");
-        if (!prompt || !answer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (!preview || !prompt || !answer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
         const examples = [
             {
@@ -226,34 +227,44 @@
             },
         ];
 
-        const typeText = (element, text, speed, onComplete) => {
+        function typeText(element, text, speed, onComplete) {
             const characters = Array.from(text);
             let index = 0;
-            const typeNext = () => {
+            element.textContent = "";
+            element.classList.add("is-generating");
+
+            function typeNext() {
+                element.textContent = characters.slice(0, index + 1).join("");
                 index += 1;
-                element.textContent = characters.slice(0, index).join("");
                 if (index < characters.length) {
                     window.setTimeout(typeNext, speed);
                 } else {
+                    element.classList.remove("is-generating");
                     onComplete();
                 }
-            };
+            }
+
             typeNext();
-        };
+        }
 
         let exampleIndex = 0;
         function playExample() {
             const example = examples[exampleIndex];
-            prompt.textContent = example.prompt;
-            answer.textContent = "";
-            answer.classList.add("is-generating");
-            typeText(answer, example.answer, 28, () => {
-                exampleIndex = (exampleIndex + 1) % examples.length;
-                window.setTimeout(playExample, 650);
-            });
+            preview.classList.add("is-transitioning");
+            window.setTimeout(() => {
+                prompt.textContent = "";
+                answer.textContent = "";
+                preview.classList.remove("is-transitioning");
+                typeText(prompt, example.prompt, 24, () => {
+                    typeText(answer, example.answer, 18, () => {
+                        exampleIndex = (exampleIndex + 1) % examples.length;
+                        window.setTimeout(playExample, 4200);
+                    });
+                });
+            }, 300);
         }
 
-        window.setTimeout(playExample, 450);
+        window.setTimeout(playExample, 800);
     }
 
     initGenAiPreview();

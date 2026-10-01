@@ -981,52 +981,56 @@ body.gaming-mode .cta-primary {
   min-height: 0;
   min-width: 0;
   overflow: hidden;
-  padding: 1.15rem 1.25rem;
+  padding: 0.85rem 1.1rem;
   border: 1px solid color-mix(in srgb, var(--home-cyan) 22%, transparent);
   border-radius: 14px;
   background:
+    linear-gradient(rgba(95, 180, 220, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 180, 220, 0.025) 1px, transparent 1px),
     linear-gradient(135deg, color-mix(in srgb, var(--home-cyan) 7%, transparent), transparent 58%),
     var(--home-panel);
+  background-size: 24px 24px, 24px 24px, auto, auto;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
   animation: fadeRiseHome 0.95s ease-out 0.2s both;
-}
-
-.genai-preview__mode {
-  position: absolute;
-  top: 0.8rem;
-  right: 1rem;
-  padding: 0.28rem 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--home-cyan) 24%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--home-cyan) 7%, transparent);
-  color: var(--home-muted);
-  font-family: var(--home-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
 }
 
 .genai-preview__body {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.45rem 0.1rem 0.15rem;
+  gap: 0.55rem;
 }
 
 .genai-preview__line {
   min-width: 0;
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  align-items: start;
-  gap: 0.5rem;
+  position: relative;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--home-cyan) 14%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--home-glass) 76%, transparent);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.genai-preview__line--prompt {
+  margin-right: clamp(0rem, 10vw, 6rem);
+}
+
+.genai-preview__line--answer {
+  margin-left: clamp(0rem, 10vw, 6rem);
+  border-color: color-mix(in srgb, var(--home-cyan) 24%, transparent);
+  background: color-mix(in srgb, var(--home-cyan) 5%, var(--home-glass));
+}
+
+.genai-preview.is-transitioning .genai-preview__line {
+  opacity: 0;
+  transform: translateY(4px);
 }
 
 .genai-preview__prefix {
   display: block;
-  padding-top: 0.12rem;
-  color: var(--home-muted);
+  margin-bottom: 0.25rem;
+  color: color-mix(in srgb, var(--home-muted) 85%, var(--home-cyan));
   font-family: var(--home-mono);
-  font-size: 0.57rem;
+  font-size: 0.52rem;
   letter-spacing: 0.07em;
 }
 
@@ -1035,36 +1039,27 @@ body.gaming-mode .cta-primary {
 }
 
 .genai-preview__line p {
-  display: block;
-  min-height: 0;
   margin: 0;
   color: var(--home-text);
-  font-size: 0.84rem;
-  line-height: 1.55;
+  font-size: 0.82rem;
+  line-height: 1.5;
   overflow-wrap: anywhere;
-}
-
-.genai-preview__prompt {
-  color: var(--home-text) !important;
 }
 
 .genai-preview__answer {
   color: color-mix(in srgb, var(--home-text) 88%, var(--home-muted)) !important;
 }
 
-.genai-preview__line--answer {
-  padding-top: 0.7rem;
-  border-top: 1px solid color-mix(in srgb, var(--home-cyan) 15%, transparent);
-}
-
-.genai-preview__answer.is-generating::after {
+.genai-preview__line p.is-generating::after {
   content: "";
   display: inline-block;
-  width: 0.42rem;
-  height: 1em;
+  width: 0.4rem;
+  height: 0.95em;
   margin-left: 0.2rem;
-  vertical-align: -0.12em;
+  vertical-align: -0.08em;
+  border-radius: 1px;
   background: var(--home-cyan);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--home-cyan) 65%, transparent);
   animation: genaiCursor 0.8s steps(2, start) infinite;
 }
 
@@ -1388,9 +1383,12 @@ header.home-cyber.container {
     padding: 1rem;
   }
 
-  .genai-preview__line {
-    grid-template-columns: 1fr;
-    gap: 0.2rem;
+  .genai-preview__line--prompt {
+    margin-right: 0.75rem;
+  }
+
+  .genai-preview__line--answer {
+    margin-left: 0.75rem;
   }
 
   .home-contact-strip {
@@ -1426,7 +1424,7 @@ header.home-cyber.container {
     animation: none !important;
   }
 
-  .genai-preview__answer.is-generating::after {
+  .genai-preview__line p.is-generating::after {
     animation: none;
   }
 
