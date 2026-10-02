@@ -1979,6 +1979,16 @@ body.gaming-mode .home-globe__tech::before {
 .home-signal-paths > path:nth-child(2) { opacity: 0.62; }
 .home-signal-paths > path:nth-child(3) { opacity: 0.38; }
 
+.home-signal-paths > path.home-signal-paths__lower {
+  stroke: color-mix(in srgb, var(--home-cyan) 35%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 38%, transparent));
+}
+
+.home-signal-paths > path.home-signal-paths__lower:nth-of-type(4) { opacity: 0.68; }
+.home-signal-paths > path.home-signal-paths__lower:nth-of-type(5) { opacity: 0.38; }
+
 .home-signal-paths__packets circle {
   fill: color-mix(in srgb, var(--home-cyan) 72%, white);
   filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 62%, transparent));
@@ -2300,8 +2310,8 @@ body.gaming-mode .home-globe__tech::before {
 
 .home-architecture__event-particles {
   position: absolute;
-  top: 18px;
-  right: 12px;
+  top: 23px;
+  left: 60px;
   width: 1px;
   height: 1px;
   pointer-events: none;
@@ -2313,25 +2323,95 @@ body.gaming-mode .home-globe__tech::before {
   height: 3px;
   border-radius: 50%;
   background: var(--home-cyan);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--home-cyan) 64%, transparent);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--home-cyan) 78%, transparent);
   opacity: 0;
-  animation: kafkaEvent 3.2s ease-out infinite;
+  animation: kafkaEvent 4.2s ease-out infinite;
 }
 
-.home-architecture__event-particles i:nth-child(2) { animation-delay: -1.05s; }
-.home-architecture__event-particles i:nth-child(3) { animation-delay: -2.1s; }
+.home-architecture__event-particles i:nth-child(2) { --event-drift-y: 0px; animation-delay: -1.4s; }
+.home-architecture__event-particles i:nth-child(3) { --event-drift-y: 7px; animation-delay: -2.8s; }
 
 @keyframes kafkaEvent {
-  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
-  12% { opacity: 0.8; }
-  100% { opacity: 0; transform: translate(13px, -14px) scale(0.25); }
+  0%, 8% { opacity: 0; transform: translate(0, 0) scale(0.55); }
+  18% { opacity: 0.82; }
+  100% { opacity: 0; transform: translate(23px, var(--event-drift-y, -7px)) scale(0.25); }
+}
+
+.home-architecture__packets--kafka circle {
+  fill: #d7f2ff;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--home-cyan) 96%, transparent));
+}
+
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring {
+  position: relative;
+  border-color: color-mix(in srgb, var(--home-cyan) 76%, transparent);
+  box-shadow: 0 0 17px color-mix(in srgb, var(--home-cyan) 24%, transparent), inset 0 0 12px color-mix(in srgb, var(--home-cyan) 14%, transparent);
+  animation: architecturePulse 6s ease-in-out infinite, kafkaNodeEmission 4.2s ease-in-out infinite;
+}
+
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring i,
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring svg {
+  animation: kafkaIconEmission 4.2s ease-in-out infinite;
+}
+
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring::before,
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid color-mix(in srgb, var(--home-cyan) 34%, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  animation: kafkaRingEmission 4.2s ease-out infinite;
+}
+
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring::after {
+  animation-delay: -2.1s;
+}
+
+@keyframes kafkaRingEmission {
+  0%, 5% { opacity: 0; transform: scale(0.92); }
+  18% { opacity: 0.46; }
+  82%, 100% { opacity: 0; transform: scale(1.5); }
+}
+
+@keyframes kafkaNodeEmission {
+  0%, 8%, 100% { box-shadow: 0 0 12px color-mix(in srgb, var(--home-cyan) 18%, transparent), inset 0 0 11px color-mix(in srgb, var(--home-cyan) 8%, transparent); }
+  16% { box-shadow: 0 0 22px color-mix(in srgb, var(--home-cyan) 48%, transparent), inset 0 0 15px color-mix(in srgb, var(--home-cyan) 22%, transparent); }
+}
+
+@keyframes kafkaIconEmission {
+  0%, 8%, 100% { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 40%, transparent)); }
+  16% { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--home-cyan) 82%, transparent)); }
+}
+
+.home-architecture__node-ring i,
+.home-architecture__node-ring svg {
+  width: 19px;
+  height: 19px;
+  color: color-mix(in srgb, var(--home-cyan) 88%, white);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.35;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 34%, transparent));
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.home-architecture__node-ring .home-architecture__brand {
+  fill: currentColor;
+  stroke: none;
+}
+
+.home-architecture__node-ring .home-architecture__brand--aws {
+  width: 27px;
+  height: 27px;
 }
 
 .home-architecture__node-ring i {
-  color: color-mix(in srgb, var(--home-cyan) 88%, white);
   font-size: 1rem;
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--home-cyan) 34%, transparent));
-  transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 .home-architecture__node--aws .home-architecture__node-ring {
@@ -2391,7 +2471,9 @@ body.gaming-mode .home-globe__tech::before {
 }
 
 .home-architecture__node:hover .home-architecture__node-ring i,
-.home-architecture__node:focus-visible .home-architecture__node-ring i {
+.home-architecture__node:hover .home-architecture__node-ring svg,
+.home-architecture__node:focus-visible .home-architecture__node-ring i,
+.home-architecture__node:focus-visible .home-architecture__node-ring svg {
   filter: drop-shadow(0 0 6px color-mix(in srgb, var(--home-cyan) 72%, transparent));
   transform: scale(1.08);
 }
@@ -2582,6 +2664,10 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
   .home-status__availability-ring,
   .home-architecture__node-ring,
   .home-architecture__event-particles i,
+  .home-architecture__node[data-system="kafka"] .home-architecture__node-ring::before,
+  .home-architecture__node[data-system="kafka"] .home-architecture__node-ring::after,
+  .home-architecture__node[data-system="kafka"] .home-architecture__node-ring i,
+  .home-architecture__node[data-system="kafka"] .home-architecture__node-ring svg,
   .home-architecture__node--aws .home-architecture__node-ring::before,
   .home-architecture__node--aws .home-architecture__node-ring::after {
     animation: none !important;

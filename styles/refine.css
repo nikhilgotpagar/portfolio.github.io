@@ -580,7 +580,7 @@ body.light-mode .particle {
 
 /* Final visual polish: clearer hierarchy, calmer surfaces, and roomier mobile layouts. */
 .home-dash {
-  gap: clamp(0.65rem, 1.5vh, 1.1rem);
+  gap: clamp(0.45rem, 1vh, 0.7rem);
   justify-content: flex-start;
 }
 
@@ -982,7 +982,7 @@ button:focus-visible {
   }
 
   .home-dash {
-    gap: 0.75rem;
+    gap: 0.55rem;
     justify-content: flex-start;
   }
 
@@ -1120,7 +1120,7 @@ body.light-mode .top-nav {
 
   .home-dash {
     min-height: auto;
-    gap: 0.75rem;
+    gap: 0.55rem;
     padding: 0;
   }
 
