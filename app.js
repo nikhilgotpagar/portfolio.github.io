@@ -721,15 +721,16 @@
         }
 
         function readColors() {
-            const styles = getComputedStyle(document.querySelector(".home-cyber") || document.body);
+            const themeRoot = document.querySelector(".home-cyber") || document.body;
+            const styles = getComputedStyle(themeRoot);
             const accent =
-                styles.getPropertyValue("--globe-accent").trim() ||
+                getComputedStyle(globe || themeRoot).getPropertyValue("--globe-accent").trim() ||
                 styles.getPropertyValue("--home-cyan").trim() ||
                 "#00d4ff";
             const mesh =
                 styles.getPropertyValue("--globe-mesh").trim() ||
                 accent;
-            return { accent, mesh };
+            return { accent, mesh, light: document.body.classList.contains("light-mode") };
         }
 
         function project(lat, lon, rot, R, cx, cy) {
@@ -743,8 +744,8 @@
 
         function drawMeridians(rot, R, cx, cy, color) {
             ctx.strokeStyle = color;
-            ctx.lineWidth = 1.15;
-            for (let lon = -180; lon < 180; lon += 30) {
+            ctx.lineWidth = 0.9;
+            for (let lon = -180; lon < 180; lon += 20) {
                 ctx.beginPath();
                 let started = false;
                 for (let lat = -90; lat <= 90; lat += 4) {
@@ -767,7 +768,7 @@
         function drawParallels(rot, R, cx, cy, color) {
             ctx.strokeStyle = color;
             ctx.lineWidth = 1;
-            for (let lat = -60; lat <= 60; lat += 30) {
+            for (let lat = -60; lat <= 60; lat += 20) {
                 ctx.beginPath();
                 let started = false;
                 for (let lon = -180; lon <= 180; lon += 4) {
@@ -826,23 +827,6 @@
             }
         }
 
-        function drawServiceLabel(point, label, w, h, color) {
-            const labelWidth = label === "KAFKA" ? 40 : 30;
-            const labelHeight = 13;
-            const left = Math.max(3, Math.min(w - labelWidth - 3, point.x + 6));
-            const top = Math.max(3, Math.min(h - labelHeight - 3, point.y - 15));
-            ctx.fillStyle = "rgba(6, 18, 30, 0.8)";
-            ctx.fillRect(left, top, labelWidth, labelHeight);
-            ctx.strokeStyle = hexToRgba(color, 0.62);
-            ctx.lineWidth = 0.7;
-            ctx.strokeRect(left, top, labelWidth, labelHeight);
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "600 7px system-ui, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(label, left + labelWidth / 2, top + labelHeight / 2);
-        }
-
         function drawRegionLabel(point, label, cx, cy, w, h, color) {
             const labelWidth = 76;
             const labelHeight = 19;
@@ -874,7 +858,7 @@
 
         function frame(timestamp = performance.now()) {
             const { w, h } = sizeCanvas(false);
-            const { accent } = readColors();
+            const { accent, light } = readColors();
             const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) / 1000 : 0;
             lastFrameTime = timestamp;
             const cx = w / 2;
@@ -883,11 +867,20 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            // Soft sphere fill — readable against dark backgrounds
-            const grad = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.3, R * 0.08, cx, cy, R);
-            grad.addColorStop(0, hexToRgba(accent, 0.42));
-            grad.addColorStop(0.45, hexToRgba(accent, 0.16));
-            grad.addColorStop(1, hexToRgba(accent, 0.03));
+            const atmosphere = ctx.createRadialGradient(cx, cy, R * 0.76, cx, cy, R * 1.3);
+            atmosphere.addColorStop(0, hexToRgba(accent, light ? 0.14 : 0.2));
+            atmosphere.addColorStop(0.56, hexToRgba(accent, light ? 0.06 : 0.09));
+            atmosphere.addColorStop(1, hexToRgba(accent, 0));
+            ctx.beginPath();
+            ctx.arc(cx, cy, R * 1.3, 0, Math.PI * 2);
+            ctx.fillStyle = atmosphere;
+            ctx.fill();
+
+            // Keep the globe as a dark holographic surface, not a photographic Earth.
+            const grad = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.34, R * 0.04, cx, cy, R);
+            grad.addColorStop(0, light ? "rgba(255, 255, 255, 0.78)" : hexToRgba(accent, 0.18));
+            grad.addColorStop(0.5, light ? "rgba(218, 235, 255, 0.36)" : "rgba(4, 20, 43, 0.78)");
+            grad.addColorStop(1, light ? "rgba(183, 211, 246, 0.18)" : "rgba(3, 12, 29, 0.94)");
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
             ctx.fillStyle = grad;
@@ -896,24 +889,25 @@
             // Outer rim + halo
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
-            ctx.strokeStyle = hexToRgba(accent, 0.95);
-            ctx.lineWidth = 2.25;
+            ctx.strokeStyle = hexToRgba(accent, 0.98);
+            ctx.lineWidth = 2;
             ctx.shadowColor = accent;
-            ctx.shadowBlur = 14;
+            ctx.shadowBlur = 21;
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            drawMeridians(rotation, R, cx, cy, hexToRgba(accent, 0.55));
-            drawParallels(rotation, R, cx, cy, hexToRgba(accent, 0.48));
+            drawMeridians(rotation, R, cx, cy, hexToRgba(accent, 0.62));
+            drawParallels(rotation, R, cx, cy, hexToRgba(accent, 0.56));
 
             // Land dots
-            land.forEach((pt) => {
+            land.forEach((pt, index) => {
                 const p = project(pt.lat, pt.lon, rotation, R, cx, cy);
                 if (p.z < 0) return;
                 const depth = (p.z / R + 1) / 2;
+                const pulse = reduceMotion ? 0 : (Math.sin(timestamp / 1250 + index * 0.73) + 1) * 0.07;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 1.4 + depth * 1.1, 0, Math.PI * 2);
-                ctx.fillStyle = hexToRgba(accent, 0.55 + depth * 0.4);
+                ctx.arc(p.x, p.y, 1.1 + depth * 1.05, 0, Math.PI * 2);
+                ctx.fillStyle = hexToRgba(accent, 0.48 + depth * 0.43 + pulse);
                 ctx.fill();
             });
 
@@ -945,7 +939,6 @@
                 ctx.lineWidth = isFocusedService || isAwsRegion ? 1.8 : 1;
                 ctx.stroke();
 
-                if (hub.service) drawServiceLabel(p, hub.service, w, h, accent);
                 if (isAwsRegion && hub.region) {
                     drawRegionLabel(p, hub.region, cx, cy, w, h, accent);
                 }
