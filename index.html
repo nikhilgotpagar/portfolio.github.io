@@ -61,10 +61,7 @@
         <div class="home-sweep" aria-hidden="true"></div>
         <div class="home-code-field" aria-hidden="true">
             <span>KafkaConsumer&lt;Event&gt;</span>
-            <span>AWS::ECS::Service</span>
-            <span>distributed systems</span>
             <span>Spring Boot · Terraform</span>
-            <span>Spinnaker / blue-green</span>
         </div>
         <div class="home-dash">
             <nav class="home-nav-rail" aria-label="Home section shortcuts">
@@ -143,10 +140,11 @@
                         </span>
                         <span class="home-status__scanner-regions">03 REGIONS</span>
                     </div>
-                    <div class="home-status__card">
+                    <div class="home-status__card" role="group" tabindex="0" aria-label="Daily transaction volume: 1 million or more transactions per day">
                         <span class="home-status__label">Daily transaction volume</span>
                         <strong>1M+</strong>
                         <span class="home-status__unit">Transactions / Day</span>
+                        <span class="home-status__detail">Distributed card systems at JPMorganChase</span>
                         <div class="home-status__traffic" aria-hidden="true">
                             <span>TRAFFIC PROFILE · ILLUSTRATIVE</span>
                             <svg viewBox="0 0 180 28" preserveAspectRatio="none">
@@ -155,20 +153,22 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="home-status__card home-status__card--split">
+                    <div class="home-status__card home-status__card--split" role="group" tabindex="0" aria-label="Availability: 99.99 percent. Latency reduced: 40 percent.">
                         <div>
                             <span class="home-status__label">Availability</span>
                             <strong>99.99%</strong>
+                            <span class="home-status__detail">Distributed card systems</span>
                         </div>
                         <div>
                             <span class="home-status__label">Latency reduced</span>
                             <strong>−40%</strong>
+                            <span class="home-status__detail">Java services on AWS</span>
                             <div class="home-status__bars" aria-hidden="true">
                                 <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                             </div>
                         </div>
                     </div>
-                    <div class="home-status__avail">
+                    <div class="home-status__avail" role="group" tabindex="0" aria-label="Location: Mumbai, India. Open to backend and cloud roles">
                         <div class="home-status__avail-row">
                             <i class="fas fa-map-marker-alt"></i>
                             <span>Mumbai, IN</span>
@@ -177,6 +177,7 @@
                             <i class="fas fa-briefcase"></i>
                             <span>Open to backend and cloud roles</span>
                         </div>
+                        <span class="home-status__detail">Based in Mumbai, India</span>
                     </div>
                 </aside>
             </div>
@@ -185,7 +186,7 @@
                 <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
                 <div class="home-architecture__viewport">
                   <div class="home-architecture__canvas">
-                    <svg class="home-architecture__routes" viewBox="0 0 1000 105" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <svg class="home-architecture__routes" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <path class="home-architecture__route home-architecture__route--secondary" d="M24 42 C180 0 296 92 480 42 S790 0 976 42"></path>
                         <path class="home-architecture__route home-architecture__route--secondary" d="M24 54 C180 96 296 8 480 54 S790 96 976 54"></path>
                         <path id="architecture-route-1" class="home-architecture__route" data-route="client api" d="M70 46 C112 24 200 68 242 46"></path>
@@ -195,9 +196,9 @@
                         <path id="architecture-route-5" class="home-architecture__route" data-route="kafka db" d="M758 46 C800 24 888 68 930 46"></path>
                         <path id="architecture-route-api-kafka-a" class="home-architecture__route home-architecture__route--branch" d="M242 46 C400 4 540 8 758 46"></path>
                         <path id="architecture-route-api-kafka-b" class="home-architecture__route home-architecture__route--branch" d="M414 46 C530 90 634 84 758 46"></path>
-                        <path id="architecture-route-kafka-consumer-a" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 19 818 19 850 21"></path>
-                        <path id="architecture-route-kafka-consumer-b" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C796 46 820 43 858 43"></path>
-                        <path id="architecture-route-kafka-consumer-c" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 69 824 62 866 64"></path>
+                        <path id="architecture-route-kafka-consumer-a" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 58 818 82 850 95"></path>
+                        <path id="architecture-route-kafka-consumer-b" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C796 68 820 92 858 110"></path>
+                        <path id="architecture-route-kafka-consumer-c" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 82 824 108 866 125"></path>
                         <g class="home-architecture__packets">
                             <circle r="3"><animateMotion dur="3.8s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
                             <circle r="3"><animateMotion dur="4.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
@@ -213,19 +214,20 @@
                     </svg>
                     <div class="home-architecture__nodes">
                         <button class="home-architecture__node" type="button" data-system="client" title="Client requests enter the service flow" aria-label="Client node">
-                            <span class="home-architecture__node-ring"><i class="fas fa-user-circle"></i></span><span class="home-architecture__node-label">Client</span>
+                            <span class="home-architecture__node-ring"><i class="fas fa-user-circle"></i></span><span class="home-architecture__node-label">Client</span><span class="home-architecture__node-subtitle">Web / Mobile</span>
                         </button>
                         <button class="home-architecture__node" type="button" data-system="api" title="Java and Spring Boot APIs" aria-label="API node">
-                            <span class="home-architecture__node-ring"><i class="fas fa-network-wired"></i></span><span class="home-architecture__node-label">API</span>
+                            <span class="home-architecture__node-ring"><i class="fas fa-network-wired"></i></span><span class="home-architecture__node-label">API</span><span class="home-architecture__node-subtitle">REST / GraphQL</span>
                         </button>
                         <button class="home-architecture__node" type="button" data-system="ecs" title="Containerized microservices on ECS Fargate" aria-label="ECS node">
-                            <span class="home-architecture__node-ring"><i class="fas fa-boxes"></i></span><span class="home-architecture__node-label">ECS</span>
+                            <span class="home-architecture__node-ring"><i class="fas fa-boxes"></i></span><span class="home-architecture__node-label">ECS</span><span class="home-architecture__node-subtitle">Containerized</span>
                         </button>
                         <button class="home-architecture__node home-architecture__node--aws" type="button" data-system="aws" title="AWS cloud infrastructure" aria-label="AWS node">
-                            <span class="home-architecture__node-ring"><i class="fab fa-aws"></i></span><span class="home-architecture__node-label">AWS</span>
+                            <span class="home-architecture__node-ring"><i class="fab fa-aws"></i></span><span class="home-architecture__node-label">AWS</span><span class="home-architecture__node-subtitle">Multi-Region</span>
                         </button>
                         <button class="home-architecture__node" type="button" data-system="kafka" title="Kafka event streaming" aria-label="Kafka node">
-                            <span class="home-architecture__node-ring"><i class="fas fa-stream"></i></span><span class="home-architecture__node-label">Kafka</span>
+                            <span class="home-architecture__node-ring"><i class="fas fa-stream"></i></span><span class="home-architecture__node-label">Kafka</span><span class="home-architecture__node-subtitle">Event Streaming</span>
+                            <span class="home-architecture__event-particles" aria-hidden="true"><i></i><i></i><i></i></span>
                         </button>
                         <div class="home-architecture__consumers" role="group" aria-label="Kafka consumer group">
                             <span class="home-architecture__consumer-heading">CONSUMER GROUP</span>
@@ -234,7 +236,7 @@
                             <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 03</span>
                         </div>
                         <button class="home-architecture__node home-architecture__node--db" type="button" data-system="db" title="Aurora PostgreSQL data store" aria-label="Database node">
-                            <span class="home-architecture__node-ring"><i class="fas fa-database"></i></span><span class="home-architecture__node-label">DB</span>
+                            <span class="home-architecture__node-ring"><i class="fas fa-database"></i></span><span class="home-architecture__node-label">DB</span><span class="home-architecture__node-subtitle">Aurora / DynamoDB</span>
                         </button>
                     </div>
                   </div>

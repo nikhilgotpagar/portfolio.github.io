@@ -360,8 +360,7 @@ body.light-mode .top-nav__link:hover {
   --globe-mesh: color-mix(in srgb, var(--color-secondary) 75%, transparent);
   --globe-core: color-mix(in srgb, var(--color-secondary) 40%, transparent);
 
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: 0;
   padding: 4.75rem 1.5rem 1.25rem 1.5rem !important;
   background:
     radial-gradient(ellipse 42% 48% at 62% 28%, var(--home-glow), transparent 65%),
@@ -431,8 +430,7 @@ body.light-mode .home-cyber::before { opacity: 0.14; }
   gap: 0.85rem;
   max-width: 1360px;
   margin: 0 auto;
-  min-height: calc(100vh - 6rem);
-  min-height: calc(100svh - 6rem);
+  min-height: 0;
   justify-content: flex-start;
   padding-top: 0.35rem;
   padding-bottom: 0.5rem;
@@ -1152,6 +1150,7 @@ body.gaming-mode .home-globe__tech::before {
   -webkit-backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .home-status__card::before {
@@ -1172,6 +1171,61 @@ body.gaming-mode .home-globe__tech::before {
 }
 
 .home-status__card--split::before { display: none; }
+
+.home-status__card:hover,
+.home-status__card:focus-visible,
+.home-status__avail:hover,
+.home-status__avail:focus-visible {
+  border-color: color-mix(in srgb, var(--home-cyan) 58%, transparent);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--home-cyan) 12%, transparent), inset 0 0 18px color-mix(in srgb, var(--home-cyan) 5%, transparent);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.home-status__card:focus-visible,
+.home-status__avail:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--home-cyan) 48%, transparent);
+  outline-offset: 2px;
+}
+
+.home-status__detail {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  color: var(--home-muted);
+  font-size: 0.58rem;
+  line-height: 1.35;
+  transform: translateY(3px);
+  transition: max-height 0.25s ease, opacity 0.25s ease, transform 0.25s ease, margin 0.25s ease;
+}
+
+.home-status__card:hover .home-status__detail,
+.home-status__card:focus-within .home-status__detail,
+.home-status__card:focus-visible .home-status__detail,
+.home-status__avail:hover .home-status__detail,
+.home-status__avail:focus-within .home-status__detail,
+.home-status__avail:focus-visible .home-status__detail {
+  max-height: 2.5em;
+  margin-top: 0.2rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-status__card:hover .home-status__traffic svg,
+.home-status__card:focus-within .home-status__traffic svg {
+  transform: scaleY(1.16);
+  transform-origin: center;
+}
+
+.home-status__traffic svg {
+  transition: transform 0.25s ease;
+}
+
+.home-status__card:hover .home-status__bars i,
+.home-status__card:focus-within .home-status__bars i {
+  animation-duration: 1.8s;
+}
 
 .home-status__label {
   display: block;
@@ -1280,6 +1334,7 @@ body.gaming-mode .home-globe__tech::before {
   border: 1px solid var(--home-border);
   border-radius: 8px;
   background: var(--home-panel);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .home-status__avail-row {
@@ -1601,7 +1656,7 @@ body.gaming-mode .home-globe__tech::before {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-top: auto;
+  margin-top: 0;
   padding: 1.2rem 0;
   border-top: 1px solid var(--home-border);
   animation: fadeRiseHome 1s ease-out 0.28s both;
@@ -1707,15 +1762,12 @@ body.gaming-mode .home-globe__tech::before {
 
 .home-code-field span {
   position: absolute;
-  opacity: 0.075;
+  opacity: 0.04;
   white-space: nowrap;
 }
 
-.home-code-field span:nth-child(1) { top: 21%; left: 4%; }
-.home-code-field span:nth-child(2) { top: 32%; right: 6%; }
-.home-code-field span:nth-child(3) { bottom: 20%; left: 7%; }
-.home-code-field span:nth-child(4) { bottom: 27%; right: 5%; }
-.home-code-field span:nth-child(5) { top: 13%; right: 20%; }
+.home-code-field span:nth-child(1) { top: 19%; left: 4%; }
+.home-code-field span:nth-child(2) { bottom: 16%; right: 5%; }
 
 .home-perspective-grid {
   position: absolute;
@@ -1849,11 +1901,52 @@ body.gaming-mode .home-globe__tech::before {
   flex-direction: column;
   gap: 0.25rem;
   width: min(900px, 94%);
-  margin: -0.55rem auto 0;
+  margin: -0.2rem auto 0;
   padding: 0.25rem 0 0.3rem;
   border-top: 1px solid color-mix(in srgb, var(--home-cyan) 12%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--home-cyan) 12%, transparent);
   background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--home-cyan) 3%, transparent), transparent);
+  opacity: 0.86;
+  translate: 0 8px;
+  transition: opacity 0.55s ease, translate 0.55s ease, filter 0.55s ease;
+}
+
+.home-cyber.is-architecture-focus .home-architecture {
+  opacity: 1;
+  translate: 0 0;
+  filter: drop-shadow(0 8px 24px color-mix(in srgb, var(--home-cyan) 8%, transparent));
+}
+
+.home-architecture__node {
+  translate: 0 4px;
+  transition: color 0.2s ease, opacity 0.2s ease, filter 0.2s ease, translate 0.5s ease;
+}
+
+.home-cyber.is-architecture-focus .home-architecture__node {
+  translate: 0;
+}
+
+.home-cyber.is-architecture-focus .home-architecture__node[data-system="api"] { transition-delay: 0.04s; }
+.home-cyber.is-architecture-focus .home-architecture__node[data-system="ecs"] { transition-delay: 0.08s; }
+.home-cyber.is-architecture-focus .home-architecture__node[data-system="aws"] { transition-delay: 0.12s; }
+.home-cyber.is-architecture-focus .home-architecture__node[data-system="kafka"] { transition-delay: 0.16s; }
+.home-cyber.is-architecture-focus .home-architecture__node[data-system="db"] { transition-delay: 0.2s; }
+
+.home-intro,
+.home-globe-col,
+.home-status {
+  transition: filter 0.45s ease, translate 0.45s ease, scale 0.45s ease;
+}
+
+.home-cyber.is-architecture-focus .home-intro,
+.home-cyber.is-architecture-focus .home-status {
+  filter: opacity(0.88);
+  translate: 0 -6px;
+}
+
+.home-cyber.is-architecture-focus .home-globe-col {
+  filter: opacity(0.78);
+  scale: 0.96;
 }
 
 .home-architecture__label {
@@ -1871,7 +1964,7 @@ body.gaming-mode .home-globe__tech::before {
 .home-architecture__canvas {
   position: relative;
   width: 100%;
-  height: 74px;
+  height: 140px;
 }
 
 .home-architecture__routes,
@@ -1918,12 +2011,12 @@ body.gaming-mode .home-globe__tech::before {
 
 .home-architecture__node {
   position: absolute;
-  top: 13px;
+  top: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
-  width: 60px;
+  width: 92px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -1933,7 +2026,8 @@ body.gaming-mode .home-globe__tech::before {
   font-size: 0.55rem;
   letter-spacing: 0.08em;
   transform: translateX(-50%);
-  transition: color 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+  translate: 0 4px;
+  transition: color 0.2s ease, opacity 0.2s ease, filter 0.2s ease, translate 0.5s ease;
 }
 
 .home-architecture__node:nth-child(1) { left: 7%; }
@@ -1944,14 +2038,15 @@ body.gaming-mode .home-globe__tech::before {
 .home-architecture__node:nth-child(6) { left: 93%; }
 
 .home-architecture__node--db {
-  top: 15px;
-  left: 95%;
+  top: 5px;
+  left: calc(93% - 46px);
+  transform: none;
   z-index: 1;
 }
 
 .home-architecture__consumers {
   position: absolute;
-  top: 1px;
+  top: 82px;
   left: 80.5%;
   z-index: 2;
   display: flex;
@@ -2016,6 +2111,63 @@ body.gaming-mode .home-globe__tech::before {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
+.home-architecture__node-subtitle {
+  margin-top: 2px;
+  color: color-mix(in srgb, var(--home-muted) 78%, transparent);
+  font-family: var(--home-sans);
+  font-size: 0.48rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+
+.home-architecture__node-ring {
+  animation: architecturePulse 6s ease-in-out infinite, architectureArrival 4.2s ease-in-out infinite;
+}
+
+.home-architecture__node[data-system="client"] .home-architecture__node-ring { animation-delay: 0s, 0s; }
+.home-architecture__node[data-system="api"] .home-architecture__node-ring { animation-delay: 0s, 0.7s; }
+.home-architecture__node[data-system="ecs"] .home-architecture__node-ring { animation-delay: 0s, 1.4s; }
+.home-architecture__node[data-system="aws"] .home-architecture__node-ring { animation-delay: 0s, 2.1s; }
+.home-architecture__node[data-system="kafka"] .home-architecture__node-ring { animation-delay: 0s, 2.8s; }
+.home-architecture__node[data-system="db"] .home-architecture__node-ring { animation-delay: 0s, 3.5s; }
+
+@keyframes architectureArrival {
+  0%, 15%, 100% { filter: brightness(1); }
+  7% { filter: brightness(1.55); }
+}
+
+.home-architecture__event-particles {
+  position: absolute;
+  top: 18px;
+  right: 12px;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.home-architecture__event-particles i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--home-cyan);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--home-cyan) 64%, transparent);
+  opacity: 0;
+  animation: kafkaEvent 3.2s ease-out infinite;
+}
+
+.home-architecture__event-particles i:nth-child(2) { animation-delay: -1.05s; }
+.home-architecture__event-particles i:nth-child(3) { animation-delay: -2.1s; }
+
+@keyframes kafkaEvent {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  12% { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(13px, -14px) scale(0.25); }
+}
+
 .home-architecture__node-ring i {
   color: color-mix(in srgb, var(--home-cyan) 88%, white);
   font-size: 1rem;
@@ -2030,7 +2182,7 @@ body.gaming-mode .home-globe__tech::before {
   margin-bottom: 0.32rem;
   border-color: color-mix(in srgb, var(--home-cyan) 75%, transparent);
   box-shadow: 0 0 19px color-mix(in srgb, var(--home-blue) 22%, transparent), inset 0 0 14px color-mix(in srgb, var(--home-blue) 12%, transparent);
-  animation-name: architectureAwsPulse;
+  animation: architectureAwsPulse 6s ease-in-out infinite, architectureArrival 4.2s ease-in-out 2.1s infinite;
 }
 
 .home-architecture__node--aws .home-architecture__node-ring::before,
@@ -2248,6 +2400,7 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
   .home-status__traffic-line,
   .home-status__bars i,
   .home-architecture__node-ring,
+  .home-architecture__event-particles i,
   .home-architecture__node--aws .home-architecture__node-ring::before,
   .home-architecture__node--aws .home-architecture__node-ring::after {
     animation: none !important;
@@ -2256,6 +2409,39 @@ body.light-mode .home-globe-hud { background: color-mix(in srgb, var(--color-pri
   .home-architecture__node,
   .home-architecture__node-ring {
     transition: none !important;
+  }
+  .home-architecture__node {
+    transition: none !important;
+    translate: 0;
+  }
+  .home-architecture,
+  .home-intro,
+  .home-globe-col,
+  .home-status,
+  .home-status__card,
+  .home-status__avail,
+  .home-status__detail,
+  .home-status__traffic svg {
+    transition: none !important;
+    translate: 0;
+    scale: 1;
+    filter: none;
+  }
+  .home-architecture {
+    filter: none;
+  }
+  .home-cyber.is-architecture-focus .home-architecture {
+    filter: none;
+    opacity: 1;
+    translate: 0;
+  }
+  .home-cyber.is-architecture-focus .home-intro,
+  .home-cyber.is-architecture-focus .home-globe-col,
+  .home-cyber.is-architecture-focus .home-status {
+    animation: none !important;
+    translate: 0;
+    scale: 1;
+    filter: none;
   }
   .home-architecture__packets { display: none; }
   .home-status__radar::before,

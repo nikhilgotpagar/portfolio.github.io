@@ -577,6 +577,23 @@
     }
     initHomeAmbient();
 
+    function initArchitectureTransitions() {
+        const home = document.querySelector(".home-cyber");
+        const architecture = home?.querySelector(".home-architecture");
+        if (!home || !architecture || !("IntersectionObserver" in window)) return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && window.scrollY > 40) {
+                home.classList.add("is-architecture-focus");
+            } else if (entry.boundingClientRect.top > window.innerHeight * 0.8) {
+                home.classList.remove("is-architecture-focus");
+            }
+        }, { threshold: 0.12, rootMargin: "0px 0px -12% 0px" });
+
+        observer.observe(architecture);
+    }
+    initArchitectureTransitions();
+
     document.querySelectorAll(".input-control input, .input-control textarea").forEach((input) => {
         input.addEventListener("focus", function () {
             this.style.outline = "1px solid var(--color-secondary)";
@@ -599,6 +616,12 @@
         let activeSystem = "";
         let lastFrameTime = 0;
         const rotationSpeed = 0.18;
+        let pointerRotation = 0;
+        let currentPointerRotation = 0;
+        let pointerTilt = 0;
+        let currentPointerTilt = 0;
+        let pointerX = -1000;
+        let pointerY = -1000;
         let dpr = Math.min(window.devicePixelRatio || 1, 2);
         let viewW = 0;
         let viewH = 0;
@@ -659,8 +682,20 @@
             });
             globe.addEventListener("pointerleave", () => {
                 globeHovered = false;
+                pointerRotation = 0;
+                pointerTilt = 0;
+                pointerX = -1000;
+                pointerY = -1000;
                 if (reduceMotion) frame();
             });
+            globe.addEventListener("pointermove", (event) => {
+                if (reduceMotion) return;
+                const rect = canvas.getBoundingClientRect();
+                pointerX = event.clientX - rect.left;
+                pointerY = event.clientY - rect.top;
+                pointerRotation = ((pointerX / rect.width) - 0.5) * 0.3;
+                pointerTilt = (0.5 - (pointerY / rect.height)) * 0.12;
+            }, { passive: true });
         }
 
         const arcs = [
@@ -739,7 +774,9 @@
             const x = -R * Math.sin(phi) * Math.cos(theta);
             const y = -R * Math.cos(phi);
             const z = R * Math.sin(phi) * Math.sin(theta);
-            return { x: cx + x, y: cy + y, z, visible: z > -R * 0.05 };
+            const tiltedY = y * Math.cos(currentPointerTilt) - z * Math.sin(currentPointerTilt);
+            const tiltedZ = z * Math.cos(currentPointerTilt) + y * Math.sin(currentPointerTilt);
+            return { x: cx + x, y: cy + tiltedY, z: tiltedZ, visible: tiltedZ > -R * 0.05 };
         }
 
         function drawMeridians(rot, R, cx, cy, color) {
@@ -813,7 +850,7 @@
             ctx.globalAlpha = 1;
 
             if ((showPacket || highlighted) && !reduceMotion) {
-                const progress = ((timestamp / 4200) + (a.lat + b.lon) * 0.013) % 1;
+                const progress = (((timestamp / 4200) + (a.lat + b.lon) * 0.013) % 1 + 1) % 1;
                 const inverse = 1 - progress;
                 const x = inverse * inverse * p1.x + 2 * inverse * progress * cx2 + progress * progress * p2.x;
                 const y = inverse * inverse * p1.y + 2 * inverse * progress * cy2 + progress * progress * p2.y;
@@ -827,7 +864,7 @@
             }
         }
 
-        function drawRegionLabel(point, label, cx, cy, w, h, color) {
+        function drawRegionLabel(point, label, cx, cy, w, h, color, light) {
             const labelWidth = 76;
             const labelHeight = 19;
             const direction = point.x < cx ? 1 : -1;
@@ -842,14 +879,14 @@
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            ctx.fillStyle = "rgba(6, 18, 30, 0.92)";
+            ctx.fillStyle = light ? "rgba(248, 251, 255, 0.96)" : "rgba(6, 18, 30, 0.92)";
             ctx.fillRect(left, top, labelWidth, labelHeight);
             ctx.beginPath();
             ctx.rect(left, top, labelWidth, labelHeight);
             ctx.strokeStyle = hexToRgba(color, 0.8);
             ctx.stroke();
 
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = light ? "#17449b" : "#ffffff";
             ctx.font = "600 10px system-ui, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -861,9 +898,15 @@
             const { accent, light } = readColors();
             const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) / 1000 : 0;
             lastFrameTime = timestamp;
+            if (!reduceMotion) {
+                const response = Math.min(1, elapsed * 4);
+                currentPointerRotation += (pointerRotation - currentPointerRotation) * response;
+                currentPointerTilt += (pointerTilt - currentPointerTilt) * response;
+            }
             const cx = w / 2;
             const cy = h / 2;
             const R = Math.min(w, h) * 0.42;
+            const globeRotation = rotation + currentPointerRotation;
 
             ctx.clearRect(0, 0, w, h);
 
@@ -896,12 +939,12 @@
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            drawMeridians(rotation, R, cx, cy, hexToRgba(accent, 0.62));
-            drawParallels(rotation, R, cx, cy, hexToRgba(accent, 0.56));
+            drawMeridians(globeRotation, R, cx, cy, hexToRgba(accent, 0.62));
+            drawParallels(globeRotation, R, cx, cy, hexToRgba(accent, 0.56));
 
             // Land dots
             land.forEach((pt, index) => {
-                const p = project(pt.lat, pt.lon, rotation, R, cx, cy);
+                const p = project(pt.lat, pt.lon, globeRotation, R, cx, cy);
                 if (p.z < 0) return;
                 const depth = (p.z / R + 1) / 2;
                 const pulse = reduceMotion ? 0 : (Math.sin(timestamp / 1250 + index * 0.73) + 1) * 0.07;
@@ -915,21 +958,23 @@
             arcs.forEach(([i, j], index) => {
                 const focus = activeSystem.toUpperCase();
                 const highlighted = Boolean(focus) && [hubs[i].service, hubs[j].service].includes(focus);
-                drawArc(hubs[i], hubs[j], rotation, R, cx, cy, accent, timestamp, index % 3 === 0, highlighted);
+                drawArc(hubs[i], hubs[j], globeRotation, R, cx, cy, accent, timestamp, index % 3 === 0, highlighted);
             });
 
             // Hub nodes
             hubs.forEach((hub) => {
-                const p = project(hub.lat, hub.lon, rotation, R, cx, cy);
+                const p = project(hub.lat, hub.lon, globeRotation, R, cx, cy);
                 if (p.z < 0) return;
                 const isFocusedService = activeSystem && hub.service === activeSystem.toUpperCase();
-                const isAwsRegion = (globeHovered && Boolean(hub.region)) || (activeSystem === "aws" && Boolean(hub.region));
+                const proximity = Math.max(0, 1 - Math.hypot(pointerX - p.x, pointerY - p.y) / 46);
+                const isNearby = globeHovered && proximity > 0;
+                const isAwsRegion = ((globeHovered && proximity > 0.45) || activeSystem === "aws") && Boolean(hub.region);
                 const pulse = 0.5 + (Math.sin(timestamp / 900 + hub.lat) + 1) * 0.25;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 4.4 : 3 + pulse * 0.8, 0, Math.PI * 2);
-                ctx.fillStyle = isFocusedService || isAwsRegion ? accent : "#ffffff";
+                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 4.4 : 3 + pulse * 0.8 + proximity * 1.7, 0, Math.PI * 2);
+                ctx.fillStyle = isFocusedService || isAwsRegion || isNearby ? accent : "#ffffff";
                 ctx.shadowColor = accent;
-                ctx.shadowBlur = isFocusedService || isAwsRegion ? 20 : 8 + pulse * 5;
+                ctx.shadowBlur = isFocusedService || isAwsRegion ? 20 : 8 + pulse * 5 + proximity * 10;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
@@ -940,12 +985,12 @@
                 ctx.stroke();
 
                 if (isAwsRegion && hub.region) {
-                    drawRegionLabel(p, hub.region, cx, cy, w, h, accent);
+                    drawRegionLabel(p, hub.region, cx, cy, w, h, accent, light);
                 }
             });
 
             if (!reduceMotion) {
-                rotation += rotationSpeed * elapsed;
+                rotation = (rotation + rotationSpeed * elapsed) % (Math.PI * 2);
                 rafId = requestAnimationFrame(frame);
             }
         }

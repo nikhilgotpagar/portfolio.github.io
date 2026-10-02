@@ -715,7 +715,7 @@ body.light-mode .particle {
   }
 
   .home-dash {
-    min-height: calc(100svh - 4.65rem);
+    min-height: 0;
     gap: 0.45rem;
   }
 
@@ -1107,7 +1107,7 @@ body.light-mode .top-nav {
   }
 
   .home-dash {
-    min-height: calc(100svh - 4.2rem);
+    min-height: 0;
     gap: 0.35rem;
   }
 }
