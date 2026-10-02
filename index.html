@@ -71,6 +71,16 @@
                 <a href="#contact" data-home-section="contact"><span>04</span> CONTACT</a>
             </nav>
             <div class="home-hero">
+                <svg class="home-signal-paths" viewBox="0 0 1000 460" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path id="signal-path-globe" d="M210 330 C340 420 425 405 515 300 S650 220 730 210"></path>
+                    <path id="signal-path-architecture-a" d="M220 350 C350 445 460 438 535 395 S670 370 760 382"></path>
+                    <path id="signal-path-architecture-b" d="M225 375 C365 450 480 458 590 430 S730 420 830 432"></path>
+                    <g class="home-signal-paths__packets">
+                        <circle r="2"><animateMotion dur="10s" repeatCount="indefinite"><mpath href="#signal-path-globe" xlink:href="#signal-path-globe"></mpath></animateMotion></circle>
+                        <circle r="1.8"><animateMotion dur="13s" begin="-6s" repeatCount="indefinite"><mpath href="#signal-path-architecture-a" xlink:href="#signal-path-architecture-a"></mpath></animateMotion></circle>
+                        <circle r="1.6"><animateMotion dur="15s" begin="-10s" repeatCount="indefinite"><mpath href="#signal-path-architecture-b" xlink:href="#signal-path-architecture-b"></mpath></animateMotion></circle>
+                    </g>
+                </svg>
                 <div class="home-intro">
                     <div class="home-portrait">
                         <div class="home-portrait__rings" aria-hidden="true">
@@ -140,6 +150,7 @@
                         </span>
                         <span class="home-status__scanner-regions">03 REGIONS</span>
                     </div>
+                    <div class="home-status__dashboard">
                     <div class="home-status__card" role="group" tabindex="0" aria-label="Daily transaction volume: 1 million or more transactions per day">
                         <span class="home-status__label">Daily transaction volume</span>
                         <strong>1M+</strong>
@@ -147,16 +158,27 @@
                         <span class="home-status__detail">Distributed card systems at JPMorganChase</span>
                         <div class="home-status__traffic" aria-hidden="true">
                             <span>TRAFFIC PROFILE · ILLUSTRATIVE</span>
-                            <svg viewBox="0 0 180 28" preserveAspectRatio="none">
+                            <svg viewBox="0 0 180 28" preserveAspectRatio="none" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <path class="home-status__traffic-fill" d="M0 24 0 19 15 17 28 20 43 10 57 14 72 6 87 11 101 4 116 12 130 8 144 15 159 6 180 9 180 28 0 28Z"></path>
-                                <path class="home-status__traffic-line" d="M0 19 15 17 28 20 43 10 57 14 72 6 87 11 101 4 116 12 130 8 144 15 159 6 180 9"></path>
+                                <path id="traffic-profile-path" class="home-status__traffic-line" d="M0 19 15 17 28 20 43 10 57 14 72 6 87 11 101 4 116 12 130 8 144 15 159 6 180 9"></path>
+                                <g class="home-status__traffic-packets">
+                                    <circle r="1.7"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#traffic-profile-path" xlink:href="#traffic-profile-path"></mpath></animateMotion></circle>
+                                    <circle r="1.4"><animateMotion dur="9s" begin="-4.5s" repeatCount="indefinite"><mpath href="#traffic-profile-path" xlink:href="#traffic-profile-path"></mpath></animateMotion></circle>
+                                    <circle r="1.2"><animateMotion dur="8s" begin="-2.5s" repeatCount="indefinite"><mpath href="#traffic-profile-path" xlink:href="#traffic-profile-path"></mpath></animateMotion></circle>
+                                </g>
                             </svg>
                         </div>
                     </div>
                     <div class="home-status__card home-status__card--split" role="group" tabindex="0" aria-label="Availability: 99.99 percent. Latency reduced: 40 percent.">
                         <div>
                             <span class="home-status__label">Availability</span>
-                            <strong>99.99%</strong>
+                            <span class="home-status__availability-value">
+                                <strong>99.99%</strong>
+                                <svg class="home-status__availability-ring" viewBox="0 0 28 28" aria-hidden="true">
+                                    <circle class="home-status__availability-track" cx="14" cy="14" r="11"></circle>
+                                    <circle class="home-status__availability-progress" cx="14" cy="14" r="11"></circle>
+                                </svg>
+                            </span>
                             <span class="home-status__detail">Distributed card systems</span>
                         </div>
                         <div>
@@ -167,6 +189,7 @@
                                 <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <div class="home-status__avail" role="group" tabindex="0" aria-label="Location: Mumbai, India. Open to backend and cloud roles">
                         <div class="home-status__avail-row">

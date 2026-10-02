@@ -687,8 +687,8 @@ body.light-mode .particle {
   margin: 0 0 0.15rem;
   color: var(--home-text);
   font-family: var(--home-sans);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.08rem;
+  font-weight: 650;
   letter-spacing: -0.02em;
 }
 

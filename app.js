@@ -709,6 +709,13 @@
             [1, 7],
             [6, 3],
         ];
+        const serviceLinks = [
+            { hub: 0, x: 0.18, y: 0.19, service: "aws", offset: 0 },
+            { hub: 1, x: 0.88, y: 0.32, service: "api", offset: 0.19 },
+            { hub: 2, x: 0.2, y: 0.72, service: "kafka", offset: 0.38 },
+            { hub: 3, x: 0.83, y: 0.82, service: "ecs", offset: 0.57 },
+            { hub: 7, x: 0.69, y: 0.12, service: "graphql", offset: 0.76 },
+        ];
 
         // Sparse land dots (approx continents) — lat, lon
         const land = [];
@@ -864,6 +871,62 @@
             }
         }
 
+        function drawServiceConnections(rot, R, cx, cy, w, h, color, timestamp) {
+            const pulses = new Array(hubs.length).fill(0);
+            serviceLinks.forEach((link) => {
+                const destination = project(hubs[link.hub].lat, hubs[link.hub].lon, rot, R, cx, cy);
+                if (destination.z < 0) return;
+
+                const startX = link.x * w;
+                const startY = link.y * h;
+                const midX = (startX + destination.x) / 2;
+                const midY = (startY + destination.y) / 2;
+                const bend = Math.min(w, h) * 0.12;
+                const controlX = midX + (midX - cx) * 0.08;
+                const controlY = midY + (startY < cy ? bend : -bend);
+                const progress = ((timestamp / 12500 + link.offset) % 1 + 1) % 1;
+                const linkProximity = globeHovered
+                    ? Math.max(0, 1 - Math.hypot(pointerX - destination.x, pointerY - destination.y) / 52)
+                    : 0;
+                const highlighted = activeSystem === link.service || linkProximity > 0.25;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.quadraticCurveTo(controlX, controlY, destination.x, destination.y);
+                ctx.strokeStyle = hexToRgba(color, activeSystem === link.service ? 0.64 : 0.28 + linkProximity * 0.2);
+                ctx.lineWidth = activeSystem === link.service ? 1.2 : 0.8 + linkProximity * 0.3;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = activeSystem === link.service ? 7 : 3 + linkProximity * 3;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.arc(startX, startY, 1.15, 0, Math.PI * 2);
+                ctx.fillStyle = hexToRgba(color, 0.68);
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 4;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                const inverse = 1 - progress;
+                const packetX = inverse * inverse * startX + 2 * inverse * progress * controlX + progress * progress * destination.x;
+                const packetY = inverse * inverse * startY + 2 * inverse * progress * controlY + progress * progress * destination.y;
+                if (!reduceMotion && (progress < 0.28 || highlighted)) {
+                    ctx.beginPath();
+                    ctx.arc(packetX, packetY, highlighted ? 2 : 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = "#e1f6ff";
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 7;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+
+                const arrivalPulse = reduceMotion ? 0 : Math.exp(-Math.pow((progress - 0.96) / 0.025, 2));
+                pulses[link.hub] = Math.max(pulses[link.hub], arrivalPulse);
+            });
+            return pulses;
+        }
+
         function drawRegionLabel(point, label, cx, cy, w, h, color, light) {
             const labelWidth = 76;
             const labelHeight = 19;
@@ -960,9 +1023,10 @@
                 const highlighted = Boolean(focus) && [hubs[i].service, hubs[j].service].includes(focus);
                 drawArc(hubs[i], hubs[j], globeRotation, R, cx, cy, accent, timestamp, index % 3 === 0, highlighted);
             });
+            const connectionPulses = drawServiceConnections(globeRotation, R, cx, cy, w, h, accent, timestamp);
 
             // Hub nodes
-            hubs.forEach((hub) => {
+            hubs.forEach((hub, hubIndex) => {
                 const p = project(hub.lat, hub.lon, globeRotation, R, cx, cy);
                 if (p.z < 0) return;
                 const isFocusedService = activeSystem && hub.service === activeSystem.toUpperCase();
@@ -970,17 +1034,18 @@
                 const isNearby = globeHovered && proximity > 0;
                 const isAwsRegion = ((globeHovered && proximity > 0.45) || activeSystem === "aws") && Boolean(hub.region);
                 const pulse = 0.5 + (Math.sin(timestamp / 900 + hub.lat) + 1) * 0.25;
+                const arrivalPulse = connectionPulses[hubIndex];
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 4.4 : 3 + pulse * 0.8 + proximity * 1.7, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 4.4 : 3 + pulse * 0.8 + proximity * 1.7 + arrivalPulse * 1.6, 0, Math.PI * 2);
                 ctx.fillStyle = isFocusedService || isAwsRegion || isNearby ? accent : "#ffffff";
                 ctx.shadowColor = accent;
-                ctx.shadowBlur = isFocusedService || isAwsRegion ? 20 : 8 + pulse * 5 + proximity * 10;
+                ctx.shadowBlur = isFocusedService || isAwsRegion ? 20 : 8 + pulse * 5 + proximity * 10 + arrivalPulse * 12;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 9.5 : 6.5 + pulse * 1.5, 0, Math.PI * 2);
-                ctx.strokeStyle = hexToRgba(accent, isFocusedService || isAwsRegion ? 1 : 0.35 + pulse * 0.35);
+                ctx.arc(p.x, p.y, isFocusedService || isAwsRegion ? 9.5 : 6.5 + pulse * 1.5 + arrivalPulse * 3, 0, Math.PI * 2);
+                ctx.strokeStyle = hexToRgba(accent, isFocusedService || isAwsRegion ? 1 : 0.35 + pulse * 0.35 + arrivalPulse * 0.4);
                 ctx.lineWidth = isFocusedService || isAwsRegion ? 1.8 : 1;
                 ctx.stroke();
 
