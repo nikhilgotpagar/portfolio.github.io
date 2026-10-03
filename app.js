@@ -437,7 +437,9 @@
             const rect = hero.getBoundingClientRect();
             width = rect.width;
             height = rect.height;
-            pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+            const targetPixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+            const pixelBudgetRatio = Math.sqrt(8_000_000 / Math.max(width * height, 1));
+            pixelRatio = Math.min(targetPixelRatio, pixelBudgetRatio);
             canvas.width = Math.round(width * pixelRatio);
             canvas.height = Math.round(height * pixelRatio);
             context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
@@ -622,7 +624,7 @@
         let currentPointerTilt = 0;
         let pointerX = -1000;
         let pointerY = -1000;
-        let dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let dpr = Math.min(window.devicePixelRatio || 1, 3);
         let viewW = 0;
         let viewH = 0;
 
@@ -749,7 +751,7 @@
             const rect = canvas.getBoundingClientRect();
             const w = Math.max(180, Math.floor(rect.width) || canvas.clientWidth || 280);
             const h = Math.max(180, Math.floor(rect.height) || canvas.clientHeight || 280);
-            const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
+            const nextDpr = Math.min(window.devicePixelRatio || 1, 3);
             if (!force && w === viewW && h === viewH && nextDpr === dpr) {
                 return { w: viewW, h: viewH };
             }
