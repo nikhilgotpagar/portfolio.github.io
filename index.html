@@ -78,10 +78,10 @@
                     <path class="home-signal-paths__lower" id="signal-path-lower-a" d="M0 405 C72 394 126 430 218 434 S310 422 360 410"></path>
                     <path class="home-signal-paths__lower" id="signal-path-lower-b" d="M0 432 C88 418 146 454 248 452 S334 440 390 426"></path>
                     <g class="home-signal-paths__packets">
-                        <circle r="2"><animateMotion dur="10s" repeatCount="indefinite"><mpath href="#signal-path-globe" xlink:href="#signal-path-globe"></mpath></animateMotion></circle>
-                        <circle r="1.8"><animateMotion dur="13s" begin="-6s" repeatCount="indefinite"><mpath href="#signal-path-architecture-a" xlink:href="#signal-path-architecture-a"></mpath></animateMotion></circle>
-                        <circle r="1.6"><animateMotion dur="15s" begin="-10s" repeatCount="indefinite"><mpath href="#signal-path-architecture-b" xlink:href="#signal-path-architecture-b"></mpath></animateMotion></circle>
-                        <circle r="1.7"><animateMotion dur="17s" begin="-8s" repeatCount="indefinite"><mpath href="#signal-path-lower-a" xlink:href="#signal-path-lower-a"></mpath></animateMotion></circle>
+                        <circle r="1.5"><animateMotion dur="10s" repeatCount="indefinite"><mpath href="#signal-path-globe" xlink:href="#signal-path-globe"></mpath></animateMotion></circle>
+                        <circle r="1.3"><animateMotion dur="13s" begin="-6s" repeatCount="indefinite"><mpath href="#signal-path-architecture-a" xlink:href="#signal-path-architecture-a"></mpath></animateMotion></circle>
+                        <circle r="1.25"><animateMotion dur="15s" begin="-10s" repeatCount="indefinite"><mpath href="#signal-path-architecture-b" xlink:href="#signal-path-architecture-b"></mpath></animateMotion></circle>
+                        <circle r="1.3"><animateMotion dur="17s" begin="-8s" repeatCount="indefinite"><mpath href="#signal-path-lower-a" xlink:href="#signal-path-lower-a"></mpath></animateMotion></circle>
                     </g>
                 </svg>
                 <div class="home-intro">
@@ -208,56 +208,97 @@
                 </aside>
             </div>
 
+            <article class="home-telemetry__card home-telemetry__card--latency" tabindex="0" aria-label="API latency, illustrative live profile around 42 milliseconds">
+                <div class="home-telemetry__header">
+                    <span>API LATENCY</span>
+                    <span class="home-telemetry__live"><i aria-hidden="true"></i> LIVE</span>
+                </div>
+                <div class="home-telemetry__latency">
+                    <strong>42<small>ms</small></strong>
+                    <svg viewBox="0 0 180 42" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                            <pattern id="latency-grid" width="18" height="14" patternUnits="userSpaceOnUse">
+                                <path d="M 18 0 L 0 0 0 14" fill="none" class="home-telemetry__grid-line"></path>
+                            </pattern>
+                        </defs>
+                        <rect width="180" height="42" fill="url(#latency-grid)"></rect>
+                        <path class="home-telemetry__chart-base" d="M0 27 18 25 35 28 53 18 70 22 88 12 106 19 124 10 142 16 160 8 180 13"></path>
+                        <path id="latency-path" class="home-telemetry__chart-line" d="M0 27 18 25 35 28 53 18 70 22 88 12 106 19 124 10 142 16 160 8 180 13"></path>
+                        <circle class="home-telemetry__chart-packet" r="2.2">
+                            <animateMotion dur="5.2s" repeatCount="indefinite"><mpath href="#latency-path"></mpath></animateMotion>
+                        </circle>
+                    </svg>
+                </div>
+                <div class="home-telemetry__values" aria-hidden="true">
+                    <span>42ms</span><span>38ms</span><span>45ms</span>
+                </div>
+            </article>
+
             <div class="home-architecture" role="group" aria-label="Illustrative distributed system architecture">
-                <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
+                <div class="home-architecture__heading">
+                    <span class="home-architecture__label">ILLUSTRATIVE SYSTEM FLOW</span>
+                </div>
                 <div class="home-architecture__viewport">
                   <div class="home-architecture__canvas">
                     <svg class="home-architecture__routes" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <path class="home-architecture__route home-architecture__route--secondary" d="M24 42 C180 0 296 92 480 42 S790 0 976 42"></path>
-                        <path class="home-architecture__route home-architecture__route--secondary" d="M24 54 C180 96 296 8 480 54 S790 96 976 54"></path>
-                        <path id="architecture-route-1" class="home-architecture__route" data-route="client api" d="M70 46 C112 24 200 68 242 46"></path>
-                        <path id="architecture-route-2" class="home-architecture__route" data-route="api ecs" d="M242 46 C284 68 372 24 414 46"></path>
-                        <path id="architecture-route-3" class="home-architecture__route" data-route="ecs aws" d="M414 46 C456 24 544 68 586 46"></path>
-                        <path id="architecture-route-4" class="home-architecture__route" data-route="aws kafka" d="M586 46 C628 68 716 24 758 46"></path>
-                        <path id="architecture-route-5" class="home-architecture__route" data-route="kafka db" d="M758 46 C800 24 888 68 930 46"></path>
-                        <path id="architecture-route-api-kafka-a" class="home-architecture__route home-architecture__route--branch" d="M242 46 C400 4 540 8 758 46"></path>
-                        <path id="architecture-route-api-kafka-b" class="home-architecture__route home-architecture__route--branch" d="M414 46 C530 90 634 84 758 46"></path>
-                        <path id="architecture-route-kafka-consumer-a" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 58 818 82 850 95"></path>
-                        <path id="architecture-route-kafka-consumer-b" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C796 68 820 92 858 110"></path>
-                        <path id="architecture-route-kafka-consumer-c" class="home-architecture__route home-architecture__route--consumer" d="M758 46 C792 82 824 108 866 125"></path>
+                        <path class="home-architecture__route home-architecture__route--secondary" d="M16 32 C110 4 250 66 382 36 S640 8 820 43 S940 54 984 28"></path>
+                        <path class="home-architecture__route home-architecture__route--secondary" d="M22 48 C160 86 238 6 408 44 S700 82 980 48"></path>
+                        <path id="architecture-route-1" class="home-architecture__route" data-route="client edge" d="M48 26 C90 10 138 42 178 26"></path>
+                        <path id="architecture-route-2" class="home-architecture__route" data-route="edge api" d="M222 26 C260 44 312 8 328 26"></path>
+                        <path id="architecture-route-3" class="home-architecture__route" data-route="api ecs" d="M372 26 C410 10 462 44 478 26"></path>
+                        <path id="architecture-route-4" class="home-architecture__route home-architecture__route--async" data-route="ecs kafka" d="M522 26 C568 8 628 44 658 26"></path>
+                        <path id="architecture-route-redis" class="home-architecture__route home-architecture__route--branch" data-route="ecs redis" d="M510 43 C520 57 530 76 538 86"></path>
+                        <path id="architecture-route-db" class="home-architecture__route home-architecture__route--branch" data-route="ecs db" d="M520 42 C620 94 776 112 906 86"></path>
+                        <path id="architecture-route-kafka-consumer-a" class="home-architecture__route home-architecture__route--consumer" data-route="kafka consumers" d="M700 42 C714 60 722 80 730 92"></path>
+                        <path id="architecture-route-kafka-consumer-b" class="home-architecture__route home-architecture__route--consumer" data-route="kafka consumers" d="M714 39 C728 64 732 88 738 107"></path>
+                        <path id="architecture-route-kafka-consumer-c" class="home-architecture__route home-architecture__route--consumer" data-route="kafka consumers" d="M724 32 C740 62 740 94 746 122"></path>
+                        <text class="home-architecture__flow-label" x="90" y="64">REAL-TIME REQUESTS</text>
+                        <text class="home-architecture__flow-label" x="555" y="64">LOW-LATENCY CACHE</text>
+                        <text class="home-architecture__flow-label" x="740" y="68">ASYNC PROCESSING</text>
+                        <text class="home-architecture__flow-label" x="850" y="134">PERSISTENCE</text>
                         <g class="home-architecture__packets">
-                            <circle r="3"><animateMotion dur="3.8s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
-                            <circle r="3"><animateMotion dur="4.2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
-                            <circle r="3"><animateMotion dur="4.5s" begin="-2.7s" repeatCount="indefinite"><mpath href="#architecture-route-3" xlink:href="#architecture-route-3"></mpath></animateMotion></circle>
-                            <circle r="3"><animateMotion dur="3.9s" begin="-1.9s" repeatCount="indefinite"><mpath href="#architecture-route-4" xlink:href="#architecture-route-4"></mpath></animateMotion></circle>
-                            <circle r="3"><animateMotion dur="4.3s" begin="-3.1s" repeatCount="indefinite"><mpath href="#architecture-route-5" xlink:href="#architecture-route-5"></mpath></animateMotion></circle>
-                            <circle r="2.5"><animateMotion dur="5.4s" begin="-1.2s" repeatCount="indefinite"><mpath href="#architecture-route-api-kafka-a" xlink:href="#architecture-route-api-kafka-a"></mpath></animateMotion></circle>
-                            <circle r="2.5"><animateMotion dur="5.8s" begin="-3.2s" repeatCount="indefinite"><mpath href="#architecture-route-api-kafka-b" xlink:href="#architecture-route-api-kafka-b"></mpath></animateMotion></circle>
-                            <circle r="2.3"><animateMotion dur="3.6s" begin="-0.8s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
-                            <circle r="2.3"><animateMotion dur="4.1s" begin="-2s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-b" xlink:href="#architecture-route-kafka-consumer-b"></mpath></animateMotion></circle>
-                            <circle r="2.3"><animateMotion dur="3.9s" begin="-2.8s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-c" xlink:href="#architecture-route-kafka-consumer-c"></mpath></animateMotion></circle>
+                            <circle class="packet--blue" r="2.3"><animateMotion dur="3.7s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--blue" r="1"><animateMotion dur="3.7s" begin="0.1s" repeatCount="indefinite"><mpath href="#architecture-route-1" xlink:href="#architecture-route-1"></mpath></animateMotion></circle>
+                            <circle class="packet--cyan" r="2.3"><animateMotion dur="4.6s" begin="-1.6s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--cyan" r="1"><animateMotion dur="4.6s" begin="-1.5s" repeatCount="indefinite"><mpath href="#architecture-route-2" xlink:href="#architecture-route-2"></mpath></animateMotion></circle>
+                            <circle class="packet--violet" r="2.2"><animateMotion dur="4.1s" begin="-2.2s" repeatCount="indefinite"><mpath href="#architecture-route-3" xlink:href="#architecture-route-3"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--violet" r="0.9"><animateMotion dur="4.1s" begin="-2.1s" repeatCount="indefinite"><mpath href="#architecture-route-3" xlink:href="#architecture-route-3"></mpath></animateMotion></circle>
+                            <circle class="packet--blue" r="2.3"><animateMotion dur="3.4s" begin="-1.3s" repeatCount="indefinite"><mpath href="#architecture-route-4" xlink:href="#architecture-route-4"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--blue" r="1"><animateMotion dur="3.4s" begin="-1.2s" repeatCount="indefinite"><mpath href="#architecture-route-4" xlink:href="#architecture-route-4"></mpath></animateMotion></circle>
+                            <circle class="packet--green" r="2"><animateMotion dur="5.2s" begin="-2.1s" repeatCount="indefinite"><mpath href="#architecture-route-redis" xlink:href="#architecture-route-redis"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--green" r="0.9"><animateMotion dur="5.2s" begin="-2s" repeatCount="indefinite"><mpath href="#architecture-route-redis" xlink:href="#architecture-route-redis"></mpath></animateMotion></circle>
+                            <circle class="packet--green" r="2"><animateMotion dur="6.1s" begin="-3.5s" repeatCount="indefinite"><mpath href="#architecture-route-db" xlink:href="#architecture-route-db"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--green" r="0.9"><animateMotion dur="6.1s" begin="-3.4s" repeatCount="indefinite"><mpath href="#architecture-route-db" xlink:href="#architecture-route-db"></mpath></animateMotion></circle>
+                            <circle class="packet--orange" r="2.1"><animateMotion dur="4.8s" begin="-0.9s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
+                            <circle class="packet-trail packet--orange" r="0.9"><animateMotion dur="4.8s" begin="-0.8s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
+                            <circle class="packet--cyan" r="2"><animateMotion dur="5.4s" begin="-3.4s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-b" xlink:href="#architecture-route-kafka-consumer-b"></mpath></animateMotion></circle>
+                            <circle class="packet--violet" r="1.9"><animateMotion dur="4.3s" begin="-2.6s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-c" xlink:href="#architecture-route-kafka-consumer-c"></mpath></animateMotion></circle>
                         </g>
                         <g class="home-architecture__packets home-architecture__packets--kafka">
-                            <circle r="2.1"><animateMotion dur="6.8s" begin="-1.7s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
-                            <circle r="1.8"><animateMotion dur="7.6s" begin="-5.2s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-c" xlink:href="#architecture-route-kafka-consumer-c"></mpath></animateMotion></circle>
+                            <circle class="packet--orange" r="1.8"><animateMotion dur="5.8s" begin="-1.7s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-a" xlink:href="#architecture-route-kafka-consumer-a"></mpath></animateMotion></circle>
+                            <circle class="packet--green" r="1.7"><animateMotion dur="6.6s" begin="-4.4s" repeatCount="indefinite"><mpath href="#architecture-route-kafka-consumer-c" xlink:href="#architecture-route-kafka-consumer-c"></mpath></animateMotion></circle>
                         </g>
                     </svg>
                     <div class="home-architecture__nodes">
                         <button class="home-architecture__node" type="button" data-system="client" title="Client requests enter the service flow" aria-label="Client node">
                             <span class="home-architecture__node-ring"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="4" width="19" height="13" rx="1.5"></rect><path d="M8 20h8M12 17v3M6 7h12"></path><rect x="17" y="9" width="4.5" height="8" rx="1"></rect></svg></span><span class="home-architecture__node-label">Client</span><span class="home-architecture__node-subtitle">Web / Mobile</span>
                         </button>
+                        <button class="home-architecture__node" type="button" data-system="edge" title="CloudFront edge delivery with web application firewall" aria-label="CloudFront CDN and WAF node">
+                            <span class="home-architecture__node-ring"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.8 9h16.4M4.2 15h15.6M12 3.5c2 2.2 3 5 3 8.5s-1 6.3-3 8.5c-2-2.2-3-5-3-8.5s1-6.3 3-8.5zM18 5.5l2.5 1v4.1c0 2.8-1.7 4.6-3.8 5.9-2.1-1.3-3.7-3.1-3.7-5.9V7.4l2.5-1"></path></svg></span><span class="home-architecture__node-label">Edge</span><span class="home-architecture__node-subtitle">CloudFront · CDN / WAF</span>
+                        </button>
                         <button class="home-architecture__node" type="button" data-system="api" title="Java and Spring Boot APIs" aria-label="API node">
                             <span class="home-architecture__node-ring"><svg class="home-architecture__brand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.002 0a2.138 2.138 0 1 0 0 4.277 2.138 2.138 0 1 0 0-4.277zm8.54 4.931a2.138 2.138 0 1 0 0 4.277 2.138 2.138 0 1 0 0-4.277zm0 9.862a2.138 2.138 0 1 0 0 4.277 2.138 2.138 0 1 0 0-4.277zm-8.54 4.931a2.138 2.138 0 1 0 0 4.276 2.138 2.138 0 1 0 0-4.276zm-8.542-4.93a2.138 2.138 0 1 0 0 4.276 2.138 2.138 0 1 0 0-4.277zm0-9.863a2.138 2.138 0 1 0 0 4.277 2.138 2.138 0 1 0 0-4.277zm8.542-3.378L2.953 6.777v10.448l9.049 5.224 9.047-5.224V6.777zm0 1.601 7.66 13.27H4.34zm-1.387.371L3.97 15.037V7.363zm2.774 0 6.646 3.838v7.674zM5.355 17.44h13.293l-6.646 3.836z"></path></svg></span><span class="home-architecture__node-label">API</span><span class="home-architecture__node-subtitle">REST / GraphQL</span>
+                            <span class="home-architecture__tech-caption">ALB · SPRING BOOT</span>
                         </button>
                         <button class="home-architecture__node" type="button" data-system="ecs" title="Containerized microservices on ECS Fargate" aria-label="ECS node">
-                            <span class="home-architecture__node-ring"><svg class="home-architecture__brand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m21.895 15.256-3.369-2.021V8.421a.42.42 0 0 0-.209-.364l-4.843-2.825V1.159l8.42 4.976Zm.635-9.724L13.267.06a.422.422 0 0 0-.635.362v5.053c0 .15.08.288.208.363l4.844 2.826v4.81a.42.42 0 0 0 .205.362l4.21 2.526a.42.42 0 0 0 .638-.361V5.895a.42.42 0 0 0-.207-.363ZM11.977 23.1l-9.872-5.248V6.135l8.421-4.976v4.084L6.09 8.066a.422.422 0 0 0-.195.355v7.158a.42.42 0 0 0 .226.373l5.665 2.948a.42.42 0 0 0 .387 0l5.496-2.84 3.382 2.03-9.074 5.01Zm10.135-5.356-4.21-2.526a.42.42 0 0 0-.411-.013l-5.51 2.847-5.244-2.729v-6.67l4.436-2.824a.422.422 0 0 0 .195-.355V.42a.421.421 0 0 0-.635-.362L1.47 5.532a.42.42 0 0 0-.207.363v12.21c0 .156.086.299.223.372l10.297 5.474a.421.421 0 0 0 .401-.004l9.915-5.473a.422.422 0 0 0 .013-.73Z"></path></svg></span><span class="home-architecture__node-label">ECS</span><span class="home-architecture__node-subtitle">Containerized</span>
+                            <span class="home-architecture__node-ring"><svg class="home-architecture__brand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m21.895 15.256-3.369-2.021V8.421a.42.42 0 0 0-.209-.364l-4.843-2.825V1.159l8.42 4.976Zm.635-9.724L13.267.06a.422.422 0 0 0-.635.362v5.053c0 .15.08.288.208.363l4.844 2.826v4.81a.42.42 0 0 0 .205.362l4.21 2.526a.42.42 0 0 0 .638-.361V5.895a.42.42 0 0 0-.207-.363ZM11.977 23.1l-9.872-5.248V6.135l8.421-4.976v4.084L6.09 8.066a.422.422 0 0 0-.195.355v7.158a.42.42 0 0 0 .226.373l5.665 2.948a.42.42 0 0 0 .387 0l5.496-2.84 3.382 2.03-9.074 5.01Zm10.135-5.356-4.21-2.526a.42.42 0 0 0-.411-.013l-5.51 2.847-5.244-2.729v-6.67l4.436-2.824a.422.422 0 0 0 .195-.355V.42a.421.421 0 0 0-.635-.362L1.47 5.532a.42.42 0 0 0-.207.363v12.21c0 .156.086.299.223.372l10.297 5.474a.421.421 0 0 0 .401-.004l9.915-5.473a.422.422 0 0 0 .013-.73Z"></path></svg></span><span class="home-architecture__node-label">ECS</span><span class="home-architecture__node-subtitle">AWS Fargate</span>
                         </button>
-                        <button class="home-architecture__node home-architecture__node--aws" type="button" data-system="aws" title="AWS cloud infrastructure" aria-label="AWS node">
-                            <span class="home-architecture__node-ring"><svg class="home-architecture__brand home-architecture__brand--aws" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.03-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm-3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.263.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm6.41.862c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55a1.398 1.398 0 0 1-.072-.32c0-.128.064-.2.191-.2h.783c.151 0 .255.025.31.08.065.048.113.16.16.312l1.342 5.284 1.245-5.284c.04-.16.088-.264.151-.312a.549.549 0 0 1 .32-.08h.638c.152 0 .256.025.32.08.063.048.12.16.151.312l1.261 5.348 1.381-5.348c.048-.16.104-.264.16-.312a.52.52 0 0 1 .311-.08h.743c.127 0 .2.065.2.2 0 .04-.009.08-.017.128a1.137 1.137 0 0 1-.056.2l-1.923 6.17c-.048.16-.104.263-.168.311a.51.51 0 0 1-.303.08h-.687c-.151 0-.255-.024-.32-.08-.063-.056-.119-.16-.15-.32l-1.238-5.148-1.23 5.14c-.04.16-.087.264-.15.32-.065.056-.177.08-.32.08zm10.256.215c-.415 0-.83-.048-1.229-.143-.399-.096-.71-.2-.918-.32-.128-.071-.215-.151-.247-.223a.563.563 0 0 1-.048-.224v-.407c0-.167.064-.247.183-.247.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.566.215.878.279.319.064.63.096.95.096.502 0 .894-.088 1.165-.264a.86.86 0 0 0 .415-.758.777.777 0 0 0-.215-.559c-.144-.151-.416-.287-.807-.415l-1.157-.36c-.583-.183-1.014-.454-1.277-.813a1.902 1.902 0 0 1-.4-1.158c0-.335.073-.63.216-.886.144-.255.335-.479.575-.654.24-.184.51-.32.83-.415.32-.096.655-.136 1.006-.136.175 0 .359.008.535.032.183.024.35.056.518.088.16.04.312.08.455.127.144.048.256.096.336.144a.69.69 0 0 1 .24.2.43.43 0 0 1 .071.263v.375c0 .168-.064.256-.184.256a.83.83 0 0 1-.303-.096 3.652 3.652 0 0 0-1.532-.311c-.455 0-.815.071-1.062.223-.248.152-.375.383-.375.71 0 .224.08.416.24.567.159.152.454.304.877.44l1.134.358c.574.184.99.44 1.237.767.247.327.367.702.367 1.117 0 .343-.072.655-.207.926-.144.272-.336.511-.583.703-.248.2-.543.343-.886.447-.36.111-.734.167-1.142.167zM21.698 16.207c-2.626 1.94-6.442 2.969-9.722 2.969-4.598 0-8.74-1.7-11.87-4.526-.247-.223-.024-.527.272-.351 3.384 1.963 7.559 3.153 11.877 3.153 2.914 0 6.114-.607 9.06-1.852.439-.2.814.287.383.607zM22.792 14.961c-.336-.43-2.22-.207-3.074-.103-.255.032-.295-.192-.063-.36 1.5-1.053 3.967-.75 4.254-.399.287.36-.08 2.826-1.485 4.007-.215.184-.423.088-.327-.151.32-.79 1.03-2.57.695-2.994z"></path></svg></span><span class="home-architecture__node-label">AWS</span><span class="home-architecture__node-subtitle">Multi-Region</span>
+                        <button class="home-architecture__node home-architecture__node--redis" type="button" data-system="redis" title="Redis low-latency cache" aria-label="Redis cache node">
+                            <span class="home-architecture__node-ring"></span><svg class="home-architecture__redis-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22.71 13.145c-1.66 2.092-3.452 4.483-7.038 4.483-3.203 0-4.397-2.825-4.48-5.12.701 1.484 2.073 2.685 4.214 2.63 4.117-.133 6.94-3.852 6.94-7.239 0-4.05-3.022-6.972-8.268-6.972-3.752 0-8.4 1.428-11.455 3.685C2.59 6.937 3.885 9.958 4.35 9.626c2.648-1.904 4.748-3.13 6.784-3.744C8.12 9.244.886 17.05 0 18.425c.1 1.261 1.66 4.648 2.424 4.648.232 0 .431-.133.664-.365a100.49 100.49 0 0 0 5.54-6.765c.222 3.104 1.748 6.898 6.014 6.898 3.819 0 7.604-2.756 9.33-8.965.2-.764-.73-1.361-1.261-.73zm-4.349-5.013c0 1.959-1.926 2.922-3.685 2.922-.941 0-1.664-.247-2.235-.568 1.051-1.592 2.092-3.225 3.21-4.973 1.972.334 2.71 1.43 2.71 2.619z"></path></svg><span class="home-architecture__node-label">Redis</span><span class="home-architecture__node-subtitle">Low-latency cache</span>
                         </button>
                         <button class="home-architecture__node" type="button" data-system="kafka" title="Kafka event streaming" aria-label="Kafka node">
                             <span class="home-architecture__node-ring"><svg class="home-architecture__brand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.71 2.136a1.43 1.43 0 0 0-2.047 0h-.007a1.48 1.48 0 0 0-.421 1.042c0 .41.161.777.422 1.039l.007.007c.257.264.616.426 1.019.426.404 0 .766-.162 1.027-.426l.003-.007c.261-.262.421-.629.421-1.039 0-.408-.159-.777-.421-1.042H9.71zM8.683 22.295c.404 0 .766-.167 1.027-.429l.003-.008c.261-.261.421-.631.421-1.036 0-.41-.159-.778-.421-1.044H9.71a1.42 1.42 0 0 0-1.027-.432 1.4 1.4 0 0 0-1.02.432h-.007c-.26.266-.422.634-.422 1.044 0 .406.161.775.422 1.036l.007.008c.258.262.617.429 1.02.429zm7.89-4.462c.359-.096.683-.33.882-.684l.027-.052a1.47 1.47 0 0 0 .114-1.067 1.454 1.454 0 0 0-.675-.896l-.021-.014a1.425 1.425 0 0 0-1.078-.132c-.36.091-.684.335-.881.686-.2.349-.241.75-.146 1.119.099.363.33.691.675.896h.002c.346.203.737.239 1.101.144zm-6.405-7.342a2.083 2.083 0 0 0-1.485-.627c-.58 0-1.103.242-1.482.627-.378.385-.612.916-.612 1.507s.233 1.124.612 1.514a2.08 2.08 0 0 0 2.967 0c.379-.39.612-.923.612-1.514s-.233-1.122-.612-1.507zm-.835-2.51c.843.141 1.6.552 2.178 1.144h.004c.092.093.182.196.265.299l1.446-.851a3.176 3.176 0 0 1-.047-1.808 3.149 3.149 0 0 1 1.456-1.926l.025-.016a3.062 3.062 0 0 1 2.345-.306c.77.21 1.465.721 1.898 1.482v.002c.431.757.518 1.626.313 2.408a3.145 3.145 0 0 1-1.456 1.928l-.198.118h-.02a3.095 3.095 0 0 1-2.154.201 3.127 3.127 0 0 1-1.514-.944l-1.444.848a4.162 4.162 0 0 1 0 2.879l1.444.846c.413-.47.939-.789 1.514-.944a3.041 3.041 0 0 1 2.371.319l.048.023v.002a3.17 3.17 0 0 1 1.408 1.906 3.215 3.215 0 0 1-.313 2.405l-.026.053-.003-.005a3.147 3.147 0 0 1-1.867 1.436 3.096 3.096 0 0 1-2.371-.318v-.006a3.156 3.156 0 0 1-1.456-1.927 3.175 3.175 0 0 1 .047-1.805l-1.446-.848a3.905 3.905 0 0 1-.265.294l-.004.005a3.938 3.938 0 0 1-2.178 1.138v1.699a3.09 3.09 0 0 1 1.56.862l.002.004c.565.572.914 1.368.914 2.243 0 .873-.35 1.664-.914 2.239l-.002.009a3.1 3.1 0 0 1-2.21.931 3.1 3.1 0 0 1-2.206-.93h-.002v-.009a3.186 3.186 0 0 1-.916-2.239c0-.875.35-1.672.916-2.243v-.004h.002a3.1 3.1 0 0 1 1.558-.862v-1.699a3.926 3.926 0 0 1-2.176-1.138l-.006-.005a4.098 4.098 0 0 1-1.173-2.874c0-1.122.452-2.136 1.173-2.872h.006a3.947 3.947 0 0 1 2.176-1.144V6.289a3.137 3.137 0 0 1-1.558-.864h-.002v-.004a3.192 3.192 0 0 1-.916-2.243c0-.871.35-1.669.916-2.243l.002-.002A3.084 3.084 0 0 1 8.683 0c.861 0 1.641.355 2.21.932v.002h.002c.565.574.914 1.372.914 2.243 0 .876-.35 1.667-.914 2.243l-.002.005a3.142 3.142 0 0 1-1.56.864v1.692zm8.121-1.129l-.012-.019a1.452 1.452 0 0 0-.87-.668 1.43 1.43 0 0 0-1.103.146h.002c-.347.2-.58.529-.677.896-.095.365-.054.768.146 1.119l.007.009c.2.347.519.579.874.673.357.103.755.059 1.098-.144l.019-.009a1.47 1.47 0 0 0 .657-.885 1.493 1.493 0 0 0-.141-1.118"></path></svg></span><span class="home-architecture__node-label">Kafka</span><span class="home-architecture__node-subtitle">Event Streaming</span>
-                            <span class="home-architecture__event-particles" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span class="home-architecture__event-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                         </button>
                         <div class="home-architecture__consumers" role="group" aria-label="Kafka consumer group">
                             <span class="home-architecture__consumer-heading">CONSUMER GROUP</span>
@@ -265,27 +306,63 @@
                             <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 02</span>
                             <span class="home-architecture__consumer"><i class="fas fa-cube" aria-hidden="true"></i>Consumer 03</span>
                         </div>
-                        <button class="home-architecture__node home-architecture__node--db" type="button" data-system="db" title="Aurora PostgreSQL data store" aria-label="Database node">
-                            <span class="home-architecture__node-ring"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"></ellipse><path d="M4.5 5.5v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-12M4.5 11.5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"></path><path d="m13 7.5-3 5h3l-2 4"></path></svg></span><span class="home-architecture__node-label">DB</span><span class="home-architecture__node-subtitle">Aurora / DynamoDB</span>
+                        <button class="home-architecture__node home-architecture__node--db" type="button" data-system="db" title="Aurora and DynamoDB persistence" aria-label="Aurora and DynamoDB persistence node">
+                            <span class="home-architecture__node-ring"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"></ellipse><path d="M4.5 5.5v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-12M4.5 11.5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"></path><path d="m13 7.5-3 5h3l-2 4"></path></svg></span><span class="home-architecture__node-label">Aurora</span><span class="home-architecture__node-subtitle">DynamoDB · Persistence</span>
                         </button>
                     </div>
                   </div>
                 </div>
             </div>
 
-            <section class="genai-preview" aria-label="Resume question and answer examples">
-                <div class="genai-preview__body">
-                    <div class="genai-preview__line genai-preview__line--prompt">
-                        <span class="genai-preview__prefix">PROMPT</span>
-                        <p class="genai-preview__prompt">Tell me about scaling a high-throughput system.</p>
+            <div class="home-status__system-telemetry">
+                <aside class="home-ai-flow" aria-label="Illustrative AI retrieval-augmented generation flow: prompt, vector retrieval, language model, response">
+                    <span class="home-ai-flow__title">RAG REQUEST FLOW</span>
+                    <svg class="home-ai-flow__route" viewBox="0 0 8 96" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="home-ai-flow__route-line" d="M4 2 V94"></path>
+                        <path id="home-ai-flow-route" class="home-ai-flow__motion-path" d="M4 2 V94"></path>
+                        <circle class="home-ai-flow__packet home-ai-flow__packet--cyan" r="1.5">
+                            <animateMotion dur="5.2s" repeatCount="indefinite"><mpath href="#home-ai-flow-route" xlink:href="#home-ai-flow-route"></mpath></animateMotion>
+                        </circle>
+                        <circle class="home-ai-flow__packet home-ai-flow__packet--violet" r="1.2">
+                            <animateMotion dur="6.8s" begin="-3.1s" repeatCount="indefinite"><mpath href="#home-ai-flow-route" xlink:href="#home-ai-flow-route"></mpath></animateMotion>
+                        </circle>
+                    </svg>
+                    <ol class="home-ai-flow__steps">
+                        <li>
+                            <svg class="home-ai-flow__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5.5h16v11H9l-5 3v-14Z"></path><path d="M8 9h8M8 13h5"></path></svg>
+                            <strong>Prompt</strong>
+                        </li>
+                        <li>
+                            <svg class="home-ai-flow__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="10" cy="6" rx="6" ry="2.5"></ellipse><path d="M4 6v8c0 1.4 2.7 2.5 6 2.5M16 6v2"></path><circle cx="16.5" cy="15.5" r="4"></circle><path d="m19.5 18.5 2 2"></path></svg>
+                            <strong>Vector search</strong>
+                        </li>
+                        <li>
+                            <svg class="home-ai-flow__icon home-ai-flow__icon--model" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="5" width="14" height="14" rx="3"></rect><path d="M9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3M9 10h6v4H9z"></path><circle cx="12" cy="12" r="1"></circle></svg>
+                            <strong>LLM</strong>
+                        </li>
+                        <li>
+                            <svg class="home-ai-flow__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h8l4 4v13H6z"></path><path d="M14 3.5v4h4m-9 4h6m-6 4h6"></path><path d="m9 18 1.5 1.5L14 16"></path></svg>
+                            <strong>Response</strong>
+                        </li>
+                    </ol>
+                </aside>
+            </div>
+
+            <div class="home-live-row">
+                <section class="genai-preview" aria-label="Resume question and answer examples">
+                    <div class="genai-preview__body">
+                        <div class="genai-preview__line genai-preview__line--prompt">
+                            <span class="genai-preview__prefix">PROMPT</span>
+                            <p class="genai-preview__prompt">Tell me about scaling a high-throughput system.</p>
+                        </div>
+                        <div class="genai-preview__line genai-preview__line--answer">
+                            <span class="genai-preview__prefix">RESPONSE</span>
+                            <p class="genai-preview__answer">At JPMorganChase, I built Java services on AWS for distributed card systems handling millions of transactions daily.</p>
+                        </div>
                     </div>
-                    <div class="genai-preview__line genai-preview__line--answer">
-                        <span class="genai-preview__prefix">RESPONSE</span>
-                        <p class="genai-preview__answer">At JPMorganChase, I built Java services on AWS for distributed card systems handling millions of transactions daily.</p>
-                    </div>
-                </div>
-                <p class="sr-only">These are example questions and answers based on Nikhil's resume; they are not generated by a live AI service.</p>
-            </section>
+                    <p class="sr-only">These are example questions and answers based on Nikhil's resume; they are not generated by a live AI service.</p>
+                </section>
+            </div>
 
             <div class="home-contact-strip">
                 <div>

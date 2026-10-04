@@ -1241,7 +1241,7 @@ body.light-mode .top-nav {
   }
 
   .home-architecture {
-    width: 100%;
+    width: min(1080px, 96%);
     max-width: 100%;
     margin-top: 0;
   }
@@ -1429,4 +1429,228 @@ body.light-mode .top-nav {
   .home-architecture__canvas {
     min-width: 580px;
   }
+}
+
+@media (min-width: 1101px) {
+  .home-cyber {
+    min-height: 100svh;
+  }
+
+  .home-dash {
+    display: block;
+    min-height: calc(100svh - 4.5rem);
+    isolation: isolate;
+    --architecture-top: 54%;
+  }
+
+  .home-dash::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 36% -2% 4%;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 35% 22% at 13% 31%, transparent 97%, color-mix(in srgb, var(--home-cyan) 8%, transparent) 97.4%, transparent 98%),
+      radial-gradient(ellipse 28% 30% at 84% 38%, transparent 97%, color-mix(in srgb, var(--home-cyan) 7%, transparent) 97.4%, transparent 98%),
+      radial-gradient(ellipse 38% 22% at 67% 75%, transparent 97%, color-mix(in srgb, var(--home-cyan) 5%, transparent) 97.4%, transparent 98%),
+      linear-gradient(150deg, transparent 48%, color-mix(in srgb, var(--home-cyan) 4%, transparent) 48.1%, transparent 48.3%);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 92%, transparent);
+    opacity: 0.7;
+  }
+
+  .home-dash > .home-nav-rail {
+    z-index: 5;
+  }
+
+  .home-dash > .home-hero {
+    position: relative;
+    z-index: 3;
+  }
+
+  .home-dash > .home-architecture {
+    position: absolute;
+    z-index: 1;
+    top: var(--architecture-top);
+    left: 50%;
+    width: min(1080px, 96%);
+    margin: 0;
+    transform: translateX(-50%);
+    translate: 0 0;
+  }
+
+  .home-architecture__heading .home-architecture__label {
+    align-self: center;
+    text-align: center;
+  }
+
+  .home-dash > .home-telemetry__card--latency {
+    position: absolute;
+    z-index: 2;
+    top: calc(var(--architecture-top) - clamp(55px, 10vh, 90px));
+    left: 4%;
+    width: 190px;
+    padding: 0.1rem 0;
+    opacity: 0.72;
+    translate: 0;
+  }
+
+  .home-dash > .home-status__system-telemetry {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: block;
+    width: auto;
+    opacity: 0.68;
+    pointer-events: none;
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    position: absolute;
+    top: 76%;
+    left: 2%;
+    width: 14%;
+    min-width: 148px;
+    max-width: 190px;
+    pointer-events: none;
+  }
+
+  .home-dash > .home-live-row {
+    position: absolute;
+    z-index: 3;
+    top: 80%;
+    left: 17%;
+    width: 66%;
+    max-width: 1120px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-dash > .home-live-row > .genai-preview {
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-dash > .home-contact-strip {
+    position: absolute;
+    z-index: 4;
+    right: 0;
+    bottom: 0.15rem;
+    left: 0;
+    display: block;
+    min-height: 3.25rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .home-contact-strip > div {
+    position: absolute;
+    top: 50%;
+    left: 19%;
+    transform: translateY(-50%);
+  }
+
+  .home-contact-strip__link {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+  }
+
+  .home-dash > .home-telemetry__card--latency:focus-visible,
+  .home-dash > .home-telemetry__card--latency:hover,
+  .home-status__system-telemetry:hover {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1101px) and (max-width: 1300px) {
+  .home-dash > .home-live-row {
+    left: 17%;
+    width: 60%;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 850px) {
+  .home-dash { --architecture-top: 48%; }
+  .home-dash > .home-live-row { top: 79%; }
+}
+
+@media (min-width: 1101px) and (max-height: 750px) {
+  .home-dash { --architecture-top: 45%; }
+  .home-dash > .home-live-row { top: 80%; }
+}
+
+@media (min-width: 1101px) and (max-height: 600px) {
+  .home-dash { --architecture-top: 32%; }
+  .home-dash > .home-live-row { top: 77%; }
+}
+
+@media (max-width: 1100px) {
+  .home-dash > .home-architecture,
+  .home-dash > .home-telemetry__card--latency,
+  .home-dash > .home-status__system-telemetry,
+  .home-dash > .home-live-row,
+  .home-dash > .home-contact-strip {
+    position: relative;
+    inset: auto;
+    transform: none;
+    translate: none;
+  }
+
+  .home-dash > .home-architecture {
+    width: min(1080px, 96%);
+    margin: -0.2rem auto 0;
+  }
+
+  .home-dash > .home-telemetry__card--latency {
+    width: min(220px, 100%);
+    margin: 0.25rem 0;
+    translate: none;
+  }
+
+  .home-dash > .home-status__system-telemetry {
+    display: block;
+    width: 100%;
+    margin: 0.4rem 0;
+    pointer-events: auto;
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    position: relative;
+    inset: auto;
+    width: min(480px, 100%);
+    min-width: 0;
+    margin: 0.55rem auto;
+  }
+
+  .home-dash > .home-live-row {
+    width: 100%;
+    margin: 0.4rem 0;
+  }
+
+  .home-dash > .home-contact-strip {
+    display: flex;
+    min-height: 0;
+    margin: 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--home-border);
+  }
+
+  .home-contact-strip > div,
+  .home-contact-strip__link {
+    position: static;
+    transform: none;
+  }
+
+  .home-dash::before {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-dash > .home-telemetry__card--latency {
+    margin-inline: auto;
+  }
+
 }

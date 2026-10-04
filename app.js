@@ -619,6 +619,7 @@
         let rafId = null;
         let globeHovered = false;
         let activeSystem = "";
+        let telemetryBoosted = false;
         let lastFrameTime = 0;
         const rotationSpeed = 0.18;
         let pointerRotation = 0;
@@ -644,11 +645,13 @@
         ];
         const globe = canvas.closest(".home-globe");
         const hero = canvas.closest(".home-hero");
+        const telemetryCards = document.querySelectorAll(".home-telemetry__card");
 
         if (hero) {
             const setActiveSystem = (element) => {
                 const [system] = element.dataset.system.split(/\s+/);
                 activeSystem = system;
+                telemetryBoosted = true;
                 hero.dataset.focusSystem = system;
                 if (reduceMotion) frame();
             };
@@ -660,6 +663,7 @@
                 element.addEventListener("pointerleave", (event) => {
                     if (event.relatedTarget instanceof Node && element.contains(event.relatedTarget)) return;
                     activeSystem = "";
+                    telemetryBoosted = false;
                     delete hero.dataset.focusSystem;
                     if (reduceMotion) frame();
                 });
@@ -674,6 +678,7 @@
                         return;
                     }
                     activeSystem = "";
+                    telemetryBoosted = false;
                     delete hero.dataset.focusSystem;
                     if (reduceMotion) frame();
                 });
@@ -703,6 +708,13 @@
             }, { passive: true });
         }
 
+        telemetryCards.forEach((card) => {
+            card.addEventListener("pointerenter", () => { telemetryBoosted = true; }, { passive: true });
+            card.addEventListener("pointerleave", () => { telemetryBoosted = false; }, { passive: true });
+            card.addEventListener("focus", () => { telemetryBoosted = true; });
+            card.addEventListener("blur", () => { telemetryBoosted = false; });
+        });
+
         const arcs = [
             [0, 1],
             [0, 2],
@@ -714,6 +726,7 @@
             [1, 7],
             [6, 3],
         ];
+        const packetColorOrder = [0, 1, 0, 1, 0, 1, 2, 0, 4, 1, 3, 0, 2, 1];
         const serviceLinks = [
             { hub: 0, x: 0.18, y: 0.19, service: "aws", offset: 0 },
             { hub: 1, x: 0.88, y: 0.32, service: "api", offset: 0.19 },
@@ -777,7 +790,10 @@
             const mesh =
                 styles.getPropertyValue("--globe-mesh").trim() ||
                 accent;
-            return { accent, mesh, light: document.body.classList.contains("light-mode") };
+            const packetColors = ["blue", "cyan", "violet", "orange", "green"].map((name) =>
+                styles.getPropertyValue(`--packet-${name}`).trim()
+            );
+            return { accent, mesh, light: document.body.classList.contains("light-mode"), packetColors };
         }
 
         function project(lat, lon, rot, R, cx, cy) {
@@ -837,7 +853,7 @@
             }
         }
 
-        function drawArc(a, b, rot, R, cx, cy, color, timestamp, showPacket, highlighted) {
+        function drawArc(a, b, rot, R, cx, cy, color, packetColor, packetColors, timestamp, index, highlighted, light) {
             const p1 = project(a.lat, a.lon, rot, R, cx, cy);
             const p2 = project(b.lat, b.lon, rot, R, cx, cy);
             if (p1.z < 0 && p2.z < 0) return;
@@ -854,33 +870,75 @@
             ctx.quadraticCurveTo(cx2, cy2, p2.x, p2.y);
             ctx.strokeStyle = color;
             ctx.lineWidth = highlighted ? 2 : 1.2;
-            ctx.globalAlpha = highlighted ? 1 : activeSystem ? 0.2 : 0.72;
+            ctx.globalAlpha = highlighted ? 1 : activeSystem ? 0.16 : light ? 0.34 : 0.4;
             ctx.shadowColor = color;
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = highlighted ? 8 : 2.5;
             ctx.stroke();
             ctx.shadowBlur = 0;
             ctx.globalAlpha = 1;
 
-            if ((showPacket || highlighted) && !reduceMotion) {
-                const progress = (((timestamp / 4200) + (a.lat + b.lon) * 0.013) % 1 + 1) % 1;
-                const inverse = 1 - progress;
-                const x = inverse * inverse * p1.x + 2 * inverse * progress * cx2 + progress * progress * p2.x;
-                const y = inverse * inverse * p1.y + 2 * inverse * progress * cy2 + progress * progress * p2.y;
+            if (!reduceMotion) {
+                const cycleDuration = telemetryBoosted ? 3400 : [4500, 6200, 5200, 7100, 3900][index % 5];
+                const forward = (((timestamp / cycleDuration) + index * 0.173) % 1 + 1) % 1;
+                const reverse = index % 3 === 1;
+                const progress = reverse ? 1 - forward : forward;
+                const pointAt = (t) => {
+                    const inverse = 1 - t;
+                    return {
+                        x: inverse * inverse * p1.x + 2 * inverse * t * cx2 + t * t * p2.x,
+                        y: inverse * inverse * p1.y + 2 * inverse * t * cy2 + t * t * p2.y,
+                    };
+                };
+                [0.045, 0.022].forEach((trailOffset, trailIndex) => {
+                    const trailProgress = reverse
+                        ? Math.min(1, progress + trailOffset)
+                        : Math.max(0, progress - trailOffset);
+                    const trail = pointAt(trailProgress);
+                    ctx.beginPath();
+                    ctx.arc(trail.x, trail.y, trailIndex ? 0.95 : 1.3, 0, Math.PI * 2);
+                    ctx.fillStyle = hexToRgba(packetColor, trailIndex ? 0.26 : 0.46);
+                    ctx.fill();
+                });
+                const packet = pointAt(progress);
                 ctx.beginPath();
-                ctx.arc(x, y, 2.1, 0, Math.PI * 2);
-                ctx.fillStyle = "#ffffff";
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 9;
+                ctx.arc(packet.x, packet.y, highlighted ? 2.4 : 2, 0, Math.PI * 2);
+                ctx.fillStyle = packetColor;
+                ctx.shadowColor = packetColor;
+                ctx.shadowBlur = light ? 4 : 9;
                 ctx.fill();
                 ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.arc(packet.x, packet.y, 0.65, 0, Math.PI * 2);
+                ctx.fillStyle = hexToRgba(packetColor, light ? 0.95 : 1);
+                ctx.fill();
+                if (highlighted || telemetryBoosted) {
+                    const extra = pointAt((progress + (reverse ? -0.42 : 0.42) + 1) % 1);
+                    const extraColor = packetColor === packetColors[0] ? packetColors[1] : packetColors[0];
+                    ctx.beginPath();
+                    ctx.arc(extra.x, extra.y, 1.15, 0, Math.PI * 2);
+                    ctx.fillStyle = extraColor;
+                    ctx.fill();
+                }
+
+                const arrivalProgress = reverse ? 0.015 : 0.985;
+                const arrivalPulse = Math.exp(-Math.pow((progress - arrivalProgress) / 0.022, 2));
+                if (arrivalPulse > 0.08) {
+                    ctx.beginPath();
+                    const destination = reverse ? p1 : p2;
+                    ctx.arc(destination.x, destination.y, 3 + arrivalPulse * 4, 0, Math.PI * 2);
+                    ctx.strokeStyle = hexToRgba(packetColor, arrivalPulse * 0.55);
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
             }
         }
 
-        function drawServiceConnections(rot, R, cx, cy, w, h, color, timestamp) {
+        function drawServiceConnections(rot, R, cx, cy, w, h, color, packetColors, timestamp, light) {
             const pulses = new Array(hubs.length).fill(0);
-            serviceLinks.forEach((link) => {
+            serviceLinks.forEach((link, index) => {
                 const destination = project(hubs[link.hub].lat, hubs[link.hub].lon, rot, R, cx, cy);
                 if (destination.z < 0) return;
+                const packetColor = packetColors[packetColorOrder[(index + arcs.length) % packetColorOrder.length]];
 
                 const startX = link.x * w;
                 const startY = link.y * h;
@@ -889,7 +947,8 @@
                 const bend = Math.min(w, h) * 0.12;
                 const controlX = midX + (midX - cx) * 0.08;
                 const controlY = midY + (startY < cy ? bend : -bend);
-                const progress = ((timestamp / 12500 + link.offset) % 1 + 1) % 1;
+                const cycleDuration = 9800 + (index % 3) * 2700;
+                const progress = ((timestamp / cycleDuration + link.offset) % 1 + 1) % 1;
                 const linkProximity = globeHovered
                     ? Math.max(0, 1 - Math.hypot(pointerX - destination.x, pointerY - destination.y) / 52)
                     : 0;
@@ -916,14 +975,39 @@
                 const inverse = 1 - progress;
                 const packetX = inverse * inverse * startX + 2 * inverse * progress * controlX + progress * progress * destination.x;
                 const packetY = inverse * inverse * startY + 2 * inverse * progress * controlY + progress * progress * destination.y;
-                if (!reduceMotion && (progress < 0.28 || highlighted)) {
+                if (!reduceMotion) {
+                    [0.03, 0.015].forEach((trailOffset, trailIndex) => {
+                        const trailProgress = (progress - trailOffset + 1) % 1;
+                        const trailInverse = 1 - trailProgress;
+                        const trailX = trailInverse * trailInverse * startX + 2 * trailInverse * trailProgress * controlX + trailProgress * trailProgress * destination.x;
+                        const trailY = trailInverse * trailInverse * startY + 2 * trailInverse * trailProgress * controlY + trailProgress * trailProgress * destination.y;
+                        ctx.beginPath();
+                        ctx.arc(trailX, trailY, trailIndex ? 0.75 : 1, 0, Math.PI * 2);
+                        ctx.fillStyle = hexToRgba(packetColor, trailIndex ? 0.24 : 0.43);
+                        ctx.fill();
+                    });
                     ctx.beginPath();
-                    ctx.arc(packetX, packetY, highlighted ? 2 : 1.5, 0, Math.PI * 2);
-                    ctx.fillStyle = "#e1f6ff";
-                    ctx.shadowColor = color;
-                    ctx.shadowBlur = 7;
+                    ctx.arc(packetX, packetY, highlighted ? 2.2 : 1.9, 0, Math.PI * 2);
+                    ctx.fillStyle = packetColor;
+                    ctx.shadowColor = packetColor;
+                    ctx.shadowBlur = light ? 3 : 8;
                     ctx.fill();
                     ctx.shadowBlur = 0;
+                    ctx.beginPath();
+                    ctx.arc(packetX, packetY, 0.6, 0, Math.PI * 2);
+                    ctx.fillStyle = packetColor;
+                    ctx.fill();
+
+                    if (telemetryBoosted || linkProximity > 0.7) {
+                        const extraProgress = (progress + 0.42) % 1;
+                        const extraInverse = 1 - extraProgress;
+                        const extraX = extraInverse * extraInverse * startX + 2 * extraInverse * extraProgress * controlX + extraProgress * extraProgress * destination.x;
+                        const extraY = extraInverse * extraInverse * startY + 2 * extraInverse * extraProgress * controlY + extraProgress * extraProgress * destination.y;
+                        ctx.beginPath();
+                        ctx.arc(extraX, extraY, 1.15, 0, Math.PI * 2);
+                        ctx.fillStyle = packetColors[(index + 2) % packetColors.length];
+                        ctx.fill();
+                    }
                 }
 
                 const arrivalPulse = reduceMotion ? 0 : Math.exp(-Math.pow((progress - 0.96) / 0.025, 2));
@@ -963,7 +1047,7 @@
 
         function frame(timestamp = performance.now()) {
             const { w, h } = sizeCanvas(false);
-            const { accent, light } = readColors();
+            const { accent, light, packetColors } = readColors();
             const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) / 1000 : 0;
             lastFrameTime = timestamp;
             if (!reduceMotion) {
@@ -1026,9 +1110,23 @@
             arcs.forEach(([i, j], index) => {
                 const focus = activeSystem.toUpperCase();
                 const highlighted = Boolean(focus) && [hubs[i].service, hubs[j].service].includes(focus);
-                drawArc(hubs[i], hubs[j], globeRotation, R, cx, cy, accent, timestamp, index % 3 === 0, highlighted);
+                drawArc(
+                    hubs[i],
+                    hubs[j],
+                    globeRotation,
+                    R,
+                    cx,
+                    cy,
+                    accent,
+                    packetColors[packetColorOrder[index % packetColorOrder.length]],
+                    packetColors,
+                    timestamp,
+                    index,
+                    highlighted,
+                    light
+                );
             });
-            const connectionPulses = drawServiceConnections(globeRotation, R, cx, cy, w, h, accent, timestamp);
+            const connectionPulses = drawServiceConnections(globeRotation, R, cx, cy, w, h, accent, packetColors, timestamp, light);
 
             // Hub nodes
             hubs.forEach((hub, hubIndex) => {
