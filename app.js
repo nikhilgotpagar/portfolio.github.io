@@ -83,7 +83,10 @@
             const target = document.getElementById(id);
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                    ? "auto"
+                    : "smooth";
+                target.scrollIntoView({ behavior, block: "start" });
                 if (navMenu) {
                     navMenu.classList.remove("is-open");
                     if (navToggle) {
