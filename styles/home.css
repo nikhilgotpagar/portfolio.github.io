@@ -3459,3 +3459,164 @@ header.home-cyber.container {
     stroke-dashoffset: 0;
   }
 }
+
+.home-live-logs {
+  --log-line-height: 1.08rem;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: calc(100% + 1rem);
+  width: min(320px, calc(17vw - 1rem));
+  min-width: 190px;
+  color: color-mix(in srgb, var(--home-text) 74%, var(--home-muted));
+  font-family: var(--home-mono);
+  pointer-events: none;
+  transform: translateY(-50%);
+  isolation: isolate;
+}
+
+.home-live-logs::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -0.6rem -0.45rem;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--home-cyan) 2.2%, transparent), transparent 75%),
+    repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--home-cyan) 1.5%, transparent) 3px 4px);
+  opacity: 0.54;
+  mask-image: linear-gradient(90deg, #000, transparent 98%);
+}
+
+.home-live-logs__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+  color: color-mix(in srgb, var(--home-cyan) 76%, var(--home-muted));
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--home-cyan) 24%, transparent);
+}
+
+.home-live-logs__heading > span:last-child > span {
+  color: color-mix(in srgb, var(--home-muted) 70%, transparent);
+}
+
+.home-live-logs__indicator {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 5px;
+  border-radius: 50%;
+  background: var(--home-cyan);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--home-cyan) 65%, transparent);
+  animation: homeLogIndicator 2.4s ease-in-out infinite;
+}
+
+.home-live-logs__viewport {
+  position: relative;
+  height: calc(var(--log-line-height) * 9);
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, transparent, #000 13%, #000 84%, transparent);
+}
+
+.home-live-logs__lines {
+  position: absolute;
+  inset: 0;
+}
+
+.home-live-logs__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 3.55rem 2rem minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  height: var(--log-line-height);
+  gap: 0.18rem;
+  overflow: hidden;
+  opacity: var(--log-opacity, 0);
+  transform: translate3d(0, calc(var(--log-position, 9) * var(--log-line-height)), 0);
+  transition: transform 760ms cubic-bezier(0.2, 0.65, 0.25, 1), opacity 620ms ease;
+  font-size: 0.52rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.home-live-logs__line.is-recycling {
+  transition: none;
+}
+
+.home-live-logs__time {
+  color: color-mix(in srgb, var(--home-muted) 78%, transparent);
+}
+
+.home-live-logs__level {
+  color: color-mix(in srgb, var(--home-cyan) 72%, var(--home-muted));
+}
+
+.home-live-logs__message {
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--home-text) 75%, var(--home-muted));
+  text-overflow: ellipsis;
+}
+
+.home-architecture__node.is-log-active .home-architecture__node-ring,
+.home-architecture__node.is-log-active .home-architecture__node-ring svg,
+.home-architecture__node.is-log-active .home-architecture__redis-mark {
+  color: var(--home-cyan);
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--home-cyan) 72%, transparent));
+}
+
+.home-architecture__node.is-log-active .home-architecture__node-ring {
+  animation: homeLogNodePulse 820ms ease-out;
+}
+
+.home-architecture__node[data-system="kafka"].is-log-active .home-architecture__event-particles i {
+  animation: kafkaEvent 1s ease-out both;
+  animation-delay: 0s;
+}
+
+.home-architecture__node[data-system="kafka"].is-log-active .home-architecture__event-particles i:nth-child(2) { animation-delay: 0.07s; }
+.home-architecture__node[data-system="kafka"].is-log-active .home-architecture__event-particles i:nth-child(3) { animation-delay: 0.14s; }
+.home-architecture__node[data-system="kafka"].is-log-active .home-architecture__event-particles i:nth-child(4) { animation-delay: 0.21s; }
+.home-architecture__node[data-system="kafka"].is-log-active .home-architecture__event-particles i:nth-child(5) { animation-delay: 0.28s; }
+
+@keyframes homeLogIndicator {
+  50% { opacity: 0.42; }
+}
+
+@keyframes homeLogNodePulse {
+  45% { scale: 1.12; }
+}
+
+@media (max-width: 1100px) {
+  .home-live-logs {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, 520px);
+    min-width: 0;
+    margin: 1rem auto 0;
+    transform: none;
+  }
+}
+
+@media (min-width: 1101px) and (max-width: 1300px) {
+  .home-live-logs {
+    width: min(21vw, 280px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-live-logs__indicator,
+  .home-architecture__node.is-log-active .home-architecture__node-ring {
+    animation: none;
+  }
+
+  .home-live-logs__line {
+    transition: none;
+  }
+}

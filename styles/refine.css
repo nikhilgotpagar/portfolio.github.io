@@ -301,90 +301,6 @@ body.gaming-mode .cert-chip:hover {
   border-color: var(--color-secondary);
 }
 
-/* ===== Futuristic FX layer ===== */
-.fx-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.fx-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.45;
-  will-change: transform;
-  animation: orbDrift 18s ease-in-out infinite;
-}
-
-.fx-orb--1 {
-  width: min(42vw, 420px);
-  height: min(42vw, 420px);
-  background: color-mix(in srgb, var(--color-secondary) 55%, transparent);
-  top: -8%;
-  left: -6%;
-  animation-duration: 22s;
-}
-
-.fx-orb--2 {
-  width: min(36vw, 360px);
-  height: min(36vw, 360px);
-  background: color-mix(in srgb, var(--color-accent) 50%, transparent);
-  bottom: 5%;
-  right: -4%;
-  animation-duration: 26s;
-  animation-delay: -6s;
-}
-
-.fx-orb--3 {
-  width: min(28vw, 280px);
-  height: min(28vw, 280px);
-  background: color-mix(in srgb, var(--color-secondary) 35%, transparent);
-  top: 42%;
-  left: 48%;
-  animation-duration: 20s;
-  animation-delay: -10s;
-}
-
-@keyframes orbDrift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(4%, 6%) scale(1.08); }
-  66% { transform: translate(-5%, 3%) scale(0.94); }
-}
-
-.fx-spotlight {
-  position: absolute;
-  width: 520px;
-  height: 520px;
-  margin: -260px 0 0 -260px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-secondary) 22%, transparent) 0%,
-    transparent 68%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  will-change: transform;
-}
-
-body.is-pointer .fx-spotlight {
-  opacity: 1;
-}
-
-/* Scan grid pulse */
-body::after {
-  animation: gridPulse 8s ease-in-out infinite;
-  opacity: 0.55;
-}
-
-@keyframes gridPulse {
-  0%, 100% { opacity: 0.35; background-size: 64px 64px; }
-  50% { opacity: 0.55; background-size: 68px 68px; }
-}
-
 /* Status pulse + gradient name */
 
 /* Hero entrance choreography */
@@ -503,18 +419,6 @@ body::after {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-secondary) 25%, transparent) !important;
 }
 
-/* Particles — brighter, theme-colored sparks */
-.particle {
-  opacity: 0.35 !important;
-  width: 3px !important;
-  height: 3px !important;
-  box-shadow: 0 0 8px var(--color-secondary);
-}
-
-body.light-mode .particle {
-  opacity: 0.5 !important;
-}
-
 body.light-mode .name-gradient {
   background: linear-gradient(
     120deg,
@@ -529,10 +433,6 @@ body.light-mode .name-gradient {
   color: transparent;
 }
 
-body.light-mode .fx-orb {
-  opacity: 0.32;
-}
-
 body.light-mode .status-dot {
   background: #2563eb;
   box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45);
@@ -541,15 +441,6 @@ body.light-mode .status-dot {
 body.light-mode .controls .control,
 body.light-mode .theme-btn {
   background: rgba(255, 255, 255, 0.78) !important;
-}
-
-body.light-mode .particle {
-  opacity: 0.28 !important;
-}
-
-/* Reduce particle noise */
-.particle-container {
-  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -567,9 +458,6 @@ body.light-mode .particle {
     display: none !important;
   }
 
-  .fx-layer {
-    display: none;
-  }
 }
 
 @media screen and (max-width: 1100px) {
@@ -590,13 +478,6 @@ body.light-mode .particle {
     background-size: 48px 48px;
   }
 
-  .fx-orb--3 {
-    display: none;
-  }
-
-  .fx-spotlight {
-    display: none;
-  }
 }
 
 /* Final visual polish: clearer hierarchy, calmer surfaces, and roomier mobile layouts. */

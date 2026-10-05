@@ -1,13 +1,4 @@
 (function () {
-    // Initialize EmailJS (with error handling)
-    try {
-        if (typeof emailjs !== "undefined") {
-            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // Replace with your EmailJS public key
-        }
-    } catch (error) {
-        console.warn("EmailJS not initialized. Contact form may not work until configured.");
-    }
-
     // ===== TOP NAV + SCROLL SYNC =====
     const navLinks = document.querySelectorAll(".top-nav__link");
     const homeRailLinks = document.querySelectorAll(".home-nav-rail a");
@@ -152,6 +143,7 @@
             localStorage.setItem("theme", theme);
             currentTheme = theme;
             updateThemeIndicator();
+            document.dispatchEvent(new Event("portfolio:themechange"));
         }
 
         function updateThemeIndicator() {
@@ -236,15 +228,16 @@
 
         function typeText(element, text, speed, onComplete) {
             const characters = Array.from(text);
+            const batchSize = 3;
             let index = 0;
             element.textContent = "";
             element.classList.add("is-generating");
 
             function typeNext() {
-                element.textContent = characters.slice(0, index + 1).join("");
-                index += 1;
+                index = Math.min(index + batchSize, characters.length);
+                element.textContent = characters.slice(0, index).join("");
                 if (index < characters.length) {
-                    window.setTimeout(typeNext, speed);
+                    window.setTimeout(typeNext, speed * batchSize);
                 } else {
                     element.classList.remove("is-generating");
                     onComplete();
@@ -316,6 +309,10 @@
 
             const submitBtn = document.getElementById("submit-btn");
             const originalText = submitBtn.innerHTML;
+            if (typeof emailjs === "undefined") {
+                alert("The contact form is not configured yet. Please email me directly.");
+                return;
+            }
 
             try {
                 submitBtn.innerHTML =
@@ -347,75 +344,6 @@
         });
     }
 
-    // Ambient FX — orbs + pointer spotlight
-    function createAmbientFx() {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            return;
-        }
-
-        const layer = document.createElement("div");
-        layer.className = "fx-layer";
-        layer.innerHTML = `
-            <div class="fx-orb fx-orb--1"></div>
-            <div class="fx-orb fx-orb--2"></div>
-            <div class="fx-orb fx-orb--3"></div>
-            <div class="fx-spotlight"></div>
-        `;
-        document.body.insertBefore(layer, document.body.firstChild);
-
-        const spotlight = layer.querySelector(".fx-spotlight");
-        let raf = null;
-        let targetX = 0;
-        let targetY = 0;
-        let currentX = 0;
-        let currentY = 0;
-
-        function tick() {
-            currentX += (targetX - currentX) * 0.12;
-            currentY += (targetY - currentY) * 0.12;
-            spotlight.style.transform = `translate(${currentX}px, ${currentY}px)`;
-            raf = requestAnimationFrame(tick);
-        }
-
-        window.addEventListener(
-            "pointermove",
-            (e) => {
-                document.body.classList.add("is-pointer");
-                targetX = e.clientX;
-                targetY = e.clientY;
-                if (!raf) raf = requestAnimationFrame(tick);
-            },
-            { passive: true }
-        );
-
-        window.addEventListener(
-            "pointerleave",
-            () => {
-                document.body.classList.remove("is-pointer");
-            },
-            { passive: true }
-        );
-    }
-    createAmbientFx();
-
-    // Theme-colored sparks
-    function createParticles() {
-        const particleContainer = document.createElement("div");
-        particleContainer.className = "particle-container";
-        document.body.insertBefore(particleContainer, document.body.firstChild);
-
-        for (let i = 0; i < 16; i++) {
-            const particle = document.createElement("div");
-            particle.className = "particle";
-            particle.style.left = Math.random() * 100 + "%";
-            particle.style.top = Math.random() * 100 + "%";
-            particle.style.animationDelay = Math.random() * 20 + "s";
-            particle.style.animationDuration = Math.random() * 16 + 18 + "s";
-            particleContainer.appendChild(particle);
-        }
-    }
-    createParticles();
-
     function initHomeAmbient() {
         const hero = document.querySelector(".home-cyber");
         const canvas = document.querySelector(".home-ambient");
@@ -427,14 +355,18 @@
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
         const particles = [];
+        const connections = [];
         let width = 0;
         let height = 0;
         let pixelRatio = 1;
+        let color = "#38bdf8";
         let previousTime = 0;
         let frameId = 0;
         let pointerX = -1000;
         let pointerY = -1000;
         let pointerFrame = 0;
+        let isInView = true;
+        let heroBounds;
 
         function resize() {
             const rect = hero.getBoundingClientRect();
@@ -458,16 +390,24 @@
                     phase: Math.random() * Math.PI * 2,
                 });
             }
+            connections.length = 0;
+            for (let first = 0; first < particles.length; first += 1) {
+                for (let second = first + 1; second < particles.length; second += 1) {
+                    const a = particles[first];
+                    const b = particles[second];
+                    if (Math.hypot(a.x - b.x, a.y - b.y) <= 112) {
+                        connections.push({ a, b });
+                    }
+                }
+            }
         }
 
         function draw(timestamp = performance.now()) {
+            frameId = 0;
             const delta = previousTime ? Math.min(timestamp - previousTime, 40) / 16.67 : 1;
             previousTime = timestamp;
             context.clearRect(0, 0, width, height);
-            const styles = getComputedStyle(hero);
-            const color = styles.getPropertyValue("--home-cyan").trim() || "#38bdf8";
-
-            particles.forEach((particle, index) => {
+            particles.forEach((particle) => {
                 if (!reduceMotion) {
                     particle.x += particle.vx * delta;
                     particle.y += particle.vy * delta;
@@ -491,20 +431,20 @@
                 context.fill();
                 context.shadowBlur = 0;
 
-                for (let otherIndex = index + 1; otherIndex < particles.length; otherIndex += 1) {
-                    const other = particles[otherIndex];
-                    const distance = Math.hypot(particle.x - other.x, particle.y - other.y);
-                    if (distance > 112) continue;
-                    context.beginPath();
-                    context.moveTo(particle.x, particle.y);
-                    context.lineTo(other.x, other.y);
-                    context.strokeStyle = colorToRgba(color, (1 - distance / 112) * 0.12);
-                    context.lineWidth = 0.65;
-                    context.stroke();
-                }
             });
 
-            if (!reduceMotion) frameId = requestAnimationFrame(draw);
+            connections.forEach(({ a, b }) => {
+                const distance = Math.hypot(a.x - b.x, a.y - b.y);
+                if (distance > 112) return;
+                context.beginPath();
+                context.moveTo(a.x, a.y);
+                context.lineTo(b.x, b.y);
+                context.strokeStyle = colorToRgba(color, (1 - distance / 112) * 0.12);
+                context.lineWidth = 0.65;
+                context.stroke();
+            });
+
+            if (!reduceMotion && isInView && !document.hidden) frameId = requestAnimationFrame(draw);
         }
 
         function colorToRgba(color, alpha) {
@@ -520,11 +460,15 @@
             return `rgba(56, 189, 248, ${alpha})`;
         }
 
+        function refreshColor() {
+            color = getComputedStyle(hero).getPropertyValue("--home-cyan").trim() || "#38bdf8";
+        }
+
         function onPointerMove(event) {
             if (reduceMotion) return;
-            const bounds = hero.getBoundingClientRect();
-            pointerX = event.clientX - bounds.left;
-            pointerY = event.clientY - bounds.top;
+            if (!heroBounds) return;
+            pointerX = event.clientX - heroBounds.left;
+            pointerY = event.clientY - heroBounds.top;
             if (pointerFrame) return;
             pointerFrame = requestAnimationFrame(() => {
                 pointerFrame = 0;
@@ -562,23 +506,51 @@
             hero.style.setProperty("--grid-y", "0px");
         }
 
+        refreshColor();
         resize();
         draw();
+        document.querySelector(".theme-btn")?.addEventListener("click", () => {
+            window.setTimeout(() => {
+                refreshColor();
+                if (reduceMotion) draw();
+            }, 150);
+        });
         window.addEventListener("resize", () => {
             resize();
             if (reduceMotion) draw();
         }, { passive: true });
         if (finePointer && !reduceMotion) {
+            hero.addEventListener("pointerenter", () => {
+                heroBounds = hero.getBoundingClientRect();
+            }, { passive: true });
             hero.addEventListener("pointermove", onPointerMove, { passive: true });
-            hero.addEventListener("pointerleave", resetPointer, { passive: true });
+            hero.addEventListener("pointerleave", () => {
+                heroBounds = null;
+                resetPointer();
+            }, { passive: true });
         }
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 cancelAnimationFrame(frameId);
-            } else if (!reduceMotion) {
+                frameId = 0;
+            } else if (!reduceMotion && isInView && !frameId) {
+                previousTime = 0;
                 frameId = requestAnimationFrame(draw);
             }
         });
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver(([entry]) => {
+                isInView = entry.isIntersecting;
+                if (!isInView && frameId) {
+                    cancelAnimationFrame(frameId);
+                    frameId = 0;
+                } else if (isInView && !document.hidden && !reduceMotion && !frameId) {
+                    previousTime = 0;
+                    frameId = requestAnimationFrame(draw);
+                }
+            });
+            observer.observe(hero);
+        }
     }
     initHomeAmbient();
 
@@ -598,6 +570,160 @@
         observer.observe(architecture);
     }
     initArchitectureTransitions();
+
+    function initHomeLiveLogs() {
+        const logLines = document.querySelector(".home-live-logs__lines");
+        const dashboard = document.querySelector(".home-dash");
+        if (!logLines || !dashboard) return;
+
+        const events = [
+            {
+                variants: ["Request received | /api/v1/cards", "Request received | /rag/query"],
+                system: "edge",
+            },
+            {
+                variants: ["API Gateway routing request", "API Gateway route healthy | 200"],
+                system: "edge",
+            },
+            {
+                variants: ["ECS service processing request", "ECS service processing | task healthy"],
+                system: "ecs",
+            },
+            {
+                variants: ["Redis cache lookup", "Redis cache lookup | session key"],
+                system: "redis",
+            },
+            {
+                variants: ["Redis cache HIT", "Redis cache HIT | 4 ms"],
+                system: "redis",
+            },
+            {
+                variants: ["Kafka event published", "Kafka event published | partition 03"],
+                system: "kafka",
+            },
+            {
+                variants: ["Consumer processing event", "Consumer processing event | offset committed"],
+                system: "kafka",
+            },
+            {
+                variants: ["Aurora query completed", "Aurora query completed | 4 rows"],
+                system: "db",
+            },
+            {
+                variants: ["Response returned | status 200", "Response returned | 42 ms"],
+                system: "api",
+            },
+        ];
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const lines = [];
+        const nodes = [...dashboard.querySelectorAll(".home-architecture__node[data-system]")];
+        const nodesBySystem = new Map(nodes.map((node) => [node.dataset.system, node]));
+        let eventIndex = events.length;
+        let timerId = null;
+        let isVisible = false;
+
+        function createLogLine() {
+            const line = document.createElement("div");
+            line.className = "home-live-logs__line";
+            const timestamp = document.createElement("span");
+            timestamp.className = "home-live-logs__time";
+            const level = document.createElement("span");
+            level.className = "home-live-logs__level";
+            level.textContent = "INFO";
+            const message = document.createElement("span");
+            message.className = "home-live-logs__message";
+            line.append(timestamp, level, message);
+            logLines.append(line);
+            return { element: line, timestamp, message };
+        }
+
+        function setLogContent(line, index) {
+            const event = events[index % events.length];
+            line.timestamp.textContent = `[${new Date().toLocaleTimeString("en-GB", { hour12: false })}]`;
+            line.message.textContent = event.variants[Math.floor(index / events.length) % event.variants.length];
+            return event;
+        }
+
+        function pulseNode(system) {
+            if (reduceMotion) return;
+            const node = nodesBySystem.get(system);
+            if (node) node.classList.add("is-log-active");
+        }
+
+        nodes.forEach((node) => {
+            node.addEventListener("animationend", (animationEvent) => {
+                if (animationEvent.animationName === "homeLogNodePulse") {
+                    node.classList.remove("is-log-active");
+                }
+            });
+        });
+
+        for (let position = 0; position < 9; position += 1) {
+            const line = createLogLine();
+            setLogContent(line, position);
+            line.element.style.setProperty("--log-position", String(position));
+            line.element.style.setProperty("--log-opacity", String(0.24 + position * 0.085));
+            lines.push(line);
+        }
+
+        function addEvent() {
+            const recycledLine = lines.shift();
+            if (!recycledLine) return;
+            const event = setLogContent(recycledLine, eventIndex);
+            eventIndex += 1;
+
+            lines.forEach((line, position) => {
+                line.element.style.setProperty("--log-position", String(position));
+                line.element.style.setProperty("--log-opacity", String(0.24 + position * 0.085));
+            });
+
+            recycledLine.element.classList.add("is-recycling");
+            recycledLine.element.style.setProperty("--log-position", "9");
+            recycledLine.element.style.setProperty("--log-opacity", "0");
+            lines.push(recycledLine);
+            requestAnimationFrame(() => {
+                recycledLine.element.classList.remove("is-recycling");
+                recycledLine.element.style.setProperty("--log-position", "8");
+                recycledLine.element.style.setProperty("--log-opacity", "0.92");
+            });
+            pulseNode(event.system);
+        }
+
+        function scheduleNext() {
+            if (document.hidden || !isVisible || timerId !== null) return;
+            timerId = window.setTimeout(() => {
+                timerId = null;
+                if (!document.hidden && isVisible) addEvent();
+                scheduleNext();
+            }, 1750);
+        }
+
+        function updateVisibility(visible) {
+            isVisible = visible;
+            if (!isVisible && timerId !== null) {
+                window.clearTimeout(timerId);
+                timerId = null;
+            }
+            if (isVisible) scheduleNext();
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && timerId !== null) {
+                window.clearTimeout(timerId);
+                timerId = null;
+            } else if (!document.hidden) {
+                scheduleNext();
+            }
+        });
+
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver(([entry]) => updateVisibility(entry.isIntersecting));
+            observer.observe(document.querySelector(".home-live-logs"));
+        } else {
+            updateVisibility(true);
+        }
+    }
+    initHomeLiveLogs();
 
     document.querySelectorAll(".input-control input, .input-control textarea").forEach((input) => {
         input.addEventListener("focus", function () {
@@ -628,9 +754,11 @@
         let currentPointerTilt = 0;
         let pointerX = -1000;
         let pointerY = -1000;
+        let globeBounds = null;
         let dpr = Math.min(window.devicePixelRatio || 1, 3);
         let viewW = 0;
         let viewH = 0;
+        let isInView = true;
 
         // Hub cities (lat, lon) for glowing nodes + arcs
         const hubs = [
@@ -688,10 +816,12 @@
         if (globe) {
             globe.addEventListener("pointerenter", () => {
                 globeHovered = true;
+                globeBounds = canvas.getBoundingClientRect();
                 if (reduceMotion) frame();
             });
             globe.addEventListener("pointerleave", () => {
                 globeHovered = false;
+                globeBounds = null;
                 pointerRotation = 0;
                 pointerTilt = 0;
                 pointerX = -1000;
@@ -699,12 +829,11 @@
                 if (reduceMotion) frame();
             });
             globe.addEventListener("pointermove", (event) => {
-                if (reduceMotion) return;
-                const rect = canvas.getBoundingClientRect();
-                pointerX = event.clientX - rect.left;
-                pointerY = event.clientY - rect.top;
-                pointerRotation = ((pointerX / rect.width) - 0.5) * 0.3;
-                pointerTilt = (0.5 - (pointerY / rect.height)) * 0.12;
+                if (reduceMotion || !globeBounds) return;
+                pointerX = event.clientX - globeBounds.left;
+                pointerY = event.clientY - globeBounds.top;
+                pointerRotation = ((pointerX / viewW) - 0.5) * 0.3;
+                pointerTilt = (0.5 - (pointerY / viewH)) * 0.12;
             }, { passive: true });
         }
 
@@ -763,6 +892,13 @@
         }
         seedLand();
 
+        const latitudeAngles = new Map();
+        const longitudeAngles = new Map();
+        let rotationCos = 1;
+        let rotationSin = 0;
+        let tiltCos = 1;
+        let tiltSin = 0;
+
         function sizeCanvas(force) {
             const rect = canvas.getBoundingClientRect();
             const w = Math.max(180, Math.floor(rect.width) || canvas.clientWidth || 280);
@@ -787,34 +923,44 @@
                 getComputedStyle(globe || themeRoot).getPropertyValue("--globe-accent").trim() ||
                 styles.getPropertyValue("--home-cyan").trim() ||
                 "#00d4ff";
-            const mesh =
-                styles.getPropertyValue("--globe-mesh").trim() ||
-                accent;
             const packetColors = ["blue", "cyan", "violet", "orange", "green"].map((name) =>
                 styles.getPropertyValue(`--packet-${name}`).trim()
             );
-            return { accent, mesh, light: document.body.classList.contains("light-mode"), packetColors };
+            return { accent, light: document.body.classList.contains("light-mode"), packetColors };
         }
+        let colors = readColors();
 
-        function project(lat, lon, rot, R, cx, cy) {
-            const phi = ((90 - lat) * Math.PI) / 180;
-            const theta = ((lon + 180) * Math.PI) / 180 + rot;
-            const x = -R * Math.sin(phi) * Math.cos(theta);
-            const y = -R * Math.cos(phi);
-            const z = R * Math.sin(phi) * Math.sin(theta);
-            const tiltedY = y * Math.cos(currentPointerTilt) - z * Math.sin(currentPointerTilt);
-            const tiltedZ = z * Math.cos(currentPointerTilt) + y * Math.sin(currentPointerTilt);
+        function project(lat, lon, R, cx, cy) {
+            let latitude = latitudeAngles.get(lat);
+            if (!latitude) {
+                const phi = ((90 - lat) * Math.PI) / 180;
+                latitude = { sin: Math.sin(phi), cos: Math.cos(phi) };
+                latitudeAngles.set(lat, latitude);
+            }
+            let longitude = longitudeAngles.get(lon);
+            if (!longitude) {
+                const theta = ((lon + 180) * Math.PI) / 180;
+                longitude = { sin: Math.sin(theta), cos: Math.cos(theta) };
+                longitudeAngles.set(lon, longitude);
+            }
+            const cosTheta = longitude.cos * rotationCos - longitude.sin * rotationSin;
+            const sinTheta = longitude.sin * rotationCos + longitude.cos * rotationSin;
+            const x = -R * latitude.sin * cosTheta;
+            const y = -R * latitude.cos;
+            const z = R * latitude.sin * sinTheta;
+            const tiltedY = y * tiltCos - z * tiltSin;
+            const tiltedZ = z * tiltCos + y * tiltSin;
             return { x: cx + x, y: cy + tiltedY, z: tiltedZ, visible: tiltedZ > -R * 0.05 };
         }
 
-        function drawMeridians(rot, R, cx, cy, color) {
+        function drawMeridians(R, cx, cy, color) {
             ctx.strokeStyle = color;
             ctx.lineWidth = 0.9;
             for (let lon = -180; lon < 180; lon += 20) {
                 ctx.beginPath();
                 let started = false;
                 for (let lat = -90; lat <= 90; lat += 4) {
-                    const p = project(lat, lon, rot, R, cx, cy);
+                    const p = project(lat, lon, R, cx, cy);
                     if (p.z < 0) {
                         started = false;
                         continue;
@@ -830,14 +976,14 @@
             }
         }
 
-        function drawParallels(rot, R, cx, cy, color) {
+        function drawParallels(R, cx, cy, color) {
             ctx.strokeStyle = color;
             ctx.lineWidth = 1;
             for (let lat = -60; lat <= 60; lat += 20) {
                 ctx.beginPath();
                 let started = false;
                 for (let lon = -180; lon <= 180; lon += 4) {
-                    const p = project(lat, lon, rot, R, cx, cy);
+                    const p = project(lat, lon, R, cx, cy);
                     if (p.z < 0) {
                         started = false;
                         continue;
@@ -853,9 +999,9 @@
             }
         }
 
-        function drawArc(a, b, rot, R, cx, cy, color, packetColor, packetColors, timestamp, index, highlighted, light) {
-            const p1 = project(a.lat, a.lon, rot, R, cx, cy);
-            const p2 = project(b.lat, b.lon, rot, R, cx, cy);
+        function drawArc(a, b, R, cx, cy, color, packetColor, packetColors, timestamp, index, highlighted, light) {
+            const p1 = project(a.lat, a.lon, R, cx, cy);
+            const p2 = project(b.lat, b.lon, R, cx, cy);
             if (p1.z < 0 && p2.z < 0) return;
 
             const mx = (p1.x + p2.x) / 2;
@@ -933,10 +1079,10 @@
             }
         }
 
-        function drawServiceConnections(rot, R, cx, cy, w, h, color, packetColors, timestamp, light) {
+        function drawServiceConnections(R, cx, cy, w, h, color, packetColors, timestamp, light) {
             const pulses = new Array(hubs.length).fill(0);
             serviceLinks.forEach((link, index) => {
-                const destination = project(hubs[link.hub].lat, hubs[link.hub].lon, rot, R, cx, cy);
+                const destination = project(hubs[link.hub].lat, hubs[link.hub].lon, R, cx, cy);
                 if (destination.z < 0) return;
                 const packetColor = packetColors[packetColorOrder[(index + arcs.length) % packetColorOrder.length]];
 
@@ -1046,8 +1192,10 @@
         }
 
         function frame(timestamp = performance.now()) {
-            const { w, h } = sizeCanvas(false);
-            const { accent, light, packetColors } = readColors();
+            rafId = null;
+            const w = viewW;
+            const h = viewH;
+            const { accent, light, packetColors } = colors;
             const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) / 1000 : 0;
             lastFrameTime = timestamp;
             if (!reduceMotion) {
@@ -1059,6 +1207,10 @@
             const cy = h / 2;
             const R = Math.min(w, h) * 0.42;
             const globeRotation = rotation + currentPointerRotation;
+            rotationCos = Math.cos(globeRotation);
+            rotationSin = Math.sin(globeRotation);
+            tiltCos = Math.cos(currentPointerTilt);
+            tiltSin = Math.sin(currentPointerTilt);
 
             ctx.clearRect(0, 0, w, h);
 
@@ -1091,12 +1243,12 @@
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            drawMeridians(globeRotation, R, cx, cy, hexToRgba(accent, 0.62));
-            drawParallels(globeRotation, R, cx, cy, hexToRgba(accent, 0.56));
+            drawMeridians(R, cx, cy, hexToRgba(accent, 0.62));
+            drawParallels(R, cx, cy, hexToRgba(accent, 0.56));
 
             // Land dots
             land.forEach((pt, index) => {
-                const p = project(pt.lat, pt.lon, globeRotation, R, cx, cy);
+                const p = project(pt.lat, pt.lon, R, cx, cy);
                 if (p.z < 0) return;
                 const depth = (p.z / R + 1) / 2;
                 const pulse = reduceMotion ? 0 : (Math.sin(timestamp / 1250 + index * 0.73) + 1) * 0.07;
@@ -1113,7 +1265,6 @@
                 drawArc(
                     hubs[i],
                     hubs[j],
-                    globeRotation,
                     R,
                     cx,
                     cy,
@@ -1126,11 +1277,11 @@
                     light
                 );
             });
-            const connectionPulses = drawServiceConnections(globeRotation, R, cx, cy, w, h, accent, packetColors, timestamp, light);
+            const connectionPulses = drawServiceConnections(R, cx, cy, w, h, accent, packetColors, timestamp, light);
 
             // Hub nodes
             hubs.forEach((hub, hubIndex) => {
-                const p = project(hub.lat, hub.lon, globeRotation, R, cx, cy);
+                const p = project(hub.lat, hub.lon, R, cx, cy);
                 if (p.z < 0) return;
                 const isFocusedService = activeSystem && hub.service === activeSystem.toUpperCase();
                 const proximity = Math.max(0, 1 - Math.hypot(pointerX - p.x, pointerY - p.y) / 46);
@@ -1157,7 +1308,7 @@
                 }
             });
 
-            if (!reduceMotion) {
+            if (!reduceMotion && isInView && !document.hidden) {
                 rotation = (rotation + rotationSpeed * elapsed) % (Math.PI * 2);
                 rafId = requestAnimationFrame(frame);
             }
@@ -1191,15 +1342,13 @@
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
-        // Restart on theme change so colors refresh immediately
-        const themeBtn = document.querySelector(".theme-btn");
-        if (themeBtn) {
-            themeBtn.addEventListener("click", () => {
-                // next paint after class swap
-                requestAnimationFrame(() => {
-                    if (reduceMotion) frame();
-                });
-            });
+        function refreshColors() {
+            colors = readColors();
+            if (reduceMotion) frame();
+        }
+        document.addEventListener("portfolio:themechange", refreshColors);
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", refreshColors, { once: true });
         }
 
         window.addEventListener(
@@ -1213,9 +1362,10 @@
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 cancelAnimationFrame(rafId);
+                rafId = null;
             } else if (reduceMotion) {
                 frame();
-            } else {
+            } else if (isInView && !rafId) {
                 lastFrameTime = 0;
                 rafId = requestAnimationFrame(frame);
             }
@@ -1223,6 +1373,7 @@
 
         let started = false;
         function start() {
+            colors = readColors();
             if (started) {
                 sizeCanvas(true);
                 return;
@@ -1238,6 +1389,19 @@
         requestAnimationFrame(start);
         if (document.readyState !== "complete") {
             window.addEventListener("load", start, { once: true });
+        }
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver(([entry]) => {
+                isInView = entry.isIntersecting;
+                if (!isInView && rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                } else if (isInView && started && !document.hidden && !reduceMotion && !rafId) {
+                    lastFrameTime = 0;
+                    rafId = requestAnimationFrame(frame);
+                }
+            });
+            observer.observe(canvas);
         }
 
         return () => {

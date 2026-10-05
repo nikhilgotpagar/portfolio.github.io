@@ -11,17 +11,6 @@
 }
 
 @media screen and (max-width: 600px) {
-    // Reduce particle effects on mobile for better performance
-    .particle {
-        width: 3px;
-        height: 3px;
-        opacity: 0.2;
-    }
-
-    .particle-container {
-        display: none;
-    }
-
     .cursor-dot,
     .cursor-outline {
         display: none;
