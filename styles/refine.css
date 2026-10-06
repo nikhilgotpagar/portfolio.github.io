@@ -1417,25 +1417,38 @@ body.light-mode .top-nav {
     right: 0;
     bottom: 0.15rem;
     left: 0;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
     min-height: 3.25rem;
     margin: 0;
-    padding: 0;
+    padding: 0.2rem 5% 0.2rem 17%;
     border: 0;
   }
 
   .home-contact-strip > div {
-    position: absolute;
-    top: 50%;
-    left: 19%;
-    transform: translateY(-50%);
+    position: static;
+    top: auto;
+    left: auto;
+    max-width: min(28rem, 52%);
+    transform: none;
   }
 
   .home-contact-strip__link {
-    position: absolute;
-    top: 50%;
-    right: 5%;
-    transform: translateY(-50%);
+    position: static;
+    top: auto;
+    right: auto;
+    flex-shrink: 0;
+    transform: none;
+    white-space: nowrap;
+  }
+
+  .home-live-logs {
+    top: 0;
+    transform: none;
+    max-height: 100%;
+    overflow: hidden;
   }
 
   .home-dash > .home-telemetry__card--latency:focus-visible,
@@ -1534,4 +1547,453 @@ body.light-mode .top-nav {
     margin-inline: auto;
   }
 
+}
+
+/* ===== Multi-resolution support (keep layout/structure; fix overflow + short-height collisions) ===== */
+html,
+body.main-content {
+  overflow-x: clip;
+}
+
+.certs-strip {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Phone: 320x568, 390x844 */
+@media (max-width: 400px) {
+  .home-cyber {
+    padding: 4rem 0.7rem 1.25rem !important;
+  }
+
+  .home-portrait {
+    width: min(64vw, 200px);
+    max-width: 200px;
+  }
+
+  .home-name {
+    font-size: clamp(1.55rem, 7.2vw, 1.95rem);
+  }
+
+  .home-lead {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .home-tags {
+    gap: 0.3rem;
+    justify-content: center;
+  }
+
+  .home-tags span {
+    padding: 0.28rem 0.48rem;
+    font-size: 0.68rem;
+  }
+
+  .home-globe-col {
+    max-width: 280px;
+  }
+
+  .home-globe {
+    width: min(68vw, 220px);
+  }
+
+  .home-architecture__canvas {
+    min-width: 560px;
+  }
+
+  .home-live-logs {
+    margin-top: 0.65rem;
+  }
+
+  .top-nav {
+    width: calc(100% - 1.1rem);
+  }
+}
+
+/* Tablet portrait: 768x1024 */
+@media (min-width: 701px) and (max-width: 900px) {
+  .home-cyber {
+    padding: 4.1rem 1rem 1.1rem !important;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.15fr) minmax(200px, 0.85fr);
+    gap: 0.9rem 0.85rem;
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(150px, 0.78fr) minmax(0, 1.22fr);
+    gap: 0.4rem 0.65rem;
+  }
+
+  .home-portrait {
+    max-width: 190px;
+  }
+
+  .home-portrait img {
+    width: 108%;
+    margin-left: -4%;
+  }
+
+  .home-name {
+    font-size: clamp(1.7rem, 3.2vw, 2.2rem);
+  }
+
+  .home-lead {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .home-globe {
+    max-width: 220px;
+  }
+
+  .home-globe canvas {
+    max-width: 220px;
+    max-height: 220px;
+  }
+
+  .home-status__card {
+    padding: 0.55rem 0.7rem;
+  }
+}
+
+/* Tablet landscape / small laptop: 1024x768 */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1.2fr) minmax(210px, 0.8fr);
+    gap: 0.85rem 1rem;
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(170px, 0.82fr) minmax(0, 1.18fr);
+  }
+
+  .home-portrait {
+    max-width: 240px;
+  }
+
+  .home-globe {
+    max-width: 250px;
+  }
+
+  .home-globe canvas {
+    max-width: 250px;
+    max-height: 250px;
+  }
+}
+
+/* Desktop band covering 1366x768 and nearby widths */
+@media (min-width: 1101px) and (max-width: 1439px) {
+  .home-cyber {
+    padding-left: 3rem !important;
+    padding-right: 1.35rem !important;
+  }
+
+  .home-dash {
+    max-width: min(1280px, calc(100% - 1.5rem));
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.42fr) minmax(190px, 0.7fr) minmax(170px, 0.54fr);
+    gap: 0.65rem 0.75rem;
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(170px, 0.82fr) minmax(0, 1.18fr);
+    gap: 0.35rem 0.7rem;
+  }
+
+  .home-portrait {
+    max-width: 280px;
+  }
+
+  .home-nav-rail {
+    left: -4.4rem;
+  }
+
+  .home-dash > .home-live-row {
+    left: 16%;
+    width: 62%;
+  }
+
+  .home-live-logs {
+    width: min(210px, 15.5vw);
+    min-width: 155px;
+    left: calc(100% + 0.55rem);
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    min-width: 132px;
+    max-width: 170px;
+  }
+}
+
+/* Short desktop heights (1366x768, 1440x900 edge, 1024-class landscapes via desktop layout) */
+@media (min-width: 1101px) and (max-height: 900px) {
+  .home-cyber {
+    padding-top: 3.05rem !important;
+    padding-bottom: 0.45rem !important;
+  }
+
+  .home-dash {
+    --architecture-top: 57%;
+    gap: 0.3rem;
+  }
+
+  .home-portrait {
+    max-width: min(250px, 34vh);
+  }
+
+  .home-portrait img {
+    width: auto;
+    max-width: 118%;
+    max-height: min(46vh, 360px);
+    margin-left: -5%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .home-intro-body {
+    gap: 0.35rem;
+  }
+
+  .home-name {
+    font-size: clamp(1.8rem, 2.5vw, 2.45rem);
+  }
+
+  .home-lead {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .home-tags {
+    gap: 0.28rem;
+  }
+
+  .home-tags span {
+    padding: 0.22rem 0.42rem;
+    font-size: 0.62rem;
+  }
+
+  .cta-primary,
+  .cta-ghost {
+    min-height: 34px;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.74rem;
+  }
+
+  .home-globe {
+    max-width: min(230px, 30vh);
+  }
+
+  .home-globe canvas {
+    max-width: min(230px, 30vh);
+    max-height: min(230px, 30vh);
+  }
+
+  .home-status {
+    gap: 0.28rem;
+  }
+
+  .home-status__card {
+    padding: 0.42rem 0.55rem;
+  }
+
+  .home-status__avail {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .home-architecture__canvas {
+    height: 112px;
+  }
+
+  .home-dash > .home-telemetry__card--latency {
+    top: calc(var(--architecture-top) - clamp(46px, 7.5vh, 70px));
+    width: 170px;
+  }
+
+  .home-dash > .home-live-row {
+    top: 72%;
+    bottom: 3.4rem;
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    top: 68%;
+  }
+
+  .home-live-logs {
+    --log-line-height: 0.88rem;
+    width: min(190px, 14vw);
+    min-width: 150px;
+    top: 0;
+    transform: none;
+  }
+
+  .home-live-logs__viewport {
+    height: calc(var(--log-line-height) * 5);
+  }
+
+  .home-dash > .home-contact-strip {
+    min-height: 2.85rem;
+    padding-block: 0.15rem;
+  }
+}
+
+@media (min-width: 1101px) and (max-height: 780px) {
+  .home-dash {
+    --architecture-top: 59%;
+  }
+
+  .home-portrait img {
+    max-height: min(42vh, 320px);
+  }
+
+  .home-globe {
+    max-width: min(210px, 28vh);
+  }
+
+  .home-globe canvas {
+    max-width: min(210px, 28vh);
+    max-height: min(210px, 28vh);
+  }
+
+  .home-dash > .home-live-row {
+    top: 71%;
+    bottom: 3.2rem;
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    top: 67%;
+  }
+
+  .home-architecture__canvas {
+    height: 104px;
+  }
+}
+
+/* Override earlier short-height tops that pushed architecture under the hero */
+@media (min-width: 1101px) and (max-height: 850px) {
+  .home-dash {
+    --architecture-top: 57%;
+  }
+
+  .home-dash > .home-live-row {
+    top: 72%;
+    bottom: 3.4rem;
+  }
+}
+
+@media (min-width: 1101px) and (max-height: 750px) {
+  .home-dash {
+    --architecture-top: 58%;
+  }
+
+  .home-dash > .home-live-row {
+    top: 71%;
+    bottom: 3.2rem;
+  }
+}
+
+@media (min-width: 1101px) and (max-height: 600px) {
+  .home-dash {
+    --architecture-top: 52%;
+  }
+
+  .home-dash > .home-live-row {
+    top: 68%;
+    bottom: 3rem;
+  }
+}
+
+/* 1440x900 — designed density with a bit more room */
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .home-dash {
+    max-width: 1360px;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.45fr) minmax(200px, 0.72fr) minmax(180px, 0.56fr);
+  }
+
+  .home-live-logs {
+    width: min(240px, 16vw);
+  }
+}
+
+/* Large desktops: 1920x1080 / 1920x1820 */
+@media (min-width: 1600px) {
+  .home-cyber {
+    padding-left: clamp(1.25rem, 2vw, 2.25rem) !important;
+    padding-right: clamp(1.25rem, 2vw, 2.25rem) !important;
+  }
+
+  .home-dash {
+    max-width: 1460px;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 0.58fr);
+    gap: 0.8rem 1rem;
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .home-globe {
+    max-width: 320px;
+  }
+
+  .home-nav-rail {
+    left: -6rem;
+  }
+
+  .home-status__dashboard {
+    padding-inline: 0.75rem;
+  }
+
+  .home-live-logs {
+    width: min(300px, 17vw);
+  }
+}
+
+@media (min-width: 1800px) {
+  .home-dash {
+    max-width: 1480px;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.48fr) minmax(0, 0.78fr) minmax(0, 0.58fr);
+  }
+
+  .home-globe {
+    max-width: 300px;
+  }
+
+  .home-nav-rail {
+    left: -5.5rem;
+  }
+}
+
+/* Tall large screens (e.g. 1920x1820): keep layers readable in the upper band */
+@media (min-width: 1600px) and (min-height: 1400px) {
+  .home-dash {
+    --architecture-top: 42%;
+    min-height: calc(100svh - 4.5rem);
+  }
+
+  .home-dash > .home-live-row {
+    top: 58%;
+    bottom: 4.5rem;
+  }
+
+  .home-status__system-telemetry > .home-ai-flow {
+    top: 54%;
+  }
+
+  .home-dash > .home-contact-strip {
+    bottom: 0.35rem;
+  }
 }
