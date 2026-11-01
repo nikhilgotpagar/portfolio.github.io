@@ -205,24 +205,36 @@
 
         const examples = [
             {
-                prompt: "Tell me about scaling a high-throughput system.",
-                answer: "At JPMorganChase, I built Java services on AWS for distributed card systems handling millions of transactions daily.",
+                prompt: "How did you bring a critical service under a 120 ms p95 SLA?",
+                answer: "At JPMorganChase, I redesigned the request path and replaced three AWS calls with one call to the mainframe system of record, cutting p95 latency from ~250 ms to ~120 ms (52%).",
             },
             {
-                prompt: "How have you applied GenAI to a financial workflow?",
-                answer: "I built a FastAPI document pipeline with Docling and Azure OpenAI, validating ledger data with business rules and JSON Schema.",
+                prompt: "How did you migrate services to AWS while improving resilience?",
+                answer: "I migrated Spring Boot services to ECS Fargate with Terraform, elastic scaling, multi-region deployment, and blue-green releases—balancing capacity, availability, and low-disruption rollouts.",
             },
             {
-                prompt: "Describe your cloud migration experience.",
-                answer: "I led an on-prem-to-AWS migration and used blue-green deployments to release services without downtime.",
+                prompt: "What did Kafka enable in your distributed systems?",
+                answer: "I performance-tuned a Kafka event-driven system processing millions of events daily. It decoupled distributed services and enabled asynchronous, high-throughput processing.",
             },
             {
-                prompt: "How have you used Kafka in distributed systems?",
-                answer: "I used Kafka for asynchronous, high-volume events and built REST and GraphQL APIs for client-driven data retrieval.",
+                prompt: "How did you make LLM document extraction reliable for finance?",
+                answer: "I combined configurable prompts with business rules and JSON Schema validation in a FastAPI, Docling, and Azure OpenAI pipeline, reaching 97% extraction accuracy and daily operations adoption.",
             },
             {
-                prompt: "What measurable impact have you delivered?",
-                answer: "At Cybage, I automated supply-chain workflows, reducing manual operational effort by 75%.",
+                prompt: "How do you validate changes before a production rollout?",
+                answer: "I used component, integration, and load tests with Hoverfly, AWS Simulator, Cucumber, JMeter, and BlazeMeter, paired with production observability and blue-green deployments to reduce release risk.",
+            },
+            {
+                prompt: "How do you drive technical decisions across teams?",
+                answer: "In cross-team design reviews, I evaluated implementation approaches and integration patterns, then drove decisions that improved distributed-service scalability and maintainability.",
+            },
+            {
+                prompt: "What measurable improvement have you delivered beyond your current role?",
+                answer: "At Cybage, I automated supply-chain workflows across distributed warehouse systems, reducing manual operational effort by 75% while improving efficiency and reliability.",
+            },
+            {
+                prompt: "How do you approach production incidents in distributed systems?",
+                answer: "At Cybage, I owned production support, analyzed logs, and troubleshot across components and servers, then applied targeted optimizations and scripts to improve throughput and stability.",
             },
         ];
 
